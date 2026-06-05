@@ -356,8 +356,8 @@
           "id": "pig-html",
           "title": "HTML الأساسي للعبة Pig Game",
           "language": "html",
-          "summary": "لاعبين، score، current score، صورة نرد، وأزرار التحكم.",
-          "code": "<section class=\"player player--0 player--active\">\n  <h2>Player 1</h2>\n  <p class=\"score\" id=\"score--0\">0</p>\n  <div class=\"current\">\n    <p>Current</p>\n    <p id=\"current--0\">0</p>\n  </div>\n</section>\n\n<section class=\"player player--1\">\n  <h2>Player 2</h2>\n  <p class=\"score\" id=\"score--1\">0</p>\n  <div class=\"current\">\n    <p>Current</p>\n    <p id=\"current--1\">0</p>\n  </div>\n</section>\n\n<img src=\"dice-1.png\" alt=\"Dice\" class=\"dice hidden\" />\n\n<button class=\"btn--new\">New Game</button>\n<button class=\"btn--roll\">Roll Dice</button>\n<button class=\"btn--hold\">Hold</button>",
+          "summary": "لاعبين، score، current score، عنصر نرد (رقم نصي)، وأزرار التحكم.",
+          "code": "<section class=\"player player--0 player--active\">\n  <h2>Player 1</h2>\n  <p class=\"score\" id=\"score--0\">0</p>\n  <div class=\"current\">\n    <p>Current</p>\n    <p id=\"current--0\">0</p>\n  </div>\n</section>\n\n<section class=\"player player--1\">\n  <h2>Player 2</h2>\n  <p class=\"score\" id=\"score--1\">0</p>\n  <div class=\"current\">\n    <p>Current</p>\n    <p id=\"current--1\">0</p>\n  </div>\n</section>\n\n<div class=\"dice hidden\">?</div>\n\n<button class=\"btn--new\">New Game</button>\n<button class=\"btn--roll\">Roll Dice</button>\n<button class=\"btn--hold\">Hold</button>\n\n<style>\n  .dice { font-size: 4rem; text-align: center; padding: 20px; }\n  .hidden { display: none; }\n  .player--active { background: rgba(247,223,30,0.15); }\n  .player--winner { background: rgba(34,197,94,0.2); }\n</style>",
           "annotations": [
             {
               "lineStart": 1,
@@ -376,13 +376,13 @@
             {
               "lineStart": 19,
               "lineEnd": 19,
-              "title": "Dice Image",
-              "explanation": "صورة النرد تتغير حسب الرقم العشوائي.",
-              "seniorNote": "لازم توفر صور dice-1.png إلى dice-6.png أو تغير الطريقة لنص بدل صورة."
+              "title": "Dice Element",
+              "explanation": "عنصر div يعرض رقم النرد كنص — بديل بسيط بدون صور خارجية.",
+              "seniorNote": "تقدر لاحقًا تستبدله بصور dice-1.png إلى dice-6.png لو حابب UI أجمل."
             },
             {
-              "lineStart": 21,
-              "lineEnd": 23,
+              "lineStart": 25,
+              "lineEnd": 30,
               "title": "Game Controls",
               "explanation": "New Game لإعادة البداية، Roll للرمي، Hold لتثبيت النقاط.",
               "seniorNote": "أسماء classes واضحة تسهل selectors."
@@ -394,7 +394,7 @@
           "title": "JavaScript كامل للعبة Pig Game",
           "language": "javascript",
           "summary": "إدارة حالة اللعبة، تبديل اللاعب، رمي النرد، hold، والفوز.",
-          "code": "const player0 = document.querySelector('.player--0');\nconst player1 = document.querySelector('.player--1');\nconst score0Element = document.querySelector('#score--0');\nconst score1Element = document.querySelector('#score--1');\nconst current0Element = document.querySelector('#current--0');\nconst current1Element = document.querySelector('#current--1');\nconst diceElement = document.querySelector('.dice');\nconst newBtn = document.querySelector('.btn--new');\nconst rollBtn = document.querySelector('.btn--roll');\nconst holdBtn = document.querySelector('.btn--hold');\n\nlet scores;\nlet currentScore;\nlet activePlayer;\nlet playing;\n\nfunction init() {\n  scores = [0, 0];\n  currentScore = 0;\n  activePlayer = 0;\n  playing = true;\n\n  score0Element.textContent = 0;\n  score1Element.textContent = 0;\n  current0Element.textContent = 0;\n  current1Element.textContent = 0;\n\n  diceElement.classList.add('hidden');\n  player0.classList.remove('player--winner');\n  player1.classList.remove('player--winner');\n  player0.classList.add('player--active');\n  player1.classList.remove('player--active');\n}\n\nfunction switchPlayer() {\n  document.querySelector(`#current--${activePlayer}`).textContent = 0;\n  currentScore = 0;\n  activePlayer = activePlayer === 0 ? 1 : 0;\n  player0.classList.toggle('player--active');\n  player1.classList.toggle('player--active');\n}\n\ninit();\n\nrollBtn.addEventListener('click', function () {\n  if (playing) {\n    const dice = Math.trunc(Math.random() * 6) + 1;\n\n    diceElement.classList.remove('hidden');\n    diceElement.src = `dice-${dice}.png`;\n\n    if (dice !== 1) {\n      currentScore += dice;\n      document.querySelector(`#current--${activePlayer}`).textContent = currentScore;\n    } else {\n      switchPlayer();\n    }\n  }\n});\n\nholdBtn.addEventListener('click', function () {\n  if (playing) {\n    scores[activePlayer] += currentScore;\n    document.querySelector(`#score--${activePlayer}`).textContent = scores[activePlayer];\n\n    if (scores[activePlayer] >= 100) {\n      playing = false;\n      diceElement.classList.add('hidden');\n      document.querySelector(`.player--${activePlayer}`).classList.add('player--winner');\n      document.querySelector(`.player--${activePlayer}`).classList.remove('player--active');\n    } else {\n      switchPlayer();\n    }\n  }\n});\n\nnewBtn.addEventListener('click', init);",
+          "code": "const player0 = document.querySelector('.player--0');\nconst player1 = document.querySelector('.player--1');\nconst score0Element = document.querySelector('#score--0');\nconst score1Element = document.querySelector('#score--1');\nconst current0Element = document.querySelector('#current--0');\nconst current1Element = document.querySelector('#current--1');\nconst diceElement = document.querySelector('.dice');\nconst newBtn = document.querySelector('.btn--new');\nconst rollBtn = document.querySelector('.btn--roll');\nconst holdBtn = document.querySelector('.btn--hold');\n\nlet scores;\nlet currentScore;\nlet activePlayer;\nlet playing;\n\nfunction init() {\n  scores = [0, 0];\n  currentScore = 0;\n  activePlayer = 0;\n  playing = true;\n\n  score0Element.textContent = 0;\n  score1Element.textContent = 0;\n  current0Element.textContent = 0;\n  current1Element.textContent = 0;\n\n  diceElement.classList.add('hidden');\n  diceElement.textContent = '?';\n  player0.classList.remove('player--winner');\n  player1.classList.remove('player--winner');\n  player0.classList.add('player--active');\n  player1.classList.remove('player--active');\n}\n\nfunction switchPlayer() {\n  document.querySelector(`#current--${activePlayer}`).textContent = 0;\n  currentScore = 0;\n  activePlayer = activePlayer === 0 ? 1 : 0;\n  player0.classList.toggle('player--active');\n  player1.classList.toggle('player--active');\n}\n\ninit();\n\nrollBtn.addEventListener('click', function () {\n  if (playing) {\n    const dice = Math.trunc(Math.random() * 6) + 1;\n\n    diceElement.classList.remove('hidden');\n    diceElement.textContent = dice;\n\n    if (dice !== 1) {\n      currentScore += dice;\n      document.querySelector(`#current--${activePlayer}`).textContent = currentScore;\n    } else {\n      switchPlayer();\n    }\n  }\n});\n\nholdBtn.addEventListener('click', function () {\n  if (playing) {\n    scores[activePlayer] += currentScore;\n    document.querySelector(`#score--${activePlayer}`).textContent = scores[activePlayer];\n\n    if (scores[activePlayer] >= 100) {\n      playing = false;\n      diceElement.classList.add('hidden');\n      document.querySelector(`.player--${activePlayer}`).classList.add('player--winner');\n      document.querySelector(`.player--${activePlayer}`).classList.remove('player--active');\n    } else {\n      switchPlayer();\n    }\n  }\n});\n\nnewBtn.addEventListener('click', init);",
           "annotations": [
             {
               "lineStart": 1,
@@ -435,7 +435,7 @@
               "lineStart": 45,
               "lineEnd": 60,
               "title": "Roll Dice Logic",
-              "explanation": "لو اللعبة شغالة، نولد رقم من 1 إلى 6، نعرض الصورة، لو ليس 1 نضيفه للcurrent، لو 1 نبدل اللاعب.",
+              "explanation": "لو اللعبة شغالة، نولد رقم من 1 إلى 6، نعرضه في عنصر النرد، لو ليس 1 نضيفه للcurrent، لو 1 نبدل اللاعب.",
               "seniorNote": "شرط playing يمنع أي تفاعل بعد انتهاء اللعبة."
             },
             {
@@ -458,6 +458,7 @@
             "نسيان playing=false بعد الفوز فيستمر اللعب.",
             "نسيان إخفاء النرد في init أو بعد الفوز.",
             "كتابة selector ديناميكي غلط مثل #current-${activePlayer} بدون backticks.",
+            "نسيان diceElement.textContent = '?' عند reset.",
             "نسيان إضافة player--active للاعب 0 عند reset."
           ]
         }

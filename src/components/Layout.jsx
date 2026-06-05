@@ -13,7 +13,8 @@ import GlobalSeniorHints from './workshop/GlobalSeniorHints';
 import PracticePlan from './workshop/PracticePlan';
 import SuccessMetrics from './workshop/SuccessMetrics';
 import ProjectWorkshop from './workshop/ProjectWorkshop';
-import { DAY_SECTIONS, WORKSHOP_SECTIONS } from '../data/courses';
+import ExamResult from './day/ExamResult';
+import { getDaySections, WORKSHOP_SECTIONS } from '../data/courses';
 import {
   loadProgress,
   markVisited,
@@ -28,9 +29,7 @@ export default function Layout({ module, moduleId, onBack }) {
 
   const sections = isWorkshop
     ? WORKSHOP_SECTIONS
-    : DAY_SECTIONS.filter(
-        (s) => !s.conditional || data.final_homework?.length > 0
-      );
+    : getDaySections(data, module.isExam);
 
   const [activeSection, setActiveSection] = useState(sections[0].id);
   const [activeProject, setActiveProject] = useState(
@@ -135,6 +134,8 @@ export default function Layout({ module, moduleId, onBack }) {
         return <Projects projects={data.projects} />;
       case 'homework':
         return <FinalHomework items={data.final_homework} />;
+      case 'exam-result':
+        return <ExamResult module={data} progress={progress} />;
       default:
         return null;
     }

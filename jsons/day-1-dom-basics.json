@@ -1,7 +1,7 @@
 {
   "title": "اليوم الأول: أساسيات DOM والتعديل على الصفحة",
   "goal": "فهم DOM، اختيار العناصر، تغيير النصوص والستايل، التعامل مع الكلاسات، إنشاء وحذف عناصر.",
-  "duration": "حوالي 5 إلى 6 ساعات",
+  "duration": "حوالي 6 إلى 7 ساعات",
   "schedule": [
     {
       "time": "30 دقيقة",
@@ -22,6 +22,14 @@
     {
       "time": "45 دقيقة",
       "topic": "إنشاء وحذف عناصر"
+    },
+    {
+      "time": "30 دقيقة",
+      "topic": "DOMContentLoaded ومتى يشتغل JS"
+    },
+    {
+      "time": "30 دقيقة",
+      "topic": "التنقل بين العناصر: parent و children و closest"
     },
     {
       "time": "60 دقيقة",
@@ -112,6 +120,46 @@
         "append يقدر يضيف نصوص وعناصر، appendChild يضيف Node واحدة ويرجعها.",
         "قبل حذف عنصر، اتأكد إنه موجود عشان تتجنب errors في المشاريع الكبيرة."
       ]
+    },
+    {
+      "name": "DOMContentLoaded — متى يشتغل JS؟",
+      "explanation": "لو حطيت script في آخر body غالبًا العناصر موجودة. لكن الأفضل تستنى DOMContentLoaded عشان تضمن إن HTML اتحمل بالكامل قبل ما تختار عناصر أو تضيف events.",
+      "example": {
+        "html": "<h1 id='title'>Loading...</h1>",
+        "javascript": "document.addEventListener('DOMContentLoaded', function() {\n  let title = document.querySelector('#title');\n  title.textContent = 'DOM Ready!';\n});"
+      },
+      "senior_hints": [
+        "لو script في آخر body قبل </body>، غالبًا مش محتاج DOMContentLoaded.",
+        "لو script في head، لازم DOMContentLoaded أو defer.",
+        "لا تخلط بين DOMContentLoaded و window load — load بيستنى الصور كمان."
+      ]
+    },
+    {
+      "name": "التنقل بين العناصر",
+      "explanation": "تقدر تتحرك في DOM باستخدام parentElement و children و closest. closest مفيد لما تضغط على عنصر داخلي وتدور على أقرب أب مطابق لـ selector.",
+      "methods": [
+        {
+          "method": "element.parentElement",
+          "use": "الأب المباشر للعنصر"
+        },
+        {
+          "method": "element.children",
+          "use": "الأبناء المباشرين"
+        },
+        {
+          "method": "element.closest('.card')",
+          "use": "أقرب أب (أو العنصر نفسه) يطابق selector"
+        }
+      ],
+      "example": {
+        "html": "<div class='card'>\n  <button class='delete-btn'>Delete</button>\n</div>",
+        "javascript": "document.querySelector('.delete-btn').addEventListener('click', function(event) {\n  let card = event.target.closest('.card');\n  card.remove();\n});"
+      },
+      "senior_hints": [
+        "closest أقوى من parentElement في Event Delegation لأنه يدور لحد ما يلاقي المطلوب.",
+        "children بيرجع HTMLCollection — استخدم for...of أو Array.from.",
+        "متستخدمش traversal كتير في loops كبيرة — ممكن يأثر على الأداء."
+      ]
     }
   ],
   "mcq": [
@@ -164,6 +212,26 @@
         "document.add('active')"
       ],
       "answer": "element.classList.add('active')"
+    },
+    {
+      "question": "متى نستخدم DOMContentLoaded؟",
+      "choices": [
+        "بعد تحميل كل الصور فقط",
+        "لما HTML يكون جاهز للتعامل معه",
+        "قبل كتابة أي HTML",
+        "لحذف العناصر"
+      ],
+      "answer": "لما HTML يكون جاهز للتعامل معه"
+    },
+    {
+      "question": "أي كود يلاقي أقرب div له class card من الزر؟",
+      "choices": [
+        "event.target.parentElement",
+        "event.target.closest('.card')",
+        "event.target.children",
+        "document.querySelector('card')"
+      ],
+      "answer": "event.target.closest('.card')"
     }
   ],
   "code_writing_tests": [
@@ -203,6 +271,14 @@
     {
       "question": "let paragraph = document.__________('p');",
       "answer": "createElement"
+    },
+    {
+      "question": "document.addEventListener('__________', function() { init(); });",
+      "answer": "DOMContentLoaded"
+    },
+    {
+      "question": "let card = event.target.__________('.card');",
+      "answer": "closest"
     }
   ],
   "project": {
@@ -214,8 +290,16 @@
       "زر إضافة مهارة",
       "زر حذف الكارت"
     ],
-    "html": "<div id='card' class='card'>\n  <h2 id='name'>Islam Mohamed</h2>\n  <p id='job'>Frontend Student</p>\n  <ul id='skills'>\n    <li>HTML</li>\n    <li>CSS</li>\n  </ul>\n  <button onclick='changeInfo()'>Change Info</button>\n  <button onclick='addSkill()'>Add Skill</button>\n  <button onclick='deleteCard()'>Delete Card</button>\n</div>",
+    "html": "<div id='card' class='card'>\n  <h2 id='name'>Islam Mohamed</h2>\n  <p id='job'>Frontend Student</p>\n  <ul id='skills'>\n    <li>HTML</li>\n    <li>CSS</li>\n  </ul>\n  <button id='changeBtn'>Change Info</button>\n  <button id='addSkillBtn'>Add Skill</button>\n  <button id='deleteBtn'>Delete Card</button>\n</div>",
     "css": ".card { width: 300px; padding: 20px; background-color: #eee; border-radius: 10px; font-family: Arial; }\n.highlight { background-color: #222; color: white; }",
-    "javascript": "function changeInfo() {\n  let name = document.querySelector('#name');\n  let job = document.querySelector('#job');\n  let card = document.querySelector('#card');\n  name.textContent = 'Islam DOM Master';\n  job.textContent = 'JavaScript Developer';\n  card.classList.toggle('highlight');\n}\n\nfunction addSkill() {\n  let skills = document.querySelector('#skills');\n  let li = document.createElement('li');\n  li.textContent = 'JavaScript DOM';\n  skills.appendChild(li);\n}\n\nfunction deleteCard() {\n  let card = document.querySelector('#card');\n  card.remove();\n}"
-  }
+    "javascript": "let name = document.querySelector('#name');\nlet job = document.querySelector('#job');\nlet card = document.querySelector('#card');\nlet skills = document.querySelector('#skills');\nlet changeBtn = document.querySelector('#changeBtn');\nlet addSkillBtn = document.querySelector('#addSkillBtn');\nlet deleteBtn = document.querySelector('#deleteBtn');\n\nchangeBtn.addEventListener('click', function() {\n  name.textContent = 'Islam DOM Master';\n  job.textContent = 'JavaScript Developer';\n  card.classList.toggle('highlight');\n});\n\naddSkillBtn.addEventListener('click', function() {\n  let li = document.createElement('li');\n  li.textContent = 'JavaScript DOM';\n  skills.appendChild(li);\n});\n\ndeleteBtn.addEventListener('click', function() {\n  card.remove();\n});"
+  },
+  "final_homework": [
+    "ابني Mini Profile Card من غير copy paste",
+    "استخدم classList بدل style مباشر قدر الإمكان",
+    "اربط الأزرار بـ addEventListener مش onclick في HTML",
+    "أضف validation: ممنوع إضافة skill فاضية",
+    "استخدم closest أو parentElement في مكان مناسب",
+    "جرب DOMContentLoaded لو حطيت script في head"
+  ]
 }

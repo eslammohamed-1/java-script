@@ -32,6 +32,18 @@ export function markCompleted(moduleId, itemId) {
 }
 
 export function calcDayProgress(module, progress) {
+  const isExam =
+    !module.lessons?.length &&
+    !module.schedule?.length &&
+    module.mcq?.length > 0;
+
+  if (isExam) {
+    const total =
+      (module.mcq?.length ?? 0) + (module.complete_code_tests?.length ?? 0);
+    const done = progress.completed.length;
+    return total > 0 ? Math.min(100, Math.round((done / total) * 100)) : 0;
+  }
+
   const sections = [
     'overview',
     'schedule',

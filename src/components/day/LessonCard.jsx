@@ -1,4 +1,5 @@
 import CodeTabs from '../shared/CodeTabs';
+import CodePlayground from '../shared/CodePlayground';
 
 export default function LessonCard({ lesson, index }) {
   return (
@@ -39,7 +40,16 @@ export default function LessonCard({ lesson, index }) {
         </div>
       )}
 
-      {lesson.example && <CodeTabs example={lesson.example} />}
+      {lesson.example && (
+        <>
+          <CodeTabs example={lesson.example} />
+          <CodePlayground
+            html={lesson.example.html}
+            css={lesson.example.css}
+            javascript={lesson.example.javascript}
+          />
+        </>
+      )}
 
       {lesson.senior_hints?.length > 0 && (
         <div className="hint-box">

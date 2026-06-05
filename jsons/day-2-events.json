@@ -28,6 +28,10 @@
       "topic": "Event Delegation"
     },
     {
+      "time": "30 دقيقة",
+      "topic": "target vs currentTarget و Event Bubbling"
+    },
+    {
       "time": "60 دقيقة",
       "topic": "تدريبات واختبارات"
     },
@@ -50,6 +54,10 @@
         "mouseover",
         "mouseout"
       ],
+      "example": {
+        "html": "<button id='btn'>Click Me</button>\n<p id='log'>Waiting...</p>",
+        "javascript": "let btn = document.querySelector('#btn');\nlet log = document.querySelector('#log');\n\nbtn.addEventListener('click', function() {\n  log.textContent = 'click event happened!';\n});\n\nbtn.addEventListener('mouseenter', function() {\n  log.textContent = 'mouseenter — الماوس دخل الزر';\n});"
+      },
       "senior_hints": [
         "فكر في الصفحة كسلسلة أحداث وردود أفعال.",
         "اختار event مناسب للموقف: input للكتابة الحية، submit للفورم، click للأزرار."
@@ -105,6 +113,19 @@
         "استخدم classList.contains بدل tagName لو عندك عناصر كثيرة داخل نفس الأب.",
         "لو ضغط المستخدم على عنصر داخلي داخل الزر، ممكن تحتاج closest()."
       ]
+    },
+    {
+      "name": "target vs currentTarget و Event Bubbling",
+      "explanation": "event.target هو العنصر اللي حصل عليه الحدث فعليًا. event.currentTarget هو العنصر اللي عليه الـ listener. Bubbling يعني الحدث يطلع من الابن للأب — تقدر توقفه بـ stopPropagation.",
+      "example": {
+        "html": "<div id='box' style='padding:30px;background:#eee;'>\n  <button id='innerBtn'>Click Inner</button>\n</div>\n<p id='info'></p>",
+        "javascript": "let box = document.querySelector('#box');\nlet info = document.querySelector('#info');\n\nbox.addEventListener('click', function(event) {\n  info.textContent = 'target: ' + event.target.id + ' | currentTarget: ' + event.currentTarget.id;\n});\n\n// event.stopPropagation() يمنع الحدث من الوصول للأب"
+      },
+      "senior_hints": [
+        "في Event Delegation على الأب، target غالبًا الابن و currentTarget هو الأب.",
+        "استخدم stopPropagation بحذر — ممكن يكسر سلوك مكونات تانية.",
+        "removeEventListener يحتاج نفس function reference اللي استخدمتها في addEventListener."
+      ]
     }
   ],
   "mcq": [
@@ -157,6 +178,26 @@
         "تغيير CSS فقط"
       ],
       "answer": "وضع event على الأب والتعامل مع الأبناء باستخدام event.target"
+    },
+    {
+      "question": "في listener على الأب، event.currentTarget يشير إلى؟",
+      "choices": [
+        "العنصر الداخلي الذي ضُغط عليه",
+        "العنصر الذي عليه listener نفسه",
+        "document فقط",
+        "أول عنصر في الصفحة"
+      ],
+      "answer": "العنصر الذي عليه listener نفسه"
+    },
+    {
+      "question": "ما وظيفة event.stopPropagation()؟",
+      "choices": [
+        "حذف العنصر",
+        "منع انتشار الحدث للعناصر الأب",
+        "إيقاف الصفحة",
+        "تغيير النص"
+      ],
+      "answer": "منع انتشار الحدث للعناصر الأب"
     }
   ],
   "code_writing_tests": [
@@ -200,6 +241,14 @@
     {
       "question": "box.classList.__________('active');",
       "answer": "toggle"
+    },
+    {
+      "question": "console.log(event.__________); // العنصر عليه listener",
+      "answer": "currentTarget"
+    },
+    {
+      "question": "event.__________(); // منع bubbling",
+      "answer": "stopPropagation"
     }
   ],
   "projects": [

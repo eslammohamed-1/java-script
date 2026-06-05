@@ -1,4 +1,5 @@
 import CodeTabs from '../shared/CodeTabs';
+import CodePlayground from '../shared/CodePlayground';
 
 function ProjectCard({ project, index }) {
   return (
@@ -17,6 +18,12 @@ function ProjectCard({ project, index }) {
           css: project.css,
           javascript: project.javascript,
         }}
+      />
+      <CodePlayground
+        html={project.html}
+        css={project.css}
+        javascript={project.javascript}
+        title={`معاينة: ${project.name}`}
       />
     </div>
   );

@@ -1,0 +1,133 @@
+{
+  "title": "الاختبار النهائي الشامل",
+  "goal": "مراجعة DOM و Events من اليومين قبل الورشة — لازم تجيب 70% على الأقل.",
+  "duration": "30 إلى 45 دقيقة",
+  "schedule": [],
+  "lessons": [],
+  "mcq": [
+    {
+      "question": "أي كود يختار أول عنصر له class='item'؟",
+      "choices": [
+        "document.querySelector('#item')",
+        "document.querySelector('.item')",
+        "document.getElementById('item')",
+        "document.querySelector('item')"
+      ],
+      "answer": "document.querySelector('.item')"
+    },
+    {
+      "question": "لمنع إعادة تحميل الصفحة عند submit نستخدم؟",
+      "choices": [
+        "event.stopPropagation()",
+        "event.preventDefault()",
+        "event.remove()",
+        "return false فقط في HTML"
+      ],
+      "answer": "event.preventDefault()"
+    },
+    {
+      "question": "أي طريقة أنسب لإضافة عناصر ديناميكية من بيانات المستخدم؟",
+      "choices": [
+        "innerHTML مباشرة",
+        "createElement + textContent",
+        "document.write",
+        "eval"
+      ],
+      "answer": "createElement + textContent"
+    },
+    {
+      "question": "Event Delegation يعني؟",
+      "choices": [
+        "listener على كل li",
+        "listener على الأب + event.target",
+        "حذف كل events",
+        "استخدام onclick فقط"
+      ],
+      "answer": "listener على الأب + event.target"
+    },
+    {
+      "question": "input.value يرجع دائمًا نوع؟",
+      "choices": [
+        "number",
+        "boolean",
+        "string",
+        "object"
+      ],
+      "answer": "string"
+    },
+    {
+      "question": "DOMContentLoaded يحدث عندما؟",
+      "choices": [
+        "بعد تحميل كل الصور",
+        "عند جاهزية HTML للتعامل",
+        "قبل بناء DOM",
+        "عند إغلاق الصفحة"
+      ],
+      "answer": "عند جاهزية HTML للتعامل"
+    },
+    {
+      "question": "classList.toggle('active') يعمل؟",
+      "choices": [
+        "يضيف فقط",
+        "يشيل فقط",
+        "يضيف أو يشيل حسب الحالة",
+        "يحذف العنصر"
+      ],
+      "answer": "يضيف أو يشيل حسب الحالة"
+    },
+    {
+      "question": "event.currentTarget في listener على ul يشير إلى؟",
+      "choices": [
+        "الـ li المضغوط",
+        "الـ ul نفسه",
+        "document",
+        "أول زر في الصفحة"
+      ],
+      "answer": "الـ ul نفسه"
+    },
+    {
+      "question": "querySelectorAll يرجع؟",
+      "choices": [
+        "عنصر واحد",
+        "NodeList",
+        "array عادي دائمًا",
+        "string"
+      ],
+      "answer": "NodeList"
+    },
+    {
+      "question": "أي event مناسب للكتابة الحية في input؟",
+      "choices": [
+        "submit",
+        "click",
+        "input",
+        "load"
+      ],
+      "answer": "input"
+    }
+  ],
+  "code_writing_tests": [],
+  "complete_code_tests": [
+    {
+      "question": "items.forEach(function(item) { item.__________('click', handler); });",
+      "answer": "addEventListener"
+    },
+    {
+      "question": "let value = Number(input.__________);",
+      "answer": "value"
+    },
+    {
+      "question": "element.__________.remove('hidden');",
+      "answer": "classList"
+    },
+    {
+      "question": "document.addEventListener('__________', init);",
+      "answer": "DOMContentLoaded"
+    },
+    {
+      "question": "let row = event.target.__________('tr');",
+      "answer": "closest"
+    }
+  ],
+  "projects": []
+}

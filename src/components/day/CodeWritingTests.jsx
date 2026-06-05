@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import CodeTabs from '../shared/CodeTabs';
+import CodePlayground from '../shared/CodePlayground';
 
 function CodeTask({ task, html, solution, index }) {
   const [showSolution, setShowSolution] = useState(false);
@@ -11,6 +12,7 @@ function CodeTask({ task, html, solution, index }) {
       </h3>
       <div className="code-task__html">
         <CodeTabs example={{ html }} />
+        <CodePlayground html={html} title="معاينة HTML" />
       </div>
       {!showSolution ? (
         <button

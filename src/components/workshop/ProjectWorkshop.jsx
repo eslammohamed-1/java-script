@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import AnnotatedCodeBlock from './AnnotatedCodeBlock';
 import ProjectLab from '../shared/ProjectLab';
+import SeniorHints from '../shared/SeniorHints';
 import {
   extractProjectCode,
   extractStarterCode,
@@ -114,7 +115,7 @@ export default function ProjectWorkshop({
           className="btn btn--ghost"
           onClick={() => setShowSeniorHints((v) => !v)}
         >
-          {showSeniorHints ? 'إخفاء التلميحات' : 'Senior Hints'}
+          {showSeniorHints ? 'إخفاء التلميحات' : 'تلميحات احترافية'}
         </button>
         {project.testingChecklist?.length > 0 && (
           <button
@@ -155,16 +156,14 @@ export default function ProjectWorkshop({
       />
 
       {showSeniorHints && allSeniorNotes?.length > 0 && (
-        <div className="hint-box">
-          <div className="hint-box__title">Senior Hints</div>
-          <ul>
-            {allSeniorNotes.map((n, i) => (
-              <li key={i}>
-                <strong>{n.title}</strong> ({n.block}): {n.note}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <SeniorHints
+          title="تلميحات من الكود"
+          hints={allSeniorNotes.map((n) => ({
+            title: n.title,
+            explanation: n.note,
+            practice: n.block ? `من قسم: ${n.block}` : null,
+          }))}
+        />
       )}
 
       {!hideSolution &&

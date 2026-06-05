@@ -1,19 +1,23 @@
 import { useEffect, useMemo, useState } from 'react';
 import { buildSrcDoc } from '../../utils/buildSrcDoc';
 
-const TABS = [
+const EDITOR_TABS = [
   { id: 'html', label: 'HTML' },
   { id: 'css', label: 'CSS' },
   { id: 'javascript', label: 'JavaScript' },
-  { id: 'preview', label: 'معاينة' },
 ];
+
+const LIVE_DELAY_MS = 350;
 
 export default function ProjectLab({
   storageKey,
   starter,
   solution,
   title = 'طبّق المشروع هنا',
+  variant = 'project',
 }) {
+  const isLesson = variant === 'lesson';
+
   const loadSaved = () => {
     try {
       const raw = localStorage.getItem(`project-lab-${storageKey}`);
@@ -29,6 +33,7 @@ export default function ProjectLab({
   const [javascript, setJavascript] = useState(
     () => loadSaved()?.javascript ?? starter.javascript ?? ''
   );
+  const [liveCode, setLiveCode] = useState({ html, css, javascript });
   const [previewKey, setPreviewKey] = useState(0);
   const [copied, setCopied] = useState(false);
 
@@ -39,29 +44,31 @@ export default function ProjectLab({
     );
   }, [storageKey, html, css, javascript]);
 
-  const srcDoc = useMemo(
-    () => buildSrcDoc({ html, css, javascript }),
-    [html, css, javascript, previewKey]
-  );
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLiveCode({ html, css, javascript });
+      setPreviewKey((k) => k + 1);
+    }, LIVE_DELAY_MS);
 
-  function handleRun() {
-    setPreviewKey((k) => k + 1);
-    setActiveTab('preview');
-  }
+    return () => clearTimeout(timer);
+  }, [html, css, javascript]);
+
+  const srcDoc = useMemo(
+    () => buildSrcDoc(liveCode),
+    [liveCode, previewKey]
+  );
 
   function handleReset(mode) {
     const source = mode === 'solution' ? solution : starter;
     setHtml(source.html ?? '');
     setCss(source.css ?? '');
     setJavascript(source.javascript ?? '');
-    setPreviewKey((k) => k + 1);
   }
 
   function handleClear() {
     setHtml('');
     setCss('');
     setJavascript('');
-    setPreviewKey((k) => k + 1);
   }
 
   async function handleCopyAll() {
@@ -72,37 +79,46 @@ export default function ProjectLab({
   }
 
   return (
-    <div className="project-lab">
+    <div className={`project-lab ${isLesson ? 'project-lab--lesson' : ''}`}>
       <div className="project-lab__header">
         <div>
           <h3 className="project-lab__title">{title}</h3>
           <p className="project-lab__desc">
-            اكتب الكود بنفسك، اضغط تشغيل، وشوف النتيجة مباشرة — شغلك محفوظ تلقائيًا
+            عدّل الكود في التبويبات — المعاينة تحت تتحدث تلقائيًا مع أي تغيير
           </p>
         </div>
         <div className="btn-group">
-          <button type="button" className="btn btn--primary" onClick={handleRun}>
-            ▶ تشغيل
-          </button>
-          <button
-            type="button"
-            className="btn btn--secondary"
-            onClick={() => handleReset('starter')}
-          >
-            HTML فقط
-          </button>
+          {isLesson ? (
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={() => handleReset('starter')}
+            >
+              إعادة المثال
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={() => handleReset('starter')}
+            >
+              HTML فقط
+            </button>
+          )}
           {solution && (
             <button
               type="button"
               className="btn btn--ghost"
               onClick={() => handleReset('solution')}
             >
-              إظهار الحل
+              {isLesson ? 'تحميل الحل' : 'إظهار الحل'}
             </button>
           )}
-          <button type="button" className="btn btn--ghost" onClick={handleClear}>
-            مسح
-          </button>
+          {!isLesson && (
+            <button type="button" className="btn btn--ghost" onClick={handleClear}>
+              مسح
+            </button>
+          )}
           <button type="button" className="btn btn--ghost" onClick={handleCopyAll}>
             {copied ? 'تم النسخ ✓' : 'نسخ الكل'}
           </button>
@@ -110,7 +126,7 @@ export default function ProjectLab({
       </div>
 
       <div className="project-lab__tabs">
-        {TABS.map((tab) => (
+        {EDITOR_TABS.map((tab) => (
           <button
             key={tab.id}
             type="button"
@@ -122,7 +138,7 @@ export default function ProjectLab({
         ))}
       </div>
 
-      <div className="project-lab__body">
+      <div className="project-lab__editor-wrap">
         {activeTab === 'html' && (
           <textarea
             className="project-lab__editor"
@@ -151,15 +167,20 @@ export default function ProjectLab({
             dir="ltr"
           />
         )}
-        {activeTab === 'preview' && (
-          <iframe
-            key={previewKey}
-            className="project-lab__preview"
-            title="معاينة المشروع"
-            srcDoc={srcDoc}
-            sandbox="allow-scripts"
-          />
-        )}
+      </div>
+
+      <div className="project-lab__preview-section">
+        <div className="project-lab__preview-header">
+          <span className="project-lab__preview-title">معاينة حية</span>
+          <span className="project-lab__preview-hint">تتحدث تلقائيًا مع التعديل</span>
+        </div>
+        <iframe
+          key={previewKey}
+          className="project-lab__preview"
+          title="معاينة حية"
+          srcDoc={srcDoc}
+          sandbox="allow-scripts"
+        />
       </div>
     </div>
   );

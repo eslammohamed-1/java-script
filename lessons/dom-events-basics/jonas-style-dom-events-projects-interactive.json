@@ -20,12 +20,36 @@
     }
   },
   "global_senior_hints": [
-    "لا تحفظ الكود؛ افهم state: إيه البيانات اللي بتتغير مع تفاعل المستخدم؟",
-    "اكتب selectors في أول الملف، وبعدها variables الخاصة بالstate، وبعدها functions، وفي الآخر event listeners.",
-    "كرر أي منطق بيتكتب أكتر من مرة داخل function مستقلة.",
-    "استخدم classList لتغيير الشكل بدل style المباشر قدر الإمكان.",
-    "أي input.value بيرجع string؛ لو محتاج رقم استخدم Number().",
-    "اختبر كل feature بعد كتابتها فورًا بدل ما تكتب المشروع كله مرة واحدة."
+    {
+      "title": "افهم الـ state قبل الكود",
+      "explanation": "لا تحفظ الكود حرفيًا. اسأل: إيه البيانات اللي بتتغير؟ (score, isOpen, activePlayer). الـ state هو قلب أي مشروع تفاعلي.",
+      "practice": "قبل ما تكتب سطر، اكتب قائمة: secretNumber, score, highscore — واشرح كل واحد بصوت عالي."
+    },
+    {
+      "title": "ترتيب الملف الاحترافي",
+      "explanation": "① selectors ② state variables ③ functions ④ event listeners. الترتيب ده بيخلي الكود قابل للقراءة والتصحيح.",
+      "practice": "افتح أي مشروع ناجح ولاحظ الترتيب — وطبّقه في مشروعك."
+    },
+    {
+      "title": "DRY — لا تكرر المنطق",
+      "explanation": "لو نفس الكود بيتكتب مرتين أو أكثر، اعمل function. displayMessage() و closeModal() أمثلة كلاسيكية.",
+      "practice": "كل ما لقيت نفس سطرين متكررين، استخرجهم في function."
+    },
+    {
+      "title": "classList للشكل",
+      "explanation": "غيّر المظهر بإضافة/إزالة classes معرّفة في CSS — مش بـ style مباشر في كل مكان.",
+      "practice": "modal.classList.remove('hidden') أنظف من modal.style.display = 'block'."
+    },
+    {
+      "title": "input.value دايمًا string",
+      "explanation": "حتى لو type=number، value بيرجع نص. للمقارنة الرقمية لازم Number() أو parseInt().",
+      "practice": "const guess = Number(guessInput.value) قبل أي مقارنة."
+    },
+    {
+      "title": "اختبر خطوة بخطوة",
+      "explanation": "اكتب feature واحدة، جرّبها في المحرر، بعدين انتقل للتالية. كتابة المشروع كله مرة واحدة = أخطاء أصعب في التتبع.",
+      "practice": "بعد كل زر أو حالة جديدة، افتح المعاينة وجرّب فورًا."
+    }
   ],
   "projects": [
     {

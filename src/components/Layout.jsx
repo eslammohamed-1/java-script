@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import ProgressBar from './ProgressBar';
 import Overview from './day/Overview';
+import DaySummary from './day/DaySummary';
 import Schedule from './day/Schedule';
 import Lessons from './day/Lessons';
 import MCQQuiz from './day/MCQQuiz';
@@ -118,14 +119,23 @@ export default function Layout({ lesson, module, onBack, onBackToLessons }) {
     switch (activeSection) {
       case 'overview':
         return <Overview module={data} />;
+      case 'summary':
+        return (
+          <DaySummary summary={data.learning_summary} goal={data.goal} />
+        );
       case 'schedule':
         return <Schedule schedule={data.schedule} />;
       case 'lessons':
-        return <Lessons lessons={data.lessons} />;
+        return <Lessons lessons={data.lessons} lessonId={lesson.id} />;
       case 'mcq':
         return <MCQQuiz mcq={data.mcq} onCorrect={handleCorrect} />;
       case 'code-writing':
-        return <CodeWritingTests tests={data.code_writing_tests} />;
+        return (
+          <CodeWritingTests
+            tests={data.code_writing_tests}
+            lessonId={lesson.id}
+          />
+        );
       case 'fill-blank':
         return (
           <FillInBlankTests

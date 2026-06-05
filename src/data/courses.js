@@ -1,5 +1,6 @@
 export const DAY_SECTIONS = [
   { id: 'overview', label: 'نظرة عامة' },
+  { id: 'summary', label: 'ملخص', conditional: true },
   { id: 'schedule', label: 'الجدول' },
   { id: 'lessons', label: 'الدروس' },
   { id: 'mcq', label: 'اختبار MCQ' },
@@ -21,6 +22,7 @@ export const WORKSHOP_SECTIONS = [
 export function getDaySections(data, isExam = false) {
   const has = {
     overview: true,
+    summary: data.learning_summary?.length > 0,
     schedule: data.schedule?.length > 0,
     lessons: data.lessons?.length > 0,
     mcq: data.mcq?.length > 0,

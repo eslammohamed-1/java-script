@@ -40,6 +40,96 @@
       "topic": "مشروع صغير"
     }
   ],
+  "learning_summary": [
+    {
+      "topic": "DOM و document",
+      "objectives": [
+        "فهم الفرق بين HTML الثابت و DOM الحي",
+        "معرفة إن المتصفح بيبني شجرة عناصر قابلة للتعديل",
+        "ربط JavaScript بالصفحة بدون إعادة تحميل"
+      ],
+      "details": "DOM (Document Object Model) هو تمثيل الصفحة داخل المتصفح كشجرة من العناصر (nodes). لما تكتب HTML، المتصفح بيحلّله ويبني الشجرة دي. JavaScript بيقدر يقرأ منها ويعدّلها: يغيّر النص، يضيف class، ينشئ عنصر جديد، أو يحذف عنصر. ده أساس أي موقع تفاعلي — من زر بسيط لحد تطبيقات معقدة. document هو نقطة الدخول الرئيسية لكل عمليات DOM.",
+      "key_tools": ["document", "querySelector", "textContent"],
+      "practice": "افتح DevTools → Elements وشوف الشجرة. غيّر textContent لعنوان في Console ولاحظ التغيير فورًا على الصفحة."
+    },
+    {
+      "topic": "اختيار العناصر (Selectors)",
+      "objectives": [
+        "استخدام getElementById و querySelector",
+        "اختيار مجموعة عناصر بـ querySelectorAll",
+        "فهم الفرق بين id و class و tag في الـ selector"
+      ],
+      "details": "قبل ما تعدّل أي حاجة، لازم «تمسك» العنصر في JavaScript. getElementById سريع لعنصر واحد بالـ id. querySelector يقبل أي CSS selector (#id, .class, tag) ويرجع أول عنصر مطابق. querySelectorAll يرجع كل العناصر المطابقة كـ NodeList. الخطأ الشائع: استخدام .title بدل #title، أو نسيان إن querySelectorAll مش Array — لكن forEach غالبًا يشتغل. تسمية واضحة للـ id والـ class بتقلل الأخطاء وتخلي الكود قابل للقراءة بعد أسابيع.",
+      "key_tools": ["getElementById", "querySelector", "querySelectorAll"],
+      "practice": "في المحرر، اختار h1 بـ #title و p بـ .text — خزّنهم في متغيرات واستخدمهم في باقي الكود."
+    },
+    {
+      "topic": "تغيير المحتوى",
+      "objectives": [
+        "الفرق بين textContent و innerHTML",
+        "متى تستخدم كل واحد من ناحية الأمان",
+        "بناء محتوى ديناميكي بأمان"
+      ],
+      "details": "textContent بيغيّر النص فقط — المتصفح مش هيشغّل HTML أو JavaScript جواه. ده الأسلوب الآمن لعرض بيانات المستخدم (يحمي من XSS). innerHTML بيحط HTML داخل العنصر — مفيد لـ templates ثابتة وموثوقة، لكن خطر لو المستخدم يقدر يكتب HTML. الأسلوب الاحترافي لإضافة عناصر: createElement + textContent + appendChild — أوضح في المراجعة وأأمن من تركيب strings طويلة.",
+      "key_tools": ["textContent", "innerHTML", "createElement"],
+      "practice": "اعرض اسم مستخدم بـ textContent. جرّب innerHTML بـ span آمن، ثم قارن مع createElement."
+    },
+    {
+      "topic": "تغيير CSS و classList",
+      "objectives": [
+        "تعديل style مباشرة بـ camelCase",
+        "إضافة وإزالة وتبديل classes",
+        "فصل الشكل (CSS) عن السلوك (JS)"
+      ],
+      "details": "تقدر تغيّر element.style.color أو backgroundColor مباشرة — لكن في CSS properties بتتكتب camelCase في JS (background-color → backgroundColor). الأسلوب الأفضل في المشاريع: عرّف الشكل في ملف CSS كـ classes، وJavaScript يضيف أو يشيل classes بس. classList.add و remove و toggle بتديك تحكم نظيف. toggle مثالي للحالات الثنائية: active، open، hidden، dark-mode.",
+      "key_tools": ["classList.add", "classList.toggle", "element.style"],
+      "practice": "اعمل class .active في CSS وبدّلها بـ toggle على زر — بدل ما تكتب style لكل خاصية."
+    },
+    {
+      "topic": "إنشاء وحذف عناصر",
+      "objectives": [
+        "إنشاء عناصر بـ createElement",
+        "إضافتها بـ append أو appendChild",
+        "حذف عناصر بـ remove"
+      ],
+      "details": "createElement('li') بينشئ عنصر جديد في الذاكرة — لسه مش ظاهر في الصفحة. appendChild أو append بيضيفه داخل عنصر أب (مثل ul). append أحدث ومرن: يقبل نصوص وعدة عناصر. remove() بيشيل العنصر من DOM. ده أساس القوائم الديناميكية، البطاقات، والإشعارات. تجنب بناء HTML من template strings مع بيانات المستخدم — استخدم createElement.",
+      "key_tools": ["createElement", "appendChild", "append", "remove"],
+      "practice": "أنشئ li جديد، حط فيه نص، أضفه لـ ul — ثم احذفه بـ remove()."
+    },
+    {
+      "topic": "DOMContentLoaded",
+      "objectives": [
+        "معرفة متى يشتغل JavaScript بأمان",
+        "الفرق بين DOMContentLoaded و load",
+        "تجنب أخطاء null عند اختيار عناصر"
+      ],
+      "details": "لو JavaScript اشتغل قبل ما HTML يتحمل، querySelector ممكن يرجع null وتاخد error. DOMContentLoaded بيتنفّذ لما HTML يكون اتحلل بالكامل وجاهز — مش لازم تستنى الصور. window load بيستنى كل الموارد (صور، stylesheets). لو الـ script في آخر body غالبًا العناصر موجودة، لكن في head لازم DOMContentLoaded أو defer. لف init() في الحدث ده يضمن إن كل selectors تشتغل.",
+      "key_tools": ["DOMContentLoaded", "addEventListener", "defer"],
+      "practice": "لف كود اختيار العناصر في DOMContentLoaded وشوف الفرق لو حطيت script في head."
+    },
+    {
+      "topic": "التنقل بين العناصر",
+      "objectives": [
+        "الوصول للأب بـ parentElement",
+        "المرور على الأبناء بـ children",
+        "إيجاد أقرب أب بـ closest"
+      ],
+      "details": "DOM شجرة — تقدر تتحرك فيها. parentElement للأب المباشر. children للأبناء المباشرين (عناصر HTML فقط). closest(selector) بيدور في الأعلى من العنصر الحالي لحد ما يلاقي ancestor يطابق selector — أو يرجع العنصر نفسه لو مطابق. closest مهم جدًا مع الأحداث: لما المستخدم يضغط على span جوه button جوه card، event.target ممكن يكون الـ span — closest('.card') يجيب الكارت. خزّن references بدل البحث المتكرر في loops كبيرة.",
+      "key_tools": ["parentElement", "children", "closest"],
+      "practice": "زر حذف جوه card — استخدم closest('.card') ثم remove() على الكارت كله."
+    },
+    {
+      "topic": "تطبيق عملي: مشروع Profile Card",
+      "objectives": [
+        "ربط كل مفاهيم اليوم في مشروع واحد",
+        "استخدام addEventListener بدل onclick",
+        "تعديل DOM بناءً على تفاعل المستخدم"
+      ],
+      "details": "مشروع اليوم بيجمع: selectors لاختيار العناصر، textContent و classList للتعديل، createElement لإضافة عناصر، وaddEventListener للتفاعل. الهدف إنك تبني بطاقة profile تتغير لما المستخدم يضغط أزرار — من غير إعادة تحميل. رتّب الكود: selectors → variables → functions → event listeners. ده النمط اللي هتكرره في كل مشروع DOM.",
+      "key_tools": ["addEventListener", "classList", "textContent"],
+      "practice": "نفّذ Mini Profile Card في قسم المشاريع — جرّب كل زر في المعاينة الحية قبل ما تنتقل لليوم التاني."
+    }
+  ],
   "lessons": [
     {
       "name": "يعني إيه DOM؟",
@@ -49,9 +139,21 @@
         "javascript": "document.querySelector('h1').textContent = 'New Text';"
       },
       "senior_hints": [
-        "اعتبر HTML هو البيانات الخام، والـ DOM هو النسخة الحية اللي المتصفح بيتعامل معاها.",
-        "أي تعديل في DOM بيأثر على الصفحة الظاهرة للمستخدم مباشرة.",
-        "قلل تعديلات DOM المتكررة داخل loops كبيرة لأنها ممكن تأثر على الأداء."
+        {
+          "title": "الفرق بين HTML و DOM",
+          "explanation": "HTML هو الكود اللي بتكتبه في الملف. DOM هو الشجرة الحية اللي المتصفح بيبنيها من HTML وJavaScript بيقدر يعدّلها وقت التشغيل.",
+          "practice": "جرّب في المحرر: غيّر textContent لـ h1 وشوف التغيير فورًا في المعاينة."
+        },
+        {
+          "title": "التعديل = أثر بصري مباشر",
+          "explanation": "أي تغيير في DOM (نص، class، عنصر جديد) بينعكس على الشاشة فورًا من غير ما تعيد تحميل الصفحة.",
+          "practice": "افتح DevTools → Elements وراقب العنصر وهو بيتغير."
+        },
+        {
+          "title": "الأداء في التعديلات المتكررة",
+          "explanation": "تعديل DOM كتير جوه loop كبير ممكن يبطّئ الصفحة. الأفضل تجمع التغييرات أو تستخدم DocumentFragment.",
+          "practice": "لو بتضيف 100 عنصر، جرّب append لـ fragment مرة واحدة بدل 100 مرة للصفحة."
+        }
       ]
     },
     {
@@ -76,9 +178,21 @@
         "javascript": "let title = document.querySelector('#title');\nlet paragraph = document.querySelector('.text');"
       },
       "senior_hints": [
-        "لو بتختار id فقط، getElementById أسرع وبسيط، لكن querySelector أكثر مرونة.",
-        "querySelectorAll بيرجع NodeList، وتقدر تستخدم forEach عليه غالبًا.",
-        "اختار أسماء id و class واضحة ومعبرة عشان الكود يبقى قابل للصيانة."
+        {
+          "title": "getElementById vs querySelector",
+          "explanation": "لو هتختار عنصر واحد بالـ id، getElementById أسرع وأوضح. querySelector أقوى لأنه يقبل أي CSS selector.",
+          "practice": "استخدم #id لعنصر واحد، و .class أو tag لمجموعات."
+        },
+        {
+          "title": "querySelectorAll و NodeList",
+          "explanation": "querySelectorAll بيرجع NodeList مش Array. غالبًا تقدر تستخدم forEach مباشرة، لكن مش كل methods بتاعة Array موجودة.",
+          "practice": "لو محتاج map/filter، حوّل بـ [...document.querySelectorAll('.item')]."
+        },
+        {
+          "title": "تسمية واضحة = كود قابل للصيانة",
+          "explanation": "أسماء id و class المعبرة بتخليك تفهم الكود بعد أسابيع وتقلل الأخطاء في الفريق.",
+          "practice": "بدل #btn1 استخدم #submitLoginBtn — الاسم يوضح الوظيفة."
+        }
       ]
     },
     {
@@ -89,9 +203,21 @@
         "javascript": "let title = document.querySelector('#title');\ntitle.textContent = 'New Text';\ntitle.innerHTML = '<span>New Text</span>';"
       },
       "senior_hints": [
-        "استخدم textContent مع بيانات المستخدم لتجنب مشاكل أمنية مثل XSS.",
-        "استخدم innerHTML فقط لما تكون متأكد إن المحتوى آمن ومش جاي مباشرة من المستخدم.",
-        "لو هتضيف عناصر كثيرة، createElement غالبًا أنظف وأأمن من innerHTML."
+        {
+          "title": "textContent للأمان",
+          "explanation": "textContent بيعامل المحتوى كنص فقط — المتصفح مش هيشغّل HTML أو JavaScript جواه. ده بيحميك من هجمات XSS لو البيانات جاية من المستخدم.",
+          "practice": "لو بتعرض اسم مستخدم، استخدم textContent مش innerHTML."
+        },
+        {
+          "title": "متى تستخدم innerHTML؟",
+          "explanation": "innerHTML مناسب لما تحقن HTML جاهز وموثوق (مثل template ثابت). خطر لو المستخدم يقدر يكتب HTML داخله.",
+          "practice": "لو محتاج تضيف عنصر بسيط، createElement + textContent أأمن وأوضح."
+        },
+        {
+          "title": "بناء عناصر ديناميكية",
+          "explanation": "createElement بيديك تحكم كامل في العنصر قبل إضافته للصفحة — أوضح في المراجعة والتصحيح من تركيب strings طويلة.",
+          "practice": "أنشئ li بـ createElement، حط النص بـ textContent، ثم appendChild."
+        }
       ]
     },
     {
@@ -103,9 +229,21 @@
         "javascript": "let title = document.querySelector('#title');\ntitle.style.color = 'red';\ntitle.style.backgroundColor = 'yellow';\ntitle.classList.add('active');\ntitle.classList.toggle('active');"
       },
       "senior_hints": [
-        "افصل الشكل عن السلوك: خلي CSS في ملف CSS، وJavaScript يضيف أو يشيل classes فقط.",
-        "في JavaScript اكتب خصائص CSS بنظام camelCase مثل backgroundColor بدل background-color.",
-        "toggle ممتاز مع dark mode، active states، إظهار وإخفاء عناصر."
+        {
+          "title": "افصل الشكل عن السلوك",
+          "explanation": "الأسلوب الاحترافي: CSS يعرّف الشكل في classes، وJavaScript يضيف/يشيل classes فقط. ده بيخلي التصميم أسهل في التعديل.",
+          "practice": "بدل element.style.color = 'red' استخدم element.classList.add('error')."
+        },
+        {
+          "title": "camelCase في style",
+          "explanation": "في JavaScript خصائص CSS بتتكتب camelCase: backgroundColor و fontSize و borderRadius — مش بنفس صيغة CSS.",
+          "practice": "background-color في CSS = backgroundColor في JS."
+        },
+        {
+          "title": "classList.toggle",
+          "explanation": "toggle بيضيف class لو مش موجودة ويشيلها لو موجودة — مثالي للحالات الثنائية زي active و dark و open.",
+          "practice": "card.classList.toggle('highlight') أنظف من if/else لإضافة وإزالة class."
+        }
       ]
     },
     {
@@ -116,9 +254,21 @@
         "javascript": "let list = document.querySelector('#list');\nlet li = document.createElement('li');\nli.textContent = 'Learn DOM';\nlist.appendChild(li);\n// li.remove();"
       },
       "senior_hints": [
-        "createElement أفضل من تركيب strings طويلة خصوصًا لو فيه بيانات مستخدم.",
-        "append يقدر يضيف نصوص وعناصر، appendChild يضيف Node واحدة ويرجعها.",
-        "قبل حذف عنصر، اتأكد إنه موجود عشان تتجنب errors في المشاريع الكبيرة."
+        {
+          "title": "append vs appendChild",
+          "explanation": "appendChild بيضيف node واحدة. append أحدث ومرن — يقبل نصوص وعدة عناصر في نفس الاستدعاء.",
+          "practice": "list.append('نص', li) أقصر من createTextNode + appendChild."
+        },
+        {
+          "title": "remove ببساطة",
+          "explanation": "element.remove() بيشيل العنصر من DOM مباشرة. في المشاريع الكبيرة تأكد إن العنصر موجود قبل التعامل معه.",
+          "practice": "if (card) card.remove() — تحقق أولًا لو العنصر ممكن يكون اتحذف قبل كده."
+        },
+        {
+          "title": "لا تبني HTML من strings للمستخدم",
+          "explanation": "تركيب HTML بـ template strings مع بيانات المستخدم خطر. createElement + textContent الطريق الآمن.",
+          "practice": "لإضافة مهمة في To Do: أنشئ li و span منفصلين بدل innerHTML."
+        }
       ]
     },
     {
@@ -129,9 +279,21 @@
         "javascript": "document.addEventListener('DOMContentLoaded', function() {\n  let title = document.querySelector('#title');\n  title.textContent = 'DOM Ready!';\n});"
       },
       "senior_hints": [
-        "لو script في آخر body قبل </body>، غالبًا مش محتاج DOMContentLoaded.",
-        "لو script في head، لازم DOMContentLoaded أو defer.",
-        "لا تخلط بين DOMContentLoaded و window load — load بيستنى الصور كمان."
+        {
+          "title": "متى تحتاج DOMContentLoaded؟",
+          "explanation": "الحدث ده بيتنفّذ لما HTML يكون اتحلل بالكامل وجاهز للتعامل. لو الـ script في آخر body، غالبًا العناصر موجودة فعلًا.",
+          "practice": "حط script في head؟ استخدم DOMContentLoaded أو defer على الـ script tag."
+        },
+        {
+          "title": "DOMContentLoaded ≠ load",
+          "explanation": "DOMContentLoaded = HTML جاهز. load = كل حاجة اتحملت بما فيها الصور والـ stylesheets الخارجية.",
+          "practice": "لو محتاج تقيس صور قبل التشغيل، استخدم window load."
+        },
+        {
+          "title": "تجنب أخطاء null",
+          "explanation": "لو JavaScript اشتغل قبل ما العنصر يظهر في DOM، querySelector يرجع null وتاخد error. DOMContentLoaded بيحل المشكلة دي.",
+          "practice": "لف init() في DOMContentLoaded لو مش متأكد من ترتيب التحميل."
+        }
       ]
     },
     {
@@ -156,9 +318,21 @@
         "javascript": "document.querySelector('.delete-btn').addEventListener('click', function(event) {\n  let card = event.target.closest('.card');\n  card.remove();\n});"
       },
       "senior_hints": [
-        "closest أقوى من parentElement في Event Delegation لأنه يدور لحد ما يلاقي المطلوب.",
-        "children بيرجع HTMLCollection — استخدم for...of أو Array.from.",
-        "متستخدمش traversal كتير في loops كبيرة — ممكن يأثر على الأداء."
+        {
+          "title": "closest أذكى من parentElement",
+          "explanation": "closest بيدور في الأعلى لحد ما يلاقي ancestor يطابق selector — مثالي لما المستخدم يضغط على span جوه button جوه card.",
+          "practice": "event.target.closest('.card') يجيب الكارت حتى لو الضغطة على عنصر داخلي."
+        },
+        {
+          "title": "children و HTMLCollection",
+          "explanation": "children بيرجع الأبناء المباشرين فقط (عناصر HTML). مش Array — لكن for...of يشتغل عليه.",
+          "practice": "for (let child of list.children) { ... } للمرور على عناصر القائمة."
+        },
+        {
+          "title": "لا تبالغ في traversal",
+          "explanation": "البحث المتكرر في الشجرة جوه loops كبيرة مكلف. خزّن references في متغيرات بدل ما تبحث كل مرة.",
+          "practice": "اختار العناصر مرة في الأعلى، مش جوه كل iteration."
+        }
       ]
     }
   ],

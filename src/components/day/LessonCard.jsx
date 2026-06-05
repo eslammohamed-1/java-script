@@ -1,7 +1,16 @@
-import CodeTabs from '../shared/CodeTabs';
-import CodePlayground from '../shared/CodePlayground';
+import ProjectLab from '../shared/ProjectLab';
+import SeniorHints from '../shared/SeniorHints';
 
-export default function LessonCard({ lesson, index }) {
+export default function LessonCard({ lesson, index, lessonId }) {
+  const example = lesson.example;
+  const labCode = example
+    ? {
+        html: example.html ?? '',
+        css: example.css ?? '',
+        javascript: example.javascript ?? '',
+      }
+    : null;
+
   return (
     <div className="card">
       <h3 className="card__title">
@@ -40,27 +49,17 @@ export default function LessonCard({ lesson, index }) {
         </div>
       )}
 
-      {lesson.example && (
-        <>
-          <CodeTabs example={lesson.example} />
-          <CodePlayground
-            html={lesson.example.html}
-            css={lesson.example.css}
-            javascript={lesson.example.javascript}
-          />
-        </>
+      {labCode && (
+        <ProjectLab
+          variant="lesson"
+          storageKey={`${lessonId}-lesson-${index}`}
+          starter={labCode}
+          solution={labCode}
+          title="جرب بنفسك"
+        />
       )}
 
-      {lesson.senior_hints?.length > 0 && (
-        <div className="hint-box">
-          <div className="hint-box__title">تلميحات للمتقدمين</div>
-          <ul>
-            {lesson.senior_hints.map((hint, i) => (
-              <li key={i}>{hint}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <SeniorHints hints={lesson.senior_hints} />
     </div>
   );
 }

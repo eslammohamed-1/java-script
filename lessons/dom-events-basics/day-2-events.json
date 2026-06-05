@@ -40,6 +40,85 @@
       "topic": "مشروع To Do List"
     }
   ],
+  "learning_summary": [
+    {
+      "topic": "مفهوم Events",
+      "objectives": [
+        "فهم إن الصفحة سلسلة أحداث وردود أفعال",
+        "معرفة أهم الأحداث: click, input, submit, keydown",
+        "ربط الحدث بالسلوك المناسب"
+      ],
+      "details": "Event هو أي حدث يحصل في المتصفح: ضغطة، كتابة، إرسال فورم، دخول الماوس. JavaScript تقدر «تسمع» الحدث وتنفّذ كود رد الفعل. المستخدم مش بيشوف الكود — بيشوف النتيجة. قبل الكتابة اسأل: إيه الحدث؟ وإيه الرد؟ click للأزرار، input للتحديث الحي أثناء الكتابة، change لما القيمة تتثبت، submit لإرسال الفورم. اختيار الـ event الغلط = سلوك غلط حتى لو الكود «شغال».",
+      "key_tools": ["click", "input", "submit", "change"],
+      "practice": "اكتب قبل الكود: «عند click على الزر → يتغير النص» — ثم نفّذها بـ addEventListener."
+    },
+    {
+      "topic": "addEventListener",
+      "objectives": [
+        "ربط الأحداث بطريقة حديثة ونظيفة",
+        "تجنب onclick في HTML",
+        "إضافة أكثر من listener لنفس العنصر"
+      ],
+      "details": "addEventListener('click', handler) هي الطريقة الاحترافية لربط الأحداث. بتفصل HTML عن JavaScript — أسهل في الصيانة والفريق. تقدر تضيف عدة listeners لنفس الحدث (مثلاً validation و animation منفصلين). inline onclick في HTML مش recommended في المشاريع الجادة: صعب التتبع، مفيش options زي once أو passive، وبيكسر مبدأ separation of concerns. اكتب selectors في أول الملف، بعدها functions، وفي الآخر كل الـ listeners.",
+      "key_tools": ["addEventListener", "removeEventListener", "once"],
+      "practice": "حوّل أي onclick في HTML لـ addEventListener في JS — زر واحد، listener واحد، وظيفة واضحة."
+    },
+    {
+      "topic": "event object و target",
+      "objectives": [
+        "استقبال event كـ parameter في الـ handler",
+        "الفرق بين target و currentTarget",
+        "استخدام target لتعديل العنصر المتفاعل"
+      ],
+      "details": "كل handler يستقبل event object فيه معلومات عن الحدث. event.target هو العنصر اللي حصل عليه الحدث فعليًا — حتى لو الـ listener على أب. event.currentTarget هو العنصر اللي عليه الـ listener نفسه. في قائمة: listener على ul → currentTarget دايمًا ul، target ممكن يكون أي li أو span جواه. target مفيد لما تحتاج تعرف المستخدم ضغط على إيه — أساس Event Delegation.",
+      "key_tools": ["event.target", "event.currentTarget", "event.type"],
+      "practice": "listener على div — اضغط على زر جواه واطبع target.id و currentTarget.id في console."
+    },
+    {
+      "topic": "inputs و forms",
+      "objectives": [
+        "قراءة قيمة input بـ .value",
+        "التحقق من المدخلات قبل الإرسال",
+        "منع إعادة التحميل بـ preventDefault"
+      ],
+      "details": "input.value دايمًا string — حتى مع type=number لازم Number() للمقارنة الرقمية. input event بيشتغل مع كل حرف؛ change لما المستخدم يخرج من الحقل. submit على الفورم بيعيد تحميل الصفحة افتراضيًا — preventDefault() بيوقف ده. validation في الواجهة لتحسين UX: trim() لمنع مسافات فاضية، رسائل خطأ في الصفحة بدل alert. تذكّر: التحقق في المتصفح لا يغني عن التحقق في السيرفر.",
+      "key_tools": ["preventDefault", "input.value", "trim()"],
+      "practice": "فورم login: preventDefault + تحقق من username فاضي + رسالة حمراء/خضراء في p."
+    },
+    {
+      "topic": "Event Delegation",
+      "objectives": [
+        "listener واحد على الأب بدل كل ابن",
+        "التعامل مع عناصر تُضاف ديناميكيًا",
+        "استخدام closest مع target"
+      ],
+      "details": "بدل ما تضيف click على كل li (وكل li جديد لما تضيف مهمة)، حط listener واحد على ul واستخدم event.target. العناصر اللي هتتضاف لاحقًا هتشتغل تلقائي — مفيش حاجة تعيد ربط الأحداث. لو الضغطة على عنصر داخلي (أيقونة جوه زر)، closest('button') أو closest('.delete-btn') يجيب العنصر الصح. classList.contains أدق من tagName === 'LI' (حساس لحالة الأحرف). Delegation = أقل كود + أسهل صيانة + يدعم DOM الديناميكي.",
+      "key_tools": ["event.target", "closest", "classList.contains"],
+      "practice": "قائمة مهام: listener على ul — اضغط li يحذفها؛ زر إضافة ينشئ li جديدة بدون listeners إضافية."
+    },
+    {
+      "topic": "Bubbling و currentTarget",
+      "objectives": [
+        "فهم انتشار الحدث من الابن للأب",
+        "استخدام stopPropagation بحذر",
+        "إزالة listeners بشكل صحيح"
+      ],
+      "details": "Event Bubbling: الحدث يبدأ من العنصر الداخلي و«يطلع» للأباء. ده اللي بيخلي delegation يشتغل. stopPropagation يوقف الانتشار — مفيد أحيانًا لكن ممكن يكسر مكونات تانية معتمدة على bubbling. removeEventListener لازم نفس function reference — anonymous function مش هتتشال. خزّن الدالة في متغير: const handler = () => {}; btn.addEventListener('click', handler); btn.removeEventListener('click', handler).",
+      "key_tools": ["stopPropagation", "removeEventListener", "bubbling"],
+      "practice": "div فيه button — listener على الاتنين، شوف ترتيب التنفيذ؛ جرّب stopPropagation على الزر."
+    },
+    {
+      "topic": "تطبيق عملي: Counter و To Do List",
+      "objectives": [
+        "بناء state بسيط (عدد، قائمة مهام)",
+        "ربط أزرار متعددة بمنطق واضح",
+        "جمع DOM + Events في مشروع كامل"
+      ],
+      "details": "Counter يدربك على click وتحديث نص من state (متغير score). To Do List يجمع: createElement لإضافة مهام، delegation للحذف، trim للتحقق، preventDefault لو في فورم. رتّب الملف: selectors → state → functions (addTask, deleteTask, render) → listeners. اختبر كل feature لوحدها قبل ما تكمل — مشروع كامل مرة واحدة = أخطاء أصعب في التتبع.",
+      "key_tools": ["state", "createElement", "delegation"],
+      "practice": "أكمل Counter ثم To Do List في قسم المشاريع — كل زر جرّبه في المعاينة قبل الانتقال للاختبار النهائي."
+    }
+  ],
   "lessons": [
     {
       "name": "يعني إيه Event؟",
@@ -59,8 +138,16 @@
         "javascript": "let btn = document.querySelector('#btn');\nlet log = document.querySelector('#log');\n\nbtn.addEventListener('click', function() {\n  log.textContent = 'click event happened!';\n});\n\nbtn.addEventListener('mouseenter', function() {\n  log.textContent = 'mouseenter — الماوس دخل الزر';\n});"
       },
       "senior_hints": [
-        "فكر في الصفحة كسلسلة أحداث وردود أفعال.",
-        "اختار event مناسب للموقف: input للكتابة الحية، submit للفورم، click للأزرار."
+        {
+          "title": "الصفحة = أحداث + ردود أفعال",
+          "explanation": "المستخدم مش بيشوف كود — بيشوف نتيجة. فكّر: إيه الحدث؟ وإيه الرد اللي المفروض يحصل؟",
+          "practice": "قبل ما تكتب كود، اكتب: عند click على X → يحصل Y."
+        },
+        {
+          "title": "اختيار الـ event الصح",
+          "explanation": "click للأزرار، input للكتابة الحية، change لما القيمة تتثبت، submit لإرسال الفورم — كل واحد لحالة مختلفة.",
+          "practice": "لو عايز تحديث فوري أثناء الكتابة، استخدم input مش change."
+        }
       ]
     },
     {
@@ -71,9 +158,21 @@
         "javascript": "let btn = document.querySelector('#btn');\nlet title = document.querySelector('#title');\nbtn.addEventListener('click', function() {\n  title.textContent = 'Button Clicked';\n});"
       },
       "senior_hints": [
-        "تجنب inline events مثل onclick في HTML في المشاريع الجادة.",
-        "addEventListener يسمح بإضافة أكثر من listener لنفس العنصر.",
-        "خلي أسماء المتغيرات واضحة مثل submitBtn و userInput."
+        {
+          "title": "ليه نتجنب onclick في HTML؟",
+          "explanation": "inline events بتخلط HTML بـ JavaScript، صعب الصيانة، ومش بتديك تحكم في options زي once أو passive.",
+          "practice": "احذف onclick من HTML واربط الزر في ملف JS بـ addEventListener."
+        },
+        {
+          "title": "أكثر من listener لنفس العنصر",
+          "explanation": "addEventListener يسمح بإضافة عدة handlers لنفس الحدث — مفيد لفصل المسؤوليات.",
+          "practice": "زر واحد ممكن يعمل validation في listener و animation في listener تاني."
+        },
+        {
+          "title": "أسماء متغيرات معبرة",
+          "explanation": "submitBtn أو loginForm أو usernameInput بتوضح الغرض فورًا — خصوصًا في المشاريع اللي فيها عناصر كتير.",
+          "practice": "بدل btn و input، استخدم أسماء توضح دور كل عنصر."
+        }
       ]
     },
     {
@@ -84,8 +183,16 @@
         "javascript": "let btn = document.querySelector('#btn');\nbtn.addEventListener('click', function(event) {\n  event.target.textContent = 'Clicked';\n});"
       },
       "senior_hints": [
-        "استخدم event.target لما تحتاج تعرف المستخدم ضغط على أي عنصر داخل container.",
-        "في بعض الحالات استخدم event.currentTarget لمعرفة العنصر الذي عليه listener نفسه."
+        {
+          "title": "event.target",
+          "explanation": "target هو العنصر اللي حصل عليه الحدث فعليًا — حتى لو الـ listener على أب مختلف.",
+          "practice": "في قائمة، event.target ممكن يكون li أو span جوه الـ li."
+        },
+        {
+          "title": "event.currentTarget",
+          "explanation": "currentTarget هو العنصر اللي عليه الـ listener نفسه — مش بالضرورة اللي اتضغط عليه.",
+          "practice": "لو listener على ul، currentTarget دايمًا الـ ul و target ممكن يكون أي li."
+        }
       ]
     },
     {
@@ -96,9 +203,21 @@
         "javascript": "let loginForm = document.querySelector('#loginForm');\nlet username = document.querySelector('#username');\nlet message = document.querySelector('#message');\nloginForm.addEventListener('submit', function(event) {\n  event.preventDefault();\n  if (username.value === '') {\n    message.textContent = 'Please enter your username';\n    message.style.color = 'red';\n  } else {\n    message.textContent = 'Welcome ' + username.value;\n    message.style.color = 'green';\n  }\n});"
       },
       "senior_hints": [
-        "استخدم trim() لمنع اعتبار المسافات قيمة صحيحة.",
-        "التحقق في الواجهة لا يغني عن التحقق في السيرفر في التطبيقات الحقيقية.",
-        "استخدم رسائل واضحة للمستخدم بدل alert في المشاريع الأفضل."
+        {
+          "title": "trim() ضروري",
+          "explanation": "المستخدم ممكن يكتب مسافات فقط. trim() بيشيلها قبل التحقق — من غيرها المسافات تعد قيمة صحيحة.",
+          "practice": "if (input.value.trim() === '') قبل أي إضافة أو إرسال."
+        },
+        {
+          "title": "validation في الواجهة ≠ كفاية",
+          "explanation": "التحقق في المتصفح لتحسين تجربة المستخدم. في التطبيقات الحقيقية السيرفر لازم يتحقق تاني لأمان البيانات.",
+          "practice": "اعرض رسالة خطأ في الصفحة — لكن اعرف إن الـ backend لازم يكرر التحقق."
+        },
+        {
+          "title": "رسائل بدل alert",
+          "explanation": "alert بيوقف التفاعل وبيبان قديم. عنصر p أو div للرسائل داخل الصفحة احترافي أكثر.",
+          "practice": "message.textContent = '...' و message.style.color للتمييز بين نجاح وخطأ."
+        }
       ]
     },
     {
@@ -109,9 +228,21 @@
         "javascript": "let list = document.querySelector('#list');\nlet addItem = document.querySelector('#addItem');\naddItem.addEventListener('click', function() {\n  let li = document.createElement('li');\n  li.textContent = 'JavaScript';\n  list.appendChild(li);\n});\nlist.addEventListener('click', function(event) {\n  if (event.target.tagName === 'LI') {\n    event.target.remove();\n  }\n});"
       },
       "senior_hints": [
-        "Event Delegation يقلل عدد listeners ويحسن التنظيم.",
-        "استخدم classList.contains بدل tagName لو عندك عناصر كثيرة داخل نفس الأب.",
-        "لو ضغط المستخدم على عنصر داخلي داخل الزر، ممكن تحتاج closest()."
+        {
+          "title": "ليه Event Delegation؟",
+          "explanation": "بدل listener على كل عنصر (حتى اللي لسه هيتضاف)، حط listener واحد على الأب واستخدم event.target — أقل كود وأسهل صيانة.",
+          "practice": "list.addEventListener('click', ...) يتعامل مع كل li الحالية والمستقبلية."
+        },
+        {
+          "title": "contains أفضل من tagName",
+          "explanation": "tagName حساس لحالة الأحرف (LI مش li في بعض السياقات). classList.contains أو closest أوضح وأدق.",
+          "practice": "if (event.target.classList.contains('delete-btn')) بدل مقارنة tagName."
+        },
+        {
+          "title": "closest للعناصر المتداخلة",
+          "explanation": "لو الضغطة على أيقونة جوه زر، event.target مش الزر نفسه. closest بيلاقي الزر أو العنصر المطلوب.",
+          "practice": "event.target.closest('button') يجيب الزر حتى لو الضغطة على span جواه."
+        }
       ]
     },
     {
@@ -122,9 +253,21 @@
         "javascript": "let box = document.querySelector('#box');\nlet info = document.querySelector('#info');\n\nbox.addEventListener('click', function(event) {\n  info.textContent = 'target: ' + event.target.id + ' | currentTarget: ' + event.currentTarget.id;\n});\n\n// event.stopPropagation() يمنع الحدث من الوصول للأب"
       },
       "senior_hints": [
-        "في Event Delegation على الأب، target غالبًا الابن و currentTarget هو الأب.",
-        "استخدم stopPropagation بحذر — ممكن يكسر سلوك مكونات تانية.",
-        "removeEventListener يحتاج نفس function reference اللي استخدمتها في addEventListener."
+        {
+          "title": "Bubbling ببساطة",
+          "explanation": "الحدث بيبدأ من العنصر الداخلي ويطلع للأباء. ده اللي بيخلي delegation يشتغل — listener على الأب يسمع أحداث الأبناء.",
+          "practice": "اضغط على زر جوه div وشوف الـ handlers على الاتنين بيتنفذوا بالترتيب."
+        },
+        {
+          "title": "stopPropagation بحذر",
+          "explanation": "بيمنع الحدث من الوصول للأب. مفيد أحيانًا، لكن ممكن يكسر سلوك مكونات تانية معتمدة على bubbling.",
+          "practice": "استخدمه لما تكون متأكد إنك مش محتاج الأب يسمع الحدث."
+        },
+        {
+          "title": "removeEventListener",
+          "explanation": "لازم تمرّر نفس function reference اللي استخدمتها في addEventListener — anonymous function مش هتتشال.",
+          "practice": "خزّن الدالة في متغير: const handler = () => {}; btn.addEventListener('click', handler);"
+        }
       ]
     }
   ],

@@ -35,9 +35,9 @@ export default function AnnotationPanel({ annotation, summary, mistakes }) {
       <div className="annotation-panel__title">{annotation.title}</div>
       <p className="annotation-panel__explanation">{annotation.explanation}</p>
       {annotation.seniorNote && (
-        <div className="annotation-panel__senior">
-          <strong>ملاحظة احترافية: </strong>
-          {annotation.seniorNote}
+        <div className="annotation-panel__senior senior-hints__card">
+          <h4 className="senior-hints__card-title">ملاحظة احترافية</h4>
+          <p className="senior-hints__card-text">{annotation.seniorNote}</p>
         </div>
       )}
     </div>

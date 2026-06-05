@@ -46,6 +46,7 @@ export function calcDayProgress(module, progress) {
 
   const sections = [
     'overview',
+    'summary',
     'schedule',
     'lessons',
     'mcq',

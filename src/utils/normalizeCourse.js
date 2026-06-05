@@ -5,6 +5,7 @@ export function normalizeCourse(data) {
     goal: data.goal,
     duration: data.duration,
     schedule: data.schedule ?? [],
+    learning_summary: data.learning_summary ?? [],
     lessons: data.lessons ?? [],
     mcq: data.mcq ?? [],
     code_writing_tests: data.code_writing_tests ?? [],

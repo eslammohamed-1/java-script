@@ -1,0 +1,181 @@
+import { useEffect, useState, useCallback } from 'react';
+import ProgressBar from './ProgressBar';
+import Overview from './day/Overview';
+import Schedule from './day/Schedule';
+import Lessons from './day/Lessons';
+import MCQQuiz from './day/MCQQuiz';
+import CodeWritingTests from './day/CodeWritingTests';
+import FillInBlankTests from './day/FillInBlankTests';
+import Projects from './day/Projects';
+import FinalHomework from './day/FinalHomework';
+import WorkshopOverview from './workshop/WorkshopOverview';
+import GlobalSeniorHints from './workshop/GlobalSeniorHints';
+import PracticePlan from './workshop/PracticePlan';
+import SuccessMetrics from './workshop/SuccessMetrics';
+import ProjectWorkshop from './workshop/ProjectWorkshop';
+import { DAY_SECTIONS, WORKSHOP_SECTIONS } from '../data/courses';
+import {
+  loadProgress,
+  markVisited,
+  markCompleted,
+  calcDayProgress,
+  calcWorkshopProgress,
+} from '../utils/progress';
+
+export default function Layout({ module, moduleId, onBack }) {
+  const { data } = module;
+  const isWorkshop = data.type === 'projects-workshop';
+
+  const sections = isWorkshop
+    ? WORKSHOP_SECTIONS
+    : DAY_SECTIONS.filter(
+        (s) => !s.conditional || data.final_homework?.length > 0
+      );
+
+  const [activeSection, setActiveSection] = useState(sections[0].id);
+  const [activeProject, setActiveProject] = useState(
+    isWorkshop ? data.projects[0]?.id : null
+  );
+  const [progress, setProgress] = useState(() => loadProgress(moduleId));
+
+  const percent = isWorkshop
+    ? calcWorkshopProgress(data, progress)
+    : calcDayProgress(data, progress);
+
+  const refreshProgress = useCallback(() => {
+    setProgress(loadProgress(moduleId));
+  }, [moduleId]);
+
+  useEffect(() => {
+    const updated = markVisited(moduleId, activeSection);
+    if (isWorkshop && activeSection === 'projects' && activeProject) {
+      markVisited(moduleId, `project-${activeProject}`);
+      setProgress(loadProgress(moduleId));
+    } else {
+      setProgress(updated);
+    }
+  }, [activeSection, activeProject, moduleId, isWorkshop]);
+
+  function handleCorrect(itemId) {
+    markCompleted(moduleId, itemId);
+    refreshProgress();
+  }
+
+  function handleAnnotate() {
+    markCompleted(moduleId, `annotate-${activeProject}`);
+    refreshProgress();
+  }
+
+  function handleChecklistDone() {
+    markCompleted(moduleId, `checklist-${activeProject}`);
+    refreshProgress();
+  }
+
+  function renderContent() {
+    if (isWorkshop) {
+      switch (activeSection) {
+        case 'overview':
+          return <WorkshopOverview module={data} />;
+        case 'hints':
+          return <GlobalSeniorHints hints={data.global_senior_hints} />;
+        case 'plan':
+          return <PracticePlan plan={data.final_practice_plan} />;
+        case 'projects': {
+          const project = data.projects.find((p) => p.id === activeProject);
+          return (
+            <>
+              <div className="project-tabs">
+                {data.projects.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    className={`project-tab ${activeProject === p.id ? 'project-tab--active' : ''}`}
+                    onClick={() => setActiveProject(p.id)}
+                  >
+                    {p.name}
+                  </button>
+                ))}
+              </div>
+              {project && (
+                <ProjectWorkshop
+                  project={project}
+                  onAnnotate={handleAnnotate}
+                  onChecklistDone={handleChecklistDone}
+                />
+              )}
+            </>
+          );
+        }
+        case 'success':
+          return <SuccessMetrics metrics={data.how_to_measure_success} />;
+        default:
+          return null;
+      }
+    }
+
+    switch (activeSection) {
+      case 'overview':
+        return <Overview module={data} />;
+      case 'schedule':
+        return <Schedule schedule={data.schedule} />;
+      case 'lessons':
+        return <Lessons lessons={data.lessons} />;
+      case 'mcq':
+        return <MCQQuiz mcq={data.mcq} onCorrect={handleCorrect} />;
+      case 'code-writing':
+        return <CodeWritingTests tests={data.code_writing_tests} />;
+      case 'fill-blank':
+        return (
+          <FillInBlankTests
+            tests={data.complete_code_tests}
+            onCorrect={handleCorrect}
+          />
+        );
+      case 'projects':
+        return <Projects projects={data.projects} />;
+      case 'homework':
+        return <FinalHomework items={data.final_homework} />;
+      default:
+        return null;
+    }
+  }
+
+  return (
+    <>
+      <header className="app-header">
+        <div className="app-header__brand">
+          <div className="app-header__logo">JS</div>
+          <span>{data.title}</span>
+        </div>
+        <ProgressBar percent={percent} />
+        <button type="button" className="app-header__back" onClick={onBack}>
+          ← العودة
+        </button>
+      </header>
+
+      <div className="layout">
+        <aside className="sidebar">
+          <div className="sidebar__title">الأقسام</div>
+          <ul className="sidebar__nav">
+            {sections.map((section) => {
+              const isDone = progress.visited.includes(section.id);
+              return (
+                <li key={section.id}>
+                  <button
+                    type="button"
+                    className={`sidebar__link ${activeSection === section.id ? 'sidebar__link--active' : ''} ${isDone ? 'sidebar__link--done' : ''}`}
+                    onClick={() => setActiveSection(section.id)}
+                  >
+                    {section.label}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </aside>
+
+        <main className="main-content">{renderContent()}</main>
+      </div>
+    </>
+  );
+}

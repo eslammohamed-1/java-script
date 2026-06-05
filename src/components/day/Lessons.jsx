@@ -1,0 +1,13 @@
+import LessonCard from './LessonCard';
+
+export default function Lessons({ lessons }) {
+  return (
+    <section className="section">
+      <h2 className="section__title">الدروس</h2>
+      <p className="section__subtitle">{lessons.length} دروس في هذا اليوم</p>
+      {lessons.map((lesson, i) => (
+        <LessonCard key={i} lesson={lesson} index={i} />
+      ))}
+    </section>
+  );
+}

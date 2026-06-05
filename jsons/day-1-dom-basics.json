@@ -1,0 +1,221 @@
+{
+  "title": "اليوم الأول: أساسيات DOM والتعديل على الصفحة",
+  "goal": "فهم DOM، اختيار العناصر، تغيير النصوص والستايل، التعامل مع الكلاسات، إنشاء وحذف عناصر.",
+  "duration": "حوالي 5 إلى 6 ساعات",
+  "schedule": [
+    {
+      "time": "30 دقيقة",
+      "topic": "فهم DOM و document"
+    },
+    {
+      "time": "45 دقيقة",
+      "topic": "اختيار العناصر Selectors"
+    },
+    {
+      "time": "45 دقيقة",
+      "topic": "تغيير المحتوى والنصوص"
+    },
+    {
+      "time": "45 دقيقة",
+      "topic": "تغيير CSS و classList"
+    },
+    {
+      "time": "45 دقيقة",
+      "topic": "إنشاء وحذف عناصر"
+    },
+    {
+      "time": "60 دقيقة",
+      "topic": "تدريبات واختبارات"
+    },
+    {
+      "time": "60 دقيقة",
+      "topic": "مشروع صغير"
+    }
+  ],
+  "lessons": [
+    {
+      "name": "يعني إيه DOM؟",
+      "explanation": "DOM هو تمثيل الصفحة داخل المتصفح على شكل كائنات JavaScript، وده بيسمحلك تغير النصوص، الستايل، تضيف عناصر، تحذف عناصر، وتبني تفاعل.",
+      "example": {
+        "html": "<h1>Hello</h1>\n<p>Welcome</p>",
+        "javascript": "document.querySelector('h1').textContent = 'New Text';"
+      },
+      "senior_hints": [
+        "اعتبر HTML هو البيانات الخام، والـ DOM هو النسخة الحية اللي المتصفح بيتعامل معاها.",
+        "أي تعديل في DOM بيأثر على الصفحة الظاهرة للمستخدم مباشرة.",
+        "قلل تعديلات DOM المتكررة داخل loops كبيرة لأنها ممكن تأثر على الأداء."
+      ]
+    },
+    {
+      "name": "اختيار العناصر",
+      "explanation": "تقدر تختار عنصر باستخدام id أو class أو tag. الأشهر والأكثر مرونة هو querySelector و querySelectorAll.",
+      "methods": [
+        {
+          "method": "document.getElementById('title')",
+          "use": "اختيار عنصر واحد بالـ id بدون #"
+        },
+        {
+          "method": "document.querySelector('#title')",
+          "use": "اختيار أول عنصر يطابق selector"
+        },
+        {
+          "method": "document.querySelectorAll('.item')",
+          "use": "اختيار كل العناصر المطابقة"
+        }
+      ],
+      "example": {
+        "html": "<h1 id='title'>Hello</h1>\n<p class='text'>Welcome</p>",
+        "javascript": "let title = document.querySelector('#title');\nlet paragraph = document.querySelector('.text');"
+      },
+      "senior_hints": [
+        "لو بتختار id فقط، getElementById أسرع وبسيط، لكن querySelector أكثر مرونة.",
+        "querySelectorAll بيرجع NodeList، وتقدر تستخدم forEach عليه غالبًا.",
+        "اختار أسماء id و class واضحة ومعبرة عشان الكود يبقى قابل للصيانة."
+      ]
+    },
+    {
+      "name": "تغيير المحتوى",
+      "explanation": "textContent يغير النص فقط، أما innerHTML يقدر يضيف HTML داخل العنصر.",
+      "example": {
+        "html": "<h1 id='title'>Old Text</h1>",
+        "javascript": "let title = document.querySelector('#title');\ntitle.textContent = 'New Text';\ntitle.innerHTML = '<span>New Text</span>';"
+      },
+      "senior_hints": [
+        "استخدم textContent مع بيانات المستخدم لتجنب مشاكل أمنية مثل XSS.",
+        "استخدم innerHTML فقط لما تكون متأكد إن المحتوى آمن ومش جاي مباشرة من المستخدم.",
+        "لو هتضيف عناصر كثيرة، createElement غالبًا أنظف وأأمن من innerHTML."
+      ]
+    },
+    {
+      "name": "تغيير CSS و classList",
+      "explanation": "تقدر تغير style مباشرة، لكن الأفضل غالبًا تضيف أو تشيل class باستخدام classList.",
+      "example": {
+        "html": "<h1 id='title'>Hello</h1>",
+        "css": ".active { color: white; background-color: blue; padding: 20px; }",
+        "javascript": "let title = document.querySelector('#title');\ntitle.style.color = 'red';\ntitle.style.backgroundColor = 'yellow';\ntitle.classList.add('active');\ntitle.classList.toggle('active');"
+      },
+      "senior_hints": [
+        "افصل الشكل عن السلوك: خلي CSS في ملف CSS، وJavaScript يضيف أو يشيل classes فقط.",
+        "في JavaScript اكتب خصائص CSS بنظام camelCase مثل backgroundColor بدل background-color.",
+        "toggle ممتاز مع dark mode، active states، إظهار وإخفاء عناصر."
+      ]
+    },
+    {
+      "name": "إنشاء وحذف عناصر",
+      "explanation": "تقدر تنشئ عناصر جديدة بـ createElement وتضيفها داخل عنصر أب بـ appendChild أو append، وتحذفها بـ remove.",
+      "example": {
+        "html": "<ul id='list'></ul>",
+        "javascript": "let list = document.querySelector('#list');\nlet li = document.createElement('li');\nli.textContent = 'Learn DOM';\nlist.appendChild(li);\n// li.remove();"
+      },
+      "senior_hints": [
+        "createElement أفضل من تركيب strings طويلة خصوصًا لو فيه بيانات مستخدم.",
+        "append يقدر يضيف نصوص وعناصر، appendChild يضيف Node واحدة ويرجعها.",
+        "قبل حذف عنصر، اتأكد إنه موجود عشان تتجنب errors في المشاريع الكبيرة."
+      ]
+    }
+  ],
+  "mcq": [
+    {
+      "question": "ما معنى DOM؟",
+      "choices": [
+        "لغة برمجة",
+        "شكل الصفحة الذي يستطيع JavaScript التعامل معه",
+        "مكتبة JavaScript",
+        "نوع من أنواع CSS"
+      ],
+      "answer": "شكل الصفحة الذي يستطيع JavaScript التعامل معه"
+    },
+    {
+      "question": "أي كود يختار عنصر له id='title'؟",
+      "choices": [
+        "document.querySelector('.title')",
+        "document.querySelector('#title')",
+        "document.querySelector('title')",
+        "document.getClass('title')"
+      ],
+      "answer": "document.querySelector('#title')"
+    },
+    {
+      "question": "ما الفرق الأساسي بين textContent و innerHTML؟",
+      "choices": [
+        "لا يوجد فرق",
+        "textContent للنص فقط و innerHTML يقبل HTML",
+        "innerHTML للنص فقط",
+        "textContent يحذف العنصر"
+      ],
+      "answer": "textContent للنص فقط و innerHTML يقبل HTML"
+    },
+    {
+      "question": "أي كود يغير لون عنصر إلى أحمر؟",
+      "choices": [
+        "element.color = 'red'",
+        "element.style.color = 'red'",
+        "element.css.color = 'red'",
+        "style.element.color = 'red'"
+      ],
+      "answer": "element.style.color = 'red'"
+    },
+    {
+      "question": "أي كود يضيف class اسمها active؟",
+      "choices": [
+        "element.classList.add('active')",
+        "element.addClass('active')",
+        "element.class = 'active'",
+        "document.add('active')"
+      ],
+      "answer": "element.classList.add('active')"
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "غيّر نص h1 له id title إلى Welcome Islam",
+      "html": "<h1 id='title'>Hello</h1>",
+      "solution": "let title = document.querySelector('#title');\ntitle.textContent = 'Welcome Islam';"
+    },
+    {
+      "task": "غيّر لون p له class message إلى أزرق وحجم الخط إلى 30px",
+      "html": "<p class='message'>Old Message</p>",
+      "solution": "let message = document.querySelector('.message');\nmessage.style.color = 'blue';\nmessage.style.fontSize = '30px';"
+    },
+    {
+      "task": "أنشئ li نصه Learn DOM وأضفه داخل ul له id list",
+      "html": "<ul id='list'></ul>",
+      "solution": "let list = document.querySelector('#list');\nlet li = document.createElement('li');\nli.textContent = 'Learn DOM';\nlist.appendChild(li);"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "let title = document.__________('#title');",
+      "answer": "querySelector"
+    },
+    {
+      "question": "heading.__________ = 'New Heading';",
+      "answer": "textContent"
+    },
+    {
+      "question": "box.style.__________ = 'yellow';",
+      "answer": "backgroundColor"
+    },
+    {
+      "question": "card.classList.__________('active');",
+      "answer": "add"
+    },
+    {
+      "question": "let paragraph = document.__________('p');",
+      "answer": "createElement"
+    }
+  ],
+  "project": {
+    "name": "Mini Profile Card",
+    "requirements": [
+      "اسم",
+      "وظيفة",
+      "زر تغيير البيانات",
+      "زر إضافة مهارة",
+      "زر حذف الكارت"
+    ],
+    "html": "<div id='card' class='card'>\n  <h2 id='name'>Islam Mohamed</h2>\n  <p id='job'>Frontend Student</p>\n  <ul id='skills'>\n    <li>HTML</li>\n    <li>CSS</li>\n  </ul>\n  <button onclick='changeInfo()'>Change Info</button>\n  <button onclick='addSkill()'>Add Skill</button>\n  <button onclick='deleteCard()'>Delete Card</button>\n</div>",
+    "css": ".card { width: 300px; padding: 20px; background-color: #eee; border-radius: 10px; font-family: Arial; }\n.highlight { background-color: #222; color: white; }",
+    "javascript": "function changeInfo() {\n  let name = document.querySelector('#name');\n  let job = document.querySelector('#job');\n  let card = document.querySelector('#card');\n  name.textContent = 'Islam DOM Master';\n  job.textContent = 'JavaScript Developer';\n  card.classList.toggle('highlight');\n}\n\nfunction addSkill() {\n  let skills = document.querySelector('#skills');\n  let li = document.createElement('li');\n  li.textContent = 'JavaScript DOM';\n  skills.appendChild(li);\n}\n\nfunction deleteCard() {\n  let card = document.querySelector('#card');\n  card.remove();\n}"
+  }
+}

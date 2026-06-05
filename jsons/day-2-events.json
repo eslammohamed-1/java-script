@@ -1,0 +1,240 @@
+{
+  "title": "اليوم الثاني: Events في JavaScript",
+  "goal": "فهم addEventListener، الأحداث المهمة، event object، forms، Event Delegation، وبناء مشاريع تفاعلية.",
+  "duration": "حوالي 6 إلى 7 ساعات",
+  "schedule": [
+    {
+      "time": "20 دقيقة",
+      "topic": "مراجعة DOM بسرعة"
+    },
+    {
+      "time": "40 دقيقة",
+      "topic": "فهم Events"
+    },
+    {
+      "time": "45 دقيقة",
+      "topic": "addEventListener"
+    },
+    {
+      "time": "45 دقيقة",
+      "topic": "event object و target"
+    },
+    {
+      "time": "60 دقيقة",
+      "topic": "inputs و forms"
+    },
+    {
+      "time": "45 دقيقة",
+      "topic": "Event Delegation"
+    },
+    {
+      "time": "60 دقيقة",
+      "topic": "تدريبات واختبارات"
+    },
+    {
+      "time": "90 دقيقة",
+      "topic": "مشروع To Do List"
+    }
+  ],
+  "lessons": [
+    {
+      "name": "يعني إيه Event؟",
+      "explanation": "Event هو حدث بيحصل في الصفحة مثل click أو input أو submit أو keydown، وJavaScript تقدر تنفذ كود عند حدوثه.",
+      "common_events": [
+        "click",
+        "input",
+        "change",
+        "submit",
+        "keydown",
+        "keyup",
+        "mouseover",
+        "mouseout"
+      ],
+      "senior_hints": [
+        "فكر في الصفحة كسلسلة أحداث وردود أفعال.",
+        "اختار event مناسب للموقف: input للكتابة الحية، submit للفورم، click للأزرار."
+      ]
+    },
+    {
+      "name": "addEventListener",
+      "explanation": "الطريقة الحديثة والأفضل لإضافة حدث لعنصر بدون كتابة onclick في HTML.",
+      "example": {
+        "html": "<button id='btn'>Click Me</button>\n<h1 id='title'>Hello</h1>",
+        "javascript": "let btn = document.querySelector('#btn');\nlet title = document.querySelector('#title');\nbtn.addEventListener('click', function() {\n  title.textContent = 'Button Clicked';\n});"
+      },
+      "senior_hints": [
+        "تجنب inline events مثل onclick في HTML في المشاريع الجادة.",
+        "addEventListener يسمح بإضافة أكثر من listener لنفس العنصر.",
+        "خلي أسماء المتغيرات واضحة مثل submitBtn و userInput."
+      ]
+    },
+    {
+      "name": "event object و event.target",
+      "explanation": "كل event يرسل object فيه معلومات عن الحدث. event.target هو العنصر الذي وقع عليه الحدث فعليًا.",
+      "example": {
+        "html": "<button id='btn'>Click Me</button>",
+        "javascript": "let btn = document.querySelector('#btn');\nbtn.addEventListener('click', function(event) {\n  event.target.textContent = 'Clicked';\n});"
+      },
+      "senior_hints": [
+        "استخدم event.target لما تحتاج تعرف المستخدم ضغط على أي عنصر داخل container.",
+        "في بعض الحالات استخدم event.currentTarget لمعرفة العنصر الذي عليه listener نفسه."
+      ]
+    },
+    {
+      "name": "inputs و forms",
+      "explanation": "input event يعمل مع كل تغيير في الكتابة، submit event يعمل عند إرسال الفورم. preventDefault يمنع إعادة تحميل الصفحة.",
+      "example": {
+        "html": "<form id='loginForm'>\n  <input type='text' id='username'>\n  <button type='submit'>Login</button>\n</form>\n<p id='message'></p>",
+        "javascript": "let loginForm = document.querySelector('#loginForm');\nlet username = document.querySelector('#username');\nlet message = document.querySelector('#message');\nloginForm.addEventListener('submit', function(event) {\n  event.preventDefault();\n  if (username.value === '') {\n    message.textContent = 'Please enter your username';\n    message.style.color = 'red';\n  } else {\n    message.textContent = 'Welcome ' + username.value;\n    message.style.color = 'green';\n  }\n});"
+      },
+      "senior_hints": [
+        "استخدم trim() لمنع اعتبار المسافات قيمة صحيحة.",
+        "التحقق في الواجهة لا يغني عن التحقق في السيرفر في التطبيقات الحقيقية.",
+        "استخدم رسائل واضحة للمستخدم بدل alert في المشاريع الأفضل."
+      ]
+    },
+    {
+      "name": "Event Delegation",
+      "explanation": "بدل ما تضيف event لكل عنصر، ضيف event على الأب واستخدم event.target لمعرفة الابن الذي تم الضغط عليه. مهم جدًا للعناصر التي تُضاف ديناميكيًا.",
+      "example": {
+        "html": "<ul id='list'>\n  <li>HTML</li>\n  <li>CSS</li>\n</ul>\n<button id='addItem'>Add Item</button>",
+        "javascript": "let list = document.querySelector('#list');\nlet addItem = document.querySelector('#addItem');\naddItem.addEventListener('click', function() {\n  let li = document.createElement('li');\n  li.textContent = 'JavaScript';\n  list.appendChild(li);\n});\nlist.addEventListener('click', function(event) {\n  if (event.target.tagName === 'LI') {\n    event.target.remove();\n  }\n});"
+      },
+      "senior_hints": [
+        "Event Delegation يقلل عدد listeners ويحسن التنظيم.",
+        "استخدم classList.contains بدل tagName لو عندك عناصر كثيرة داخل نفس الأب.",
+        "لو ضغط المستخدم على عنصر داخلي داخل الزر، ممكن تحتاج closest()."
+      ]
+    }
+  ],
+  "mcq": [
+    {
+      "question": "ما وظيفة addEventListener؟",
+      "choices": [
+        "اختيار عنصر",
+        "إضافة CSS",
+        "تنفيذ كود عند حدوث event",
+        "حذف عنصر"
+      ],
+      "answer": "تنفيذ كود عند حدوث event"
+    },
+    {
+      "question": "أي event يستخدم عند الضغط على زرار؟",
+      "choices": [
+        "input",
+        "click",
+        "submit",
+        "change"
+      ],
+      "answer": "click"
+    },
+    {
+      "question": "ما وظيفة event.preventDefault()؟",
+      "choices": [
+        "حذف العنصر",
+        "منع السلوك الافتراضي",
+        "تغيير اللون",
+        "إنشاء عنصر"
+      ],
+      "answer": "منع السلوك الافتراضي"
+    },
+    {
+      "question": "ما وظيفة event.target؟",
+      "choices": [
+        "يرجع العنصر الذي حدث عليه الحدث",
+        "يغير النص",
+        "ينشئ عنصر",
+        "يحذف الصفحة"
+      ],
+      "answer": "يرجع العنصر الذي حدث عليه الحدث"
+    },
+    {
+      "question": "ما معنى Event Delegation؟",
+      "choices": [
+        "إضافة event لكل عنصر",
+        "وضع event على الأب والتعامل مع الأبناء باستخدام event.target",
+        "حذف كل الأحداث",
+        "تغيير CSS فقط"
+      ],
+      "answer": "وضع event على الأب والتعامل مع الأبناء باستخدام event.target"
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "غير نص h1 إلى Clicked عند الضغط على زر",
+      "html": "<button id='btn'>Click</button>\n<h1 id='title'>Hello</h1>",
+      "solution": "let btn = document.querySelector('#btn');\nlet title = document.querySelector('#title');\nbtn.addEventListener('click', function() {\n  title.textContent = 'Clicked';\n});"
+    },
+    {
+      "task": "اعرض قيمة input داخل p مباشرة أثناء الكتابة",
+      "html": "<input type='text' id='username'>\n<p id='result'></p>",
+      "solution": "let username = document.querySelector('#username');\nlet result = document.querySelector('#result');\nusername.addEventListener('input', function() {\n  result.textContent = username.value;\n});"
+    },
+    {
+      "task": "امنع refresh الفورم واعرض رسالة خطأ لو email فاضي",
+      "html": "<form id='form'><input type='text' id='email'><button type='submit'>Submit</button></form><p id='message'></p>",
+      "solution": "let form = document.querySelector('#form');\nlet email = document.querySelector('#email');\nlet message = document.querySelector('#message');\nform.addEventListener('submit', function(event) {\n  event.preventDefault();\n  if (email.value === '') {\n    message.textContent = 'Email is required';\n    message.style.color = 'red';\n  } else {\n    message.textContent = 'Email submitted';\n    message.style.color = 'green';\n  }\n});"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "btn.________________('click', function() { console.log('Clicked'); });",
+      "answer": "addEventListener"
+    },
+    {
+      "question": "event.________________(); // لمنع reload",
+      "answer": "preventDefault"
+    },
+    {
+      "question": "console.log(input.__________);",
+      "answer": "value"
+    },
+    {
+      "question": "console.log(event.__________);",
+      "answer": "target"
+    },
+    {
+      "question": "if (event.target.__________ === 'LI') { event.target.remove(); }",
+      "answer": "tagName"
+    },
+    {
+      "question": "box.classList.__________('active');",
+      "answer": "toggle"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Counter",
+      "requirements": [
+        "زر زيادة",
+        "زر نقصان",
+        "زر تصفير",
+        "تغيير اللون حسب قيمة الرقم"
+      ],
+      "html": "<h1 id='count'>0</h1>\n<button id='increase'>Increase</button>\n<button id='decrease'>Decrease</button>\n<button id='reset'>Reset</button>",
+      "javascript": "let countElement = document.querySelector('#count');\nlet increaseBtn = document.querySelector('#increase');\nlet decreaseBtn = document.querySelector('#decrease');\nlet resetBtn = document.querySelector('#reset');\nlet count = 0;\nfunction updateCount() {\n  countElement.textContent = count;\n  if (count > 0) countElement.style.color = 'green';\n  else if (count < 0) countElement.style.color = 'red';\n  else countElement.style.color = 'black';\n}\nincreaseBtn.addEventListener('click', function() { count++; updateCount(); });\ndecreaseBtn.addEventListener('click', function() { count--; updateCount(); });\nresetBtn.addEventListener('click', function() { count = 0; updateCount(); });"
+    },
+    {
+      "name": "To Do List",
+      "requirements": [
+        "إضافة مهمة",
+        "منع المهمة الفاضية",
+        "حذف مهمة",
+        "تعليم completed",
+        "حذف الكل",
+        "الإضافة بزر Enter"
+      ],
+      "html": "<input type='text' id='taskInput' placeholder='اكتب مهمة'>\n<button id='addTask'>Add Task</button>\n<button id='clearAll'>Clear All</button>\n<ul id='taskList'></ul>",
+      "css": ".completed { text-decoration: line-through; color: gray; }",
+      "javascript": "let taskInput = document.querySelector('#taskInput');\nlet addTask = document.querySelector('#addTask');\nlet taskList = document.querySelector('#taskList');\nlet clearAll = document.querySelector('#clearAll');\n\nfunction addNewTask() {\n  let taskText = taskInput.value.trim();\n  if (taskText === '') {\n    alert('اكتب مهمة الأول');\n    return;\n  }\n  let li = document.createElement('li');\n  let span = document.createElement('span');\n  span.textContent = taskText;\n  let deleteBtn = document.createElement('button');\n  deleteBtn.textContent = 'Delete';\n  deleteBtn.classList.add('delete-btn');\n  li.appendChild(span);\n  li.appendChild(deleteBtn);\n  taskList.appendChild(li);\n  taskInput.value = '';\n}\n\naddTask.addEventListener('click', addNewTask);\ntaskInput.addEventListener('keydown', function(event) {\n  if (event.key === 'Enter') addNewTask();\n});\ntaskList.addEventListener('click', function(event) {\n  if (event.target.classList.contains('delete-btn')) {\n    event.target.parentElement.remove();\n  }\n  if (event.target.tagName === 'SPAN') {\n    event.target.classList.toggle('completed');\n  }\n});\nclearAll.addEventListener('click', function() {\n  taskList.innerHTML = '';\n});"
+    }
+  ],
+  "final_homework": [
+    "ابني To Do List من غير copy paste",
+    "ضيف validation باستخدام trim",
+    "استخدم Event Delegation",
+    "ضيف زر Clear All",
+    "خلي Enter يضيف المهمة",
+    "امنع التكرار كتحدي إضافي"
+  ]
+}

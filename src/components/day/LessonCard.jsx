@@ -1,5 +1,6 @@
 import ProjectLab from '../shared/ProjectLab';
 import SeniorHints from '../shared/SeniorHints';
+import LessonContent, { parseLessonTitle } from '../shared/LessonContent';
 
 export default function LessonCard({ lesson, index, lessonId }) {
   const example = lesson.example;
@@ -14,9 +15,9 @@ export default function LessonCard({ lesson, index, lessonId }) {
   return (
     <div className="card">
       <h3 className="card__title">
-        {index + 1}. {lesson.name}
+        {index + 1}. {parseLessonTitle(lesson.name)}
       </h3>
-      <p>{lesson.explanation}</p>
+      {lesson.explanation && <LessonContent text={lesson.explanation} />}
 
       {lesson.methods?.length > 0 && (
         <table className="methods-table">

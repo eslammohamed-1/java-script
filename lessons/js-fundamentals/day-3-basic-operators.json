@@ -1,0 +1,296 @@
+{
+  "title": "Basic Operators",
+  "goal": "العمليات الحسابية وعمليات المقارنة والتعيين في JavaScript",
+  "duration": "حوالي ساعتين",
+  "schedule": [
+    {
+      "time": "30 دقيقة",
+      "topic": "الأوبريتورز الحسابية و String Concatenation"
+    },
+    {
+      "time": "30 دقيقة",
+      "topic": "أوبريتورز التعيين Assignment Operators"
+    },
+    {
+      "time": "30 دقيقة",
+      "topic": "أوبريتورز المقارنة Comparison Operators"
+    },
+    {
+      "time": "30 دقيقة",
+      "topic": "التدريب العملي وحل المشاكل"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "مقدمة",
+      "objectives": [],
+      "details": "في الدروس اللي فاتت اتعلمنا نعرّف متغيرات ونحط فيها قيم من أنواع مختلفة. بس لحد دلوقتي القيم دي قاعدة ساكنة \\textenglish{--} مش بنعمل بيها حاجة!\n\nتخيّل إنك اشتريت آلة حاسبة بس كل اللي بتعمله إنك بتكتب أرقام عليها من غير ما تضغط على أزرار الجمع والطرح والضرب. الأرقام موجودة بس مش بتتحوّل لنتائج.\n\nالأوبريتورز Operators هم الأزرار دي! هم اللي بيحوّلوا القيم ويدمجوها ويقارنوها ببعض. في الدرس ده هنتعلم 3 أنواع أساسية من الأوبريتورز: الحسابية Arithmetic، والتعيين Assignment، والمقارنة Comparison. وكل واحد فيهم هتلاقيه بيستخدم في كل برنامج تقريباً.",
+      "key_tools": [],
+      "practice": ""
+    }
+  ],
+  "lessons": [
+    {
+      "name": "إيه هو الـ \\en{Operator",
+      "explanation": "[معلومة]\nتعريف: الـ Operator هو رمز أو كلمة بنستخدمها علشان نعمل عملية على قيمة أو أكتر. العملية ممكن تكون حسابية، أو مقارنة، أو تعيين قيمة، أو حاجات تانية كتير.\n\\end{infobox}\n\n[نصيحة]\nتشبيه من الحياة \\textenglish{-- الأوبريتور زي الأداة:}\n\n  • المفك بيلف المسمار \\textenglish{--} الأوبريتور الحسابي بيعمل عملية على الأرقام.\n  • الميزان بيقارن بين حاجتين \\textenglish{--} أوبريتور المقارنة بيقارن بين قيمتين.\n  • الصندوق بتحط فيه حاجة \\textenglish{--} أوبريتور التعيين بيحط قيمة في متغير.\n\nكل أداة ليها وظيفة مختلفة، وكل أوبريتور ليه وظيفة مختلفة!\n\\end{tipbox}\n\n### أنواع الأوبريتورز\n\nالنوع & الوظيفة & أمثلة \\\\\nArithmetic Operators & عمليات حسابية & `+`، `-`، `*`، `/`، `**` \\\\\nAssignment Operators & تعيين قيم للمتغيرات & `=`، `+=`، `*=`، `++` \\\\\nComparison Operators & مقارنة قيمتين وإرجاع Boolean & `>`، `<`، `>=`، `<=` \\\\\nLogical Operators & عمليات منطقية (هنتعلمها بعدين) & `\\&\\&`، `||`، `!` \\\\\ntypeof & معرفة نوع القيمة & `typeof 23` \\\\\n\\end{tabular}\n\\end{center}\n\n[تحذير]\nخد بالك: في الدرس ده هنركّز على أول 3 أنواع بس. الـ Logical Operators هنتعلمهم في درس منفصل.\n\\end{warningbox}",
+      "example": null
+    },
+    {
+      "name": "الأوبريتورز الحسابية \\en{Arithmetic Operators",
+      "explanation": "[نصيحة]\nتشبيه من الحياة \\textenglish{-- الآلة الحاسبة:}\n\nالأوبريتورز الحسابية زي أزرار الآلة الحاسبة بالظبط. بتاخد رقمين (أو رقم واحد) وبتعمل عليهم عملية وبتطلّعلك نتيجة.\n\\end{tipbox}\n\n### الأوبريتورز الأساسية\n\nالرمز & العملية & مثال & النتيجة \\\\\n\\endhead\n`+` & جمع & `10 + 5` & `15` \\\\\n`-` & طرح & `10 - 5` & `5` \\\\\n`*` & ضرب & `10 * 5` & `50` \\\\\n`/` & قسمة & `10 / 5` & `2` \\\\\n`**` & الأس (رفع لقوة) & `2 ** 3` & `8` \\\\\n\\end{longtable}\n\\end{center}\n\n### مثال: حساب العمر من سنة الميلاد\n\nده المثال اللي في الفيديو. عايزين نحسب عمر شخصين بناءً على سنة ميلادهم:\n\n[معلومة]\nتشريح الكود:\n\nالجزء & معناه \\\\\n`const now = 2037` & متغير ثابت بيمثّل السنة الحالية \\\\\n`now - 1991` & أوبريتور الطرح بيحسب العمر \\\\\n`console.log(a, b)` & طباعة قيمتين في سطر واحد بينهم مسافة \\\\\n\\end{tabular}\n\\end{center}\n\\end{infobox}\n\n[نصيحة]\nليه استخدمنا متغير `now`؟\n\nلاحظ إننا كان ممكن نكتب `2037 - 1991` و`2037 - 2018` مباشرة. بس لو السنة اتغيّرت هنحتاج نغيّرها في مكانين! لما بنحطها في متغير `now`، بنغيّرها في مكان واحد بس. ده اسمه DRY (Don't Repeat Yourself).\n\\end{tipbox}\n\n### عمليات حسابية متنوعة\n\n[تحذير]\nخد بالك من أوبريتور الأس `**`:\n\n`2 ** 3` معناها 2 مرفوعة للقوة 3 (يعني $2 \\times 2 \\times 2 = 8$). ده مش ضرب عادي! لو عايز ضرب عادي استخدم `*` واحدة بس.\n\\end{warningbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const now = 2037;\nconst ageJonas = now - 1991;\n\n// \nconsole.log(ageJonas * 2, ageJonas / 10, 2 ** 3);\n// 2 ** 3 "
+      }
+    },
+    {
+      "name": "أوبريتور \\code{+",
+      "explanation": "[معلومة]\nتعريف: أوبريتور `+` ليه وظيفتين:\n\n  • مع الأرقام: بيعمل جمع حسابي (`5 + 3 = 8`).\n  • مع النصوص: بيلصق النصوص ببعض (Concatenation).\n\n\\end{infobox}\n\n[نصيحة]\nتشبيه من الحياة \\textenglish{-- لصق الورق:}\n\nتخيّل عندك ورقتين مكتوب على كل واحدة كلمة. لما بتلصقهم جنب بعض بتحصل على جملة واحدة. أوبريتور `+` مع النصوص بيعمل نفس الحاجة بالظبط!\n\\end{tipbox}\n\n[معلومة]\nتشريح الكود:\n\nالجزء & النتيجة \\\\\n`firstName` & `'Jonas'` \\\\\n`' '` & نص فيه مسافة واحدة بس \\\\\n`lastName` & `'Schmedtmann'` \\\\\n`firstName + ' ' + lastName` & `'Jonas Schmedtmann'` \\\\\n\\end{tabular}\n\\end{center}\n\\end{infobox}\n\n[تحذير]\nخد بالك: لو ما حطيتش `' '` (المسافة) في النص، الاسمين هيتلصقوا ببعض من غير مسافة:\n\\end{warningbox}\n\n[نصيحة]\nنصيحة: فيه طريقة أحسن لدمج النصوص اسمها Template Literals \\textenglish{--} هنتعلمها في الدرس الجاي. بس دلوقتي مهم تفهم إزاي `+` بيشتغل مع النصوص.\n\\end{tipbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst firstName = 'Jonas';\nconst lastName = 'Schmedtmann';\n\nconsole.log(firstName + lastName);"
+      }
+    },
+    {
+      "name": "أوبريتورز التعيين \\en{Assignment Operators",
+      "explanation": "[معلومة]\nتعريف: أوبريتورز التعيين بتحط قيمة في متغير. أشهرهم هو علامة `=` وهي نفسها أوبريتور!\n\\end{infobox}\n\n[نصيحة]\nتشبيه من الحياة \\textenglish{-- وضع حاجة في صندوق:}\n\n  • `=` $\\Rightarrow$ بتحط حاجة في الصندوق (تعيين عادي).\n  • `+=` $\\Rightarrow$ بتزوّد على اللي موجود (زي ما تضيف فلوس في الحصّالة).\n  • `*=` $\\Rightarrow$ بتضرب اللي موجود (زي ما تضاعف المبلغ).\n  • `++` $\\Rightarrow$ بتزوّد واحد بس (زي عدّاد بيزيد 1).\n  • `--` $\\Rightarrow$ بتنقّص واحد بس (زي عدّاد بينقص 1).\n\n\\end{tipbox}\n\n### أوبريتور التعيين الأساسي `=\n\n[تحذير]\nخد بالك:` في السطر ده فيه \\textbf{أوبريتورين اتنين:\n\n  • أوبريتور `+` \\textenglish{--} بيحسب `10 + 5` الأول ويطلّع `15`.\n  • أوبريتور `=` \\textenglish{--} بياخد النتيجة `15` ويحطها في المتغير `x`.\n\nالجمع بيتنفّذ قبل التعيين! (هنفهم ليه في درس Operator Precedence).\n\\end{warningbox}\n\n### أوبريتورز التعيين المختصرة\n\nالأوبريتور & معناه & مثال \\\\\n\\endhead\n`=` & تعيين عادي & `x = 10` \\\\\n`+=` & أضف وعيّن & `x += 5` يساوي `x = x + 5` \\\\\n`-=` & اطرح وعيّن & `x -= 3` يساوي `x = x - 3` \\\\\n`*=` & اضرب وعيّن & `x *= 2` يساوي `x = x * 2` \\\\\n`/=` & اقسم وعيّن & `x /= 4` يساوي `x = x / 4` \\\\\n`++` & زوّد 1 & `x++` يساوي `x = x + 1` \\\\\n`--` & نقّص 1 & `x--` يساوي `x = x - 1` \\\\\n\\end{longtable}\n\\end{center}\n\n### مثال عملي: تتبع قيمة \\code{x",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nlet x = 10 + 5; // x = 15\nconsole.log(x);\n\n// \nx += 10;         // x = x + 10 = 15 + 10 = 25\nconsole.log(x);\n\n// \nx *= 4;          // x = x * 4 = 25 * 4 = 100\nconsole.log(x);\n\n// \nx++;             // x = x + 1 = 100 + 1 = 101\nconsole.log(x);\n\n// \nx--;             // x = x - 1 = 101 - 1 = 100\nx--;             // x = x - 1 = 100 - 1 = 99\nconsole.log(x);"
+      }
+    },
+    {
+      "name": "أوبريتورز المقارنة \\en{Comparison Operators",
+      "explanation": "[معلومة]\nتعريف: أوبريتورز المقارنة بتاخد قيمتين وبتقارنهم ببعض. النتيجة دايماً بتكون Boolean (`true` أو `false`).\n\\end{infobox}\n\n[نصيحة]\nتشبيه من الحياة \\textenglish{-- الميزان:}\n\nتخيّل ميزان عليه كفّتين. بتحط رقم على كل كفّة والميزان بيقولك مين أتقل (أكبر). الإجابة يا ``أيوه'' (`true`) يا ``لأ'' (`false`).\n\nهل 46 أكبر من 19؟ $\\Rightarrow$ `true`\n\nهل 19 أكبر من 46؟ $\\Rightarrow$ `false`\n\\end{tipbox}\n\n### الأوبريتورز الأربعة\n\nالرمز & المعنى & مثال & النتيجة \\\\\n\\endhead\n`>` & أكبر من & `46 > 19` & `true` \\\\\n`<` & أصغر من & `46 < 19` & `false` \\\\\n`>=` & أكبر من أو يساوي & `18 >= 18` & `true` \\\\\n`<=` & أصغر من أو يساوي & `17 <= 18` & `true` \\\\\n\\end{longtable}\n\\end{center}\n\n### مثال: هل عمر Jonas\n\n[معلومة]\nإيه اللي حصل؟\n\nJavaScript حسبت الأعمار الأول:\n  • `ageJonas` = `2037 - 1991` = `46`\n  • `ageSarah` = `2037 - 2018` = `19`\n\\end{itemize\n\nبعدين قارنت: هل `46 > 19`؟ أيوه! $\\Rightarrow$ النتيجة `true`.\n\\end{infobox}\n\n### مثال: هل Sarah\n\n[تحذير]\nخد بالك من `>=:`\n\n`>=` معناها ``أكبر من أو يساوي''. يعني لو العمر 18 بالظبط، النتيجة `true`. ده مختلف عن `>` اللي محتاج العمر يكون 19 أو أكتر علشان يبقى `true`.\n\n\\textbf{العمر & `age > 18` & `age >= 18` \\\\\n17 & `false` & `false` \\\\\n18 & `false` & `true` \\\\\n19 & `true` & `true` \\\\\n\\end{tabular}\n\\end{center}\n\\end{warningbox}\n\n### حفظ نتيجة المقارنة في متغير\n\n[نصيحة]\nنصيحة مهمة: في الكود الحقيقي مش هتطبع نتيجة المقارنة دايماً في الـ Console. الأغلب إنك هتحفظها في متغير وتستخدمها بعد كده في اتخاذ قرارات.\n\\end{tipbox}\n\n### دمج الحساب والمقارنة في سطر واحد\n\n[معلومة]\nإيه اللي حصل هنا؟\n\nJavaScript عرفت إنها لازم تعمل العمليات الحسابية الأول وبعدين المقارنة:\n\n  • حسبت `now - 1991` = `46`\n  • حسبت `now - 2018` = `19`\n  • قارنت `46 > 19` = `true`\n\nده بيحصل بسبب حاجة اسمها Operator Precedence (أولوية الأوبريتورز) \\textenglish{--} هنتعلمها في الدرس الجاي!\n\\end{infobox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst now = 2037;\n\nconsole.log(now - 1991 > now - 2018);"
+      }
+    },
+    {
+      "name": "تشبيه شامل \\textenglish{--",
+      "explanation": "[نصيحة]\nتشبيه من الحياة \\textenglish{-- المطبخ:}\n\nتخيّل إنك في مطبخ:\n\n  • الأوبريتورز الحسابية = أدوات الطبخ (سكينة، خلاط). بتاخد المكونات (الأرقام) وبتحوّلهم لأكلة (النتيجة).\n  • أوبريتور التعيين `=` = الطبق اللي بتحط فيه الأكلة. بتاخد النتيجة وبتحطها في المتغير.\n  • أوبريتورز المقارنة = التذوّق! بتدوق وبتقول ``أيوه ده حلو'' (`true`) أو ``لأ ده مش مظبوط'' (`false`).\n\nالخطوات بتحصل بالترتيب: الأول بتطبخ (حساب)، بعدين بتحط في الطبق (تعيين)، وبعدين بتدوق (مقارنة)!\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "تتبع تنفيذ الكود خطوة بخطوة",
+      "explanation": "تعالى ناخد الكود الرئيسي من الفيديو ونتتبعه سطر سطر:\n\nالخطوة 1: تعريف المتغيرات الأساسية\n\n`const now = 2037;` $\\Rightarrow$ المتغير `now` فيه `2037`\n\n`const ageJonas = now - 1991;` $\\Rightarrow$ `2037 - 1991 = 46`\n\n`const ageSarah = now - 2018;` $\\Rightarrow$ `2037 - 2018 = 19`\n\nالذاكرة:\n\nالمتغير & القيمة & النوع \\\\\n`now` & `2037` & number \\\\\n`ageJonas` & `46` & number \\\\\n`ageSarah` & `19` & number \\\\\n\\end{tabular}\n\\end{center}\n\\end{stepbox}\n\nالخطوة 2: طباعة الأعمار\n\n`console.log(ageJonas, ageSarah);`\n\nJavaScript بتطبع القيمتين جنب بعض بمسافة: `46 19`\n\\end{stepbox}\n\nالخطوة 3: عمليات حسابية متعددة\n\n`console.log(ageJonas * 2, ageJonas / 10, 2 ** 3);`\n\n  • `ageJonas * 2` = `46 * 2` = `92`\n  • `ageJonas / 10` = `46 / 10` = `4.6`\n  • `2 ** 3` = `2 * 2 * 2` = `8`\n\nالناتج: `92 4.6 8`\n\\end{stepbox}\n\nالخطوة 4: لصق النصوص\n\n`const firstName = 'Jonas';`\n\n`const lastName = 'Schmedtmann';`\n\n`console.log(firstName + ' ' + lastName);`\n\n`'Jonas'` + `' '` + `'Schmedtmann'` = `'Jonas Schmedtmann'`\n\\end{stepbox}\n\nالخطوة 5: سلسلة أوبريتورز التعيين\n\nالسطر & العملية & قيمة `x` \\\\\n`let x = 10 + 5` & تعيين أولي & `15` \\\\\n`x += 10` & `15 + 10` & `25` \\\\\n`x *= 4` & `25 * 4` & `100` \\\\\n`x++` & `100 + 1` & `101` \\\\\n`x--` & `101 - 1` & `100` \\\\\n`x--` & `100 - 1` & `99` \\\\\n\\end{tabular}\n\\end{center}\n\nالناتج: `99`\n\\end{stepbox}\n\nالخطوة 6: المقارنة\n\n`console.log(ageJonas > ageSarah);` $\\Rightarrow$ `46 > 19` $\\Rightarrow$ `true`\n\n`const isFullAge = ageSarah >= 18;` $\\Rightarrow$ `19 >= 18` $\\Rightarrow$ `true`\n\n`console.log(isFullAge);` $\\Rightarrow$ `true`\n\\end{stepbox}\n\nالناتج الكامل:",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const now = 2037;\nconst ageJonas = now - 1991;\nconst ageSarah = now - 2018;\nconsole.log(ageJonas, ageSarah);\n\nconsole.log(ageJonas * 2, ageJonas / 10, 2 ** 3);\n\nconst firstName = 'Jonas';\nconst lastName = 'Schmedtmann';\nconsole.log(firstName + ' ' + lastName);\n\nlet x = 10 + 5;\nx += 10;\nx *= 4;\nx++;\nx--;\nx--;\nconsole.log(x);\n\nconsole.log(ageJonas > ageSarah);\nconst isFullAge = ageSarah >= 18;\nconsole.log(isFullAge);"
+      }
+    },
+    {
+      "name": "المثال الكامل من الفيديو",
+      "explanation": "",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst now = 2037;\nconst ageJonas = now - 1991;\nconst ageSarah = now - 2018;\nconsole.log(ageJonas, ageSarah);\n\nconsole.log(ageJonas * 2, ageJonas / 10, 2 ** 3);\n// 2 ** 3 means 2 to the power of 3 = 2 * 2 * 2\n\n// \nconst firstName = 'Jonas';\nconst lastName = 'Schmedtmann';\nconsole.log(firstName + ' ' + lastName);\n\n// \nlet x = 10 + 5; // 15\nx += 10;         // 25\nx *= 4;          // 100\nx++;             // 101\nx--;             // 100\nx--;             // 99\nconsole.log(x);\n\n// \nconsole.log(ageJonas > ageSarah);   // true\nconsole.log(ageSarah >= 18);        // true\n\nconst isFullAge = ageSarah >= 18;\nconsole.log(isFullAge);             // true\n\n// \nconsole.log(now - 1991 > now - 2018); // true"
+      }
+    },
+    {
+      "name": "أمثلة إضافية متنوعة",
+      "explanation": "### مثال 1: حاسبة فاتورة مطعم\n\n### مثال 2: عدّاد بأوبريتورز التعيين\n\n### مثال 3: مقارنات متعددة\n\n### مثال 4: بناء جملة من نصوص متعددة\n\n[تحذير]\nخد بالك: لما بتلصق Number مع String باستخدام `+`، JavaScript بتحوّل الرقم لنص تلقائياً! يعني `'I am ' + 25` بتطلع `'I am 25'`.\n\\end{warningbox}\n\n### مثال 5: حساب مساحة ومحيط مستطيل",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst length = 15;\nconst width = 8;\n\nconst area = length * width;\nconst perimeter = 2 * (length + width);\n\nconsole.log('Area:', area);\nconsole.log('Perimeter:', perimeter);\n\n// \nconst isLarge = area > 100;\nconsole.log('Is large?', isLarge);"
+      }
+    },
+    {
+      "name": "خد بالك \\textenglish{--",
+      "explanation": "الخطأ الشائع & الحل الصح \\\\\n\\endhead\nكتابة `let x = x + 5` بدل `x += 5` & الاتنين صح بس `x += 5` مختصرة وأفضل \\\\\nاستخدام `=` للمقارنة بدل `>` أو `<` & `=` للتعيين بس. المقارنة بـ `>` و`<` و`>=` و`<=` \\\\\nنسيان المسافة في لصق النصوص & لازم تضيف `' '` بين الأجزاء \\\\\nاستخدام `**` وفاكر إنها ضرب & `**` أس. الضرب هو `*` واحدة بس \\\\\nاستخدام `const` مع متغير هتغيّره بـ `++` أو `+=` & لازم تستخدم `let` لو هتعيد تعيين القيمة \\\\\nتكرار القيم الثابتة في كل مكان & احفظ القيمة في متغير واستخدم الاسم \\\\\nنسيان إن نتيجة المقارنة Boolean & أوبريتورز المقارنة دايماً بترجّع `true` أو `false` \\\\\nلصق رقم مع نص وتوقّع جمع حسابي & `'5' + 3` = `'53'` مش `8`. اتأكد من الأنواع \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "ملخص سريع",
+      "explanation": "المفهوم & الشرح باختصار \\\\\n\\endhead\nOperator & رمز أو كلمة بتعمل عملية على قيمة أو أكتر \\\\\nArithmetic Operators & `+`، `-`، `*`، `/`، `**` \\textenglish{--} عمليات حسابية \\\\\n`+` مع نصوص & بيلصق النصوص ببعض (Concatenation) \\\\\n`=` & أوبريتور تعيين \\textenglish{--} بيحط القيمة في المتغير \\\\\n`+=`، `-=`، `*=`، `/=` & أوبريتورز تعيين مختصرة \\\\\n`++` & بيزوّد 1 على المتغير \\\\\n`--` & بينقّص 1 من المتغير \\\\\n`>`، `<` & أكبر من، أصغر من \\\\\n`>=`، `<=` & أكبر من أو يساوي، أصغر من أو يساوي \\\\\nنتيجة المقارنة & دايماً Boolean (`true` أو `false`) \\\\\nDRY & ما تكررش نفس القيمة \\textenglish{--} حطها في متغير \\\\\nOperator Precedence & ترتيب تنفيذ الأوبريتورز (الدرس الجاي) \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "\\en{Cheat Sheet",
+      "explanation": "[معلومة]\nمرجع سريع لكل الأوبريتورز في الدرس:\n\n1. الأوبريتورز الحسابية:\n\nالرمز & العملية & مثال \\\\\n`+` & جمع / لصق نصوص & `5 + 3` $\\Rightarrow$ `8` \\\\\n`-` & طرح & `10 - 4` $\\Rightarrow$ `6` \\\\\n`*` & ضرب & `3 * 7` $\\Rightarrow$ `21` \\\\\n`/` & قسمة & `20 / 4` $\\Rightarrow$ `5` \\\\\n`**` & أس & `2 ** 4` $\\Rightarrow$ `16` \\\\\n\\end{tabular}\n\\end{center}\n\n2. أوبريتورز التعيين:\n\nالشكل المختصر & المعنى الكامل \\\\\n`x = 5` & حط 5 في `x` \\\\\n`x += 3` & `x = x + 3` \\\\\n`x -= 2` & `x = x - 2` \\\\\n`x *= 4` & `x = x * 4` \\\\\n`x /= 2` & `x = x / 2` \\\\\n`x++` & `x = x + 1` \\\\\n`x--` & `x = x - 1` \\\\\n\\end{tabular}\n\\end{center}\n\n3. أوبريتورز المقارنة (بترجّع Boolean):\n\n`a > b` & `a` أكبر من `b` \\\\\n`a < b` & `a` أصغر من `b` \\\\\n`a >= b` & `a` أكبر من أو يساوي `b` \\\\\n`a <= b` & `a` أصغر من أو يساوي `b` \\\\\n\\end{tabular}\n\\end{center}\n\\end{infobox}\n\nالأشكال العامة:",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nresult = value1 operator value2;\n\n// \nx += value;   // x = x + value\nx++;           // x = x + 1\n\n// \nconst isTrue = value1 > value2;  // true or false\n\n// \nconst fullName = first + ' ' + last;"
+      }
+    },
+    {
+      "name": "معجم المصطلحات",
+      "explanation": "المصطلح & النطق بالعربي & المعنى \\\\\n\\endhead\nOperator & أوبريتور & رمز أو كلمة بتعمل عملية على القيم \\\\\nOperand & أوبراند & القيمة اللي الأوبريتور بيشتغل عليها \\\\\nArithmetic Operator & أريثماتيك أوبريتور & أوبريتور حسابي (+، -، *، /) \\\\\nAssignment Operator & أساينمنت أوبريتور & أوبريتور تعيين (=، +=، ...) \\\\\nComparison Operator & كومباريسون أوبريتور & أوبريتور مقارنة (>، <، >=، <=) \\\\\nConcatenation & كونكاتينيشن & لصق نصوص ببعض \\\\\nExponentiation & إكسبوننشييشن & رفع لقوة (أس) \\\\\nIncrement & إنكريمنت & زيادة بمقدار 1 (`++`) \\\\\nDecrement & ديكريمنت & نقصان بمقدار 1 (`--`) \\\\\nExpression & إكسبريشن & تعبير بينتج قيمة \\\\\nPrecedence & بريسيدنس & أولوية تنفيذ الأوبريتورز \\\\\nBoolean & بوليان & قيمة منطقية (`true` أو `false`) \\\\\nDRY & دراي & Don't Repeat Yourself \\\\\nReassign & ري-أساين & إعادة تعيين القيمة لمتغير موجود \\\\\nFloating Point & فلوتينج بوينت & رقم بفاصلة عشرية \\\\\nAuto-completion & أوتو-كومبليشن & الإكمال التلقائي في محرر الأكواد \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "حل المشاكل \\en{Troubleshooting",
+      "explanation": "المشكلة & السبب & الحل \\\\\n\\endhead\nTypeError: Assignment to constant variable &\nبتحاول تغيّر قيمة `const` &\nاستخدم `let` بدل `const` لو هتغيّر القيمة \\\\\nالنتيجة `NaN` (Not a Number) &\nبتعمل عملية حسابية على حاجة مش رقم &\nاتأكد إن كل القيم أرقام بـ `typeof` \\\\\n`'55'` بدل `10` &\nبتجمع String مع Number باستخدام `+` &\nاتأكد إن الاتنين Number. الـ `+` بيلصق لو فيه String \\\\\nالنص بيظهر ملزوق من غير مسافات &\nنسيت تضيف `' '` في الـ Concatenation &\nضيف `' '` بين الأجزاء \\\\\nSyntaxError: Unexpected token &\nكتبت أوبريتور غلط أو ناقص &\nراجع الرموز: `**` مش `\\^{`} للأس \\\\\nالمقارنة بترجّع نتيجة غلط &\nبتقارن String مع Number &\nاتأكد إن النوعين متماثلين \\\\\n`x += 5` مش شغالة &\nالمتغير معرّف بـ `const` &\nلازم يكون `let` علشان يتغيّر \\\\\nنتيجة القسمة مش دقيقة (مثلاً `0.1 + 0.2`) &\nده سلوك طبيعي في الـ Floating Point &\nاستخدم `toFixed()` للتقريب (هنتعلمه بعدين) \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "تمارين عملية متدرجة",
+      "explanation": "### تمرين 1: سهل \\textenglish{--\n\nالمطلوب:\n\n  • عرّف متغيرين `a = 20` و`b = 7`.\n  • احسب واطبع: الجمع، الطرح، الضرب، القسمة، و`a` أس `b`.\n\n\\end{codebox}\n\n[نصيحة]\nالحل:\n\n\\end{tipbox}\n\n### تمرين 2: سهل \\textenglish{--\n\nالمطلوب: عرّف متغيرات للاسم الأول واسم العيلة والعمر والمدينة، وبعدين الصقهم في جملة واحدة واطبعها.\n\nالناتج المطلوب: `Hello, I am Sara Ahmed, 28 years old, from Alex.`\n\\end{codebox}\n\n[نصيحة]\nالحل:\n\n\\end{tipbox}\n\n### تمرين 3: متوسط \\textenglish{--\n\nالمطلوب: من غير ما تشغّل الكود، حدد قيمة `score` بعد كل سطر:\n\n\\end{codebox}\n\n[نصيحة]\nالحل:\n\nالسطر & العملية & قيمة `score` \\\\\n`let score = 50` & تعيين أولي & `50` \\\\\n`score += 20` & `50 + 20` & `70` \\\\\n`score -= 5` & `70 - 5` & `65` \\\\\n`score *= 2` & `65 * 2` & `130` \\\\\n`score /= 13` & `130 / 13` & `10` \\\\\n`score++` & `10 + 1` & `11` \\\\\n`score++` & `11 + 1` & `12` \\\\\n`score--` & `12 - 1` & `11` \\\\\n\\end{tabular}\n\\end{center}\n\nالناتج النهائي: `11`\n\\end{tipbox}\n\n### تمرين 4: متوسط \\textenglish{--\n\nالمطلوب:\n\n  • عرّف متغيرات لدرجات 3 طلاب في الامتحان: `gradeAli = 85`، `gradeMona = 92`، `gradeOmar = 78`.\n  • اطبع نتيجة المقارنات دي واحفظ كل نتيجة في متغير:\n  \n    • هل درجة Ali أكبر من درجة Omar؟\n    • هل درجة Mona أكبر من أو تساوي 90؟\n    • هل درجة Omar أصغر من 80؟\n    • هل درجة Ali أصغر من أو تساوي درجة Mona؟\n  \n\n\\end{codebox}\n\n[نصيحة]\nالحل:\n\n\\end{tipbox}\n\n### تمرين 5: صعب \\textenglish{--\n\nالمطلوب:\n\nشخص عايز يشتري عربية بالتقسيط. المطلوب تحسب القسط الشهري:\n\n  • `carPrice = 250000` (سعر العربية)\n  • `downPayment = 50000` (المقدم)\n  • `interestRate = 10` (نسبة الفائدة السنوية بالـ \\\n  • `years = 5` (عدد سنوات التقسيط)\n\nاحسب:\n  • المبلغ المتبقي بعد المقدم\n  • إجمالي الفائدة = المبلغ المتبقي $\\times$ نسبة الفائدة / 100 $\\times$ عدد السنوات\n  • الإجمالي = المبلغ المتبقي + الفائدة\n  • القسط الشهري = الإجمالي / (عدد السنوات $\\times$ 12)\n  • هل القسط الشهري أقل من أو يساوي 5000؟ (احفظ في متغير Boolean)\n\nابني جملة نصية تقول: `Monthly payment: XXXX EGP - Affordable: true/false`\n\\end{codebox}\n\n[نصيحة]\nالحل:\n\n\\end{tipbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst carPrice = 250000;\nconst downPayment = 50000;\nconst interestRate = 10;\nconst years = 5;\n\n// \nconst remaining = carPrice - downPayment;\nconsole.log('Remaining:', remaining);\n\n// \nconst totalInterest = remaining * interestRate / 100 * years;\nconsole.log('Total interest:', totalInterest);\n\n// \nconst totalAmount = remaining + totalInterest;\nconsole.log('Total amount:', totalAmount);\n\n// \nconst months = years * 12;\nconst monthlyPayment = totalAmount / months;\nconsole.log('Monthly payment:', monthlyPayment);\n\n// \nconst isAffordable = monthlyPayment <= 5000;\nconsole.log('Affordable?', isAffordable);\n\n// \nconst summary = 'Monthly payment: ' + monthlyPayment\n  + ' EGP - Affordable: ' + isAffordable;\nconsole.log(summary);"
+      }
+    },
+    {
+      "name": "أسئلة نظرية",
+      "explanation": "• إيه الفرق بين أوبريتور `+` لما بيستخدم مع أرقام ولما بيستخدم مع نصوص؟\n\n[نصيحة]\nالإجابة: مع الأرقام بيعمل جمع حسابي (`5 + 3 = 8`). مع النصوص بيعمل لصق Concatenation (`'Hello' + ' World' = 'Hello World'`). لو واحد String والتاني Number، JavaScript بتحوّل الرقم لنص وبتلصقهم (`'5' + 3 = '53'`).\n\\end{tipbox}\n\n• ليه أوبريتور `=` بيتنفّذ بعد أوبريتور `+` في سطر زي `let x = 10 + 5`؟\n\n[نصيحة]\nالإجابة: بسبب Operator Precedence (أولوية الأوبريتورز). الأوبريتورز الحسابية زي `+` ليها أولوية أعلى من أوبريتور التعيين `=`. فـ JavaScript بتحسب `10 + 5` الأول (= `15`) وبعدين بتعيّن النتيجة للمتغير `x`.\n\\end{tipbox}\n\n• إيه الفرق بين `x += 5` و`x = 5`؟\n\n[نصيحة]\nالإجابة: `x = 5` بتحط القيمة `5` في `x` بغض النظر عن القيمة القديمة (استبدال كامل). أما `x += 5` فمعناها `x = x + 5` يعني بتضيف `5` على القيمة الحالية لـ `x`. مثال: لو `x = 10`، بعد `x += 5` تبقى `x = 15`، بس بعد `x = 5` تبقى `x = 5`.\n\\end{tipbox}\n\n• ليه مهم نستخدم متغير زي `const now = 2037` بدل ما نكتب `2037` في كل مكان؟\n\n[نصيحة]\nالإجابة: علشان مبدأ DRY (Don't Repeat Yourself). لو كتبت `2037` في 10 أماكن وعايز تغيّرها، لازم تغيّر في الـ 10 أماكن. بس لو حاططها في متغير `now`، بتغيّر في مكان واحد بس. ده بيقلل الأخطاء وبيسهّل صيانة الكود.\n\\end{tipbox}\n\n• أوبريتورز المقارنة بترجّع إيه دايماً؟ وإيه الفرق بين `>` و`>=`؟\n\n[نصيحة]\nالإجابة: بترجّع دايماً Boolean (`true` أو `false`). الفرق: `>` معناها ``أكبر من'' بشكل صارم (مش بيشمل المساواة)، أما `>=` معناها ``أكبر من أو يساوي'' (بيشمل المساواة). مثال: `18 > 18` = `false`، لكن `18 >= 18` = `true`.\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "إيه اللي هتحتاجه بعد كده",
+      "explanation": "الدرس الجاي & هتتعلم فيه إيه & إيه علاقته بالدرس ده \\\\\n\\endhead\nOperator Precedence &\nترتيب تنفيذ الأوبريتورز &\nهتفهم ليه `+` بيتنفّذ قبل `=` وليه الحساب قبل المقارنة \\\\\nStrings and Template Literals &\nطريقة أسهل لدمج النصوص &\nبدل لصق النصوص بـ `+`، هتستخدم Template Literals \\\\\nType Conversion and Coercion &\nتحويل الأنواع &\nهتفهم ليه `'5' + 3` بيطلّع `'53'` مش `8` \\\\\nEquality Operators &\n`==` و`===` &\nأوبريتورز مقارنة تانية غير `>` و`<` \\\\\nLogical Operators &\n`\\&\\&`، `||`، `!` &\nدمج مقارنات متعددة مع بعض \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "الفكرة في سطرين (\\en{TL;DR",
+      "explanation": "[نصيحة]\n  • أوبريتورز حسابية: `+`, `-`, `*`, `/`, `**`\n  • `+` مع نص = دمج (concatenation)، مع رقم = جمع\n  • أوبريتورز تعيين: `=`, `+=`, `++`, إلخ\n  • أوبريتورز مقارنة: `>`, `<`, `>=`, `<=` ترجع boolean\n\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "ليه ده موجود؟ (\\en{Why",
+      "explanation": "[معلومة]\nالأوبريتورز أساس أي عملية في الكود. لو مش فاهم `+` بيجمع ولا بيدمج، هتتفاجأ بنتائج غلط. ولو مش واعي بأولوية التنفيذ، التعبيرات هتنفّذ بترتيب مش متوقّع.\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "النموذج الذهني (\\en{Mental Model",
+      "explanation": "[نصيحة]\nالتشبيه: الأوبريتورز زي أزرار على آلة حاسبة: كل واحد له وظيفة. `+` زر خاص --- لو لقى نص يضغط ``دمج''، لو رقم ``جمع''.\n\nالقاعدة: `+` مع أي نص = دمج. `-`, `*`, `/` دايماً بيحولوا لرقم ويحسبوا.\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "فخاخ شائعة + إزاي تكتشفها",
+      "explanation": "[تحذير]\nفخ 1: `\"5\" + 3` = `\"53\"` مش `8`\n  • العرض: توقّعت جمع وطلّع دمج\n  • السبب: `+` مع نص بيدمج\n  • الاختبار: `console.log(\"5\" + 3)`\n  • الحل: `Number(\"5\") + 3` أو `+\"5\" + 3`\n\nفخ 2: `x++` و `++x` مش نفس الحاجة\n  • العرض: الناتج مختلف في تعبير مركّب\n  • السبب: `x++` بيرجع القديم ثم يزيد، `++x` يزيد ثم بيرجع\n  • الاختبار: `let a=1; console.log(a++);` vs `let b=1; console.log(++b);`\n  • الحل: استخدم `x += 1` أو `x = x + 1` لو مش متأكد\n\nفخ 3: `2 + 3 * 4` = `14` مش `20`\n  • العرض: توقّعت إن التنفيذ من اليسار لليمين\n  • السبب: `*` أقوى من `+` في الأولوية\n  • الاختبار: `console.log(2 + 3 * 4)`\n  • الحل: استخدم أقواس: `(2 + 3) * 4` لو عايز `20`\n\n\\end{warningbox}",
+      "example": null
+    },
+    {
+      "name": "أسئلة سينيور يسألهالك",
+      "explanation": "[معلومة]\n\n  • ليه `\"10\" - \"5\"` بيرجّع `5`؟\n  • إيه الفرق بين `x++` و `++x`؟\n  • إزاي operator precedence بتأثّر على التعبيرات؟\n  • ليه `+` مختلف عن `-` و `*`؟\n  • إمتى تستخدم `+=` بدل `x = x + 1`؟\n\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "مشاكل واقعية",
+      "explanation": "مشكلة 1: تطبيق بيجمع أعمار أعضاء الفريق. الأعمار جاية من API كنصوص. الناتج `\"252830\"` بدل `83`.\n\nتفكير السينيور خطوة بخطوة:\n  • `+` مع نصوص بيدمج مش بيجمع\n  • أحوّل كل عمر لرقم قبل الجمع: `Number(age)` أو `+age`\n  • أو استخدم `parseInt` لو محتاج أجزاء صحيحة بس\n\nالحل: `ages.reduce((sum, a) => sum + Number(a), 0)`\n\\end{stepbox}\n\nمشكلة 2: شرط `if (score > 80)` مش شغال صح مع `score` جاي من `input.value`.\n\nتفكير السينيور خطوة بخطوة:\n  • `input.value` دايماً نص\n  • `\"90\" > \"80\"` بيقارن كنصوص فالناتج مش متوقّع\n  • أحوّل لرقم قبل المقارنة: `Number(score) > 80`\n\nالحل: `if (Number(score) > 80)` أو `if (+score > 80)`\n\\end{stepbox}\n\nمشكلة 3: `let x = 5; let y = x++ + 2;` --- `y` بيرجع `7` مش `8`.\n\nتفكير السينيور خطوة بخطوة:\n  • `x++` بيرجع القيمة القديمة (`5`) ثم يزيد `x`\n  • `5 + 2 = 7`. `x` بقى `6`\n  • لو عايز `8`: استخدم `++x` --- يزيد أولاً ثم يرجع `6`\n  • الأفضل: تجنّب `++` في تعبيرات مركّبة\n\nالحل: `let y = x + 2; x++;` أو فهم سلوك `x++` vs `++x`\n\\end{stepbox}",
+      "example": null
+    },
+    {
+      "name": "تمارين تطبيقية",
+      "explanation": "بدون ما تشغّل، إيه نتيجة `console.log(\"10\" - 3)`؟\n\\end{codebox}\n\n[نصيحة]\nالإجابة: `7` --- `-` بيحوّل النص لرقم ويعمل طرح.\n\\end{tipbox}\n\n\\subsection*{المستوى 2: أصلح الـ Bug}\n\nالمفروض يطبع مجموع `a` و `b`. ليه بيطلع `\"105\"`؟ \\\\\n`let a = \"10\", b = 5; console.log(a + b);`\n\\end{codebox}\n\n[نصيحة]\nالإجابة: `+` مع نص بيدمج. استخدم `Number(a) + b` أو `+a + b`\n\\end{tipbox}\n\nاكتب تعبير يحسب متوسط `n1`, `n2`, `n3` (تلات أرقام).\n\\end{codebox}\n\n[نصيحة]\nالإجابة: `(n1 + n2 + n3) / 3`\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "Checklist قبل ما تقول ``أنا فهمت''",
+      "explanation": "[معلومة]\nقبل ما تمشي للدرس الجاي، تأكد إنك:\n  • تقدر تتنبّأ بناتج `+` مع نص أو رقم\n  • تعرف الفرق بين `x++` و `++x`\n  • تعرف أولوية `*` قبل `+`\n  • تقدر تستخدم `+=`, `-=` بشكل صحيح\n  • تعرف إيه اللي بيرجع `true` أو `false` من المقارنات\n\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "الدرس اللي بعده",
+      "explanation": "[معلومة]\nالدرس الجاي (Type Conversion and Coercion) هيفسّر بالتفصيل إزاي JavaScript بتحوّل الأنواع تلقائياً، وليه `\"5\"+3` بيطلع `\"53\"`.\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "خاتمة",
+      "explanation": "[معلومة]\nملخص الدرس:\n\nفي الدرس ده اتعلمنا الأوبريتورز الأساسية في JavaScript:\n\n  • الأوبريتورز الحسابية (`+`، `-`، `*`، `/`، `**`) \\textenglish{--} بتعمل عمليات حسابية على الأرقام.\n  • أوبريتور `+` مع النصوص \\textenglish{--} بيلصق النصوص ببعض (Concatenation).\n  • أوبريتورز التعيين (`=`، `+=`، `-=`، `*=`، `/=`، `++`، `--`) \\textenglish{--} بتحط أو تعدّل القيم في المتغيرات.\n  • أوبريتورز المقارنة (`>`، `<`، `>=`، `<=`) \\textenglish{--} بتقارن قيمتين وبترجّع Boolean.\n  • مبدأ DRY \\textenglish{--} ما تكررش نفس القيمة، حطها في متغير.\n  • في سطر واحد ممكن يكون فيه أكتر من أوبريتور، وJavaScript بتعرف تنفّذهم بالترتيب الصح.\n\nالدرس الجاي: هنتعلم Operator Precedence \\textenglish{--} يعني إيه اللي بيخلّي JavaScript تعرف تنفّذ الأوبريتورز بالترتيب الصح لما يكون فيه أكتر من واحد في نفس السطر!\n\\end{infobox}\n\n\\end{document}",
+      "example": null
+    }
+  ],
+  "mcq": [
+    {
+      "question": "ما هو الناتج المتوقع من العملية التالية: '5' + 3 ؟",
+      "choices": [
+        "8",
+        "'53'",
+        "NaN",
+        "Error"
+      ],
+      "answer": "'53'"
+    },
+    {
+      "question": "أي من العبارات التالية يعادل الكود x += 5 ؟",
+      "choices": [
+        "x = x * 5",
+        "x = 5",
+        "x = x + 5",
+        "x = 5 + 5"
+      ],
+      "answer": "x = x + 5"
+    },
+    {
+      "question": "أي أوبريتور يُستخدم لحساب الأس (القوة) في JavaScript؟",
+      "choices": [
+        "^",
+        "**",
+        "*",
+        "%"
+      ],
+      "answer": "**"
+    },
+    {
+      "question": "ماذا سيكون ناتج المقارنة 18 >= 18 ؟",
+      "choices": [
+        "false",
+        "true",
+        "undefined",
+        "18"
+      ],
+      "answer": "true"
+    },
+    {
+      "question": "إذا كان let counter = 0; ثم نفذنا counter++; مرتين، ما هي قيمة counter النهائية؟",
+      "choices": [
+        "1",
+        "2",
+        "0",
+        "3"
+      ],
+      "answer": "2"
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "عرّف متغير a بـ 15 و b بـ 5، واحسب مجموعهم في متغير اسمه sum، ثم اطبع النتيجة.",
+      "html": "<!-- لا يوجد HTML مطلوب -->",
+      "solution": "const a = 15;\nconst b = 5;\nconst sum = a + b;\nconsole.log(sum);"
+    },
+    {
+      "task": "قم بإنشاء متغير let x = 10; ثم استخدم أوبريتور التعيين المختصر لضرب قيمة x في 4.",
+      "html": "<!-- لا يوجد HTML مطلوب -->",
+      "solution": "let x = 10;\nx *= 4;\nconsole.log(x);"
+    },
+    {
+      "task": "عرّف متغير age قيمته 20، ثم قم بإنشاء متغير isAdult يحمل نتيجة المقارنة: هل age أكبر من أو يساوي 18؟ واطبع isAdult.",
+      "html": "<!-- لا يوجد HTML مطلوب -->",
+      "solution": "const age = 20;\nconst isAdult = age >= 18;\nconsole.log(isAdult);"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "لحساب 2 أس 3 نستخدم الأوبريتور: 2 __________ 3;",
+      "answer": "**"
+    },
+    {
+      "question": "لإضافة 5 للمتغير x باستخدام طريقة مختصرة نكتب: x __________ 5;",
+      "answer": "+="
+    },
+    {
+      "question": "لزيادة قيمة المتغير y بمقدار 1 نستخدم: y__________;",
+      "answer": "++"
+    },
+    {
+      "question": "للتحقق مما إذا كان المتغير age أكبر من أو يساوي 21، نكتب: age __________ 21;",
+      "answer": ">="
+    },
+    {
+      "question": "لدمج كلمتين ببعض (Concatenation) في JavaScript نستخدم الأوبريتور: 'Hello' __________ 'World';",
+      "answer": "+"
+    }
+  ]
+}

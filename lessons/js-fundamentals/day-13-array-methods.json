@@ -1,0 +1,271 @@
+{
+  "title": "Basic Array Operations (Methods)",
+  "goal": "فهم واستخدام العمليات الأساسية على المصفوفات (Arrays) في JavaScript مثل الإضافة، والحذف، والبحث عن العناصر.",
+  "duration": "حوالي ساعتين",
+  "schedule": [
+    {
+      "time": "00:00",
+      "topic": "مقدمة عن الـ Array Methods"
+    },
+    {
+      "time": "00:30",
+      "topic": "ميثودز الإضافة: push و unshift"
+    },
+    {
+      "time": "01:00",
+      "topic": "ميثودز الحذف: pop و shift"
+    },
+    {
+      "time": "01:30",
+      "topic": "ميثودز البحث: indexOf و includes"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "مقدمة",
+      "objectives": [],
+      "details": "في الدرس اللي فات اتعلمنا إزاي نعرّف Arrays ونوصل لعناصرها باستخدام الـ Index. بس الـ Arrays في الحياة الحقيقية مش بتفضل ثابتة \\textenglish{--} بنضيف عليها، بنشيل منها، بندوّر جواها.\n\nJavaScript بتوفّرلنا مجموعة Methods (ميثودز) جاهزة نقدر نستخدمها مباشرة على أي Array من غير ما نكتبها من الصفر. الـ Methods دي هي في الأساس Functions بس مربوطة بالـ Array نفسه.\n\nفي الدرس ده هنتعلم 6 Methods أساسية: 2 للإضافة (`push` و`unshift`)، 2 للحذف (`pop` و`shift`)، و2 للبحث (`indexOf` و`includes`). دول أهم عمليات هتحتاجها وإنت بتتعامل مع الـ Arrays.",
+      "key_tools": [],
+      "practice": ""
+    }
+  ],
+  "lessons": [
+    {
+      "name": "إيه هي الـ \\en{Array Methods",
+      "explanation": "[معلومة]\nتعريف: الـ Array Methods هي Functions مدمجة في JavaScript بنقدر نستدعيها مباشرة على أي Array باستخدام النقطة (`.`). بنقدر نفكّر فيها كـ ``عمليات'' بنعملها على الـ Array.\n\\end{infobox}\n\n[نصيحة]\nتشبيه من الحياة \\textenglish{-- الريموت كنترول:}\n\nتخيّل إن الـ Array هو التليفزيون، والـ Methods هي أزرار الريموت:\n\n  • زرار ``إضافة قناة'' $\\Rightarrow$ `push()` أو `unshift()`\n  • زرار ``حذف قناة'' $\\Rightarrow$ `pop()` أو `shift()`\n  • زرار ``بحث عن قناة'' $\\Rightarrow$ `indexOf()` أو `includes()`\n\nكل زرار بيعمل عملية معيّنة على التليفزيون (الـ Array) من غير ما تفتحه من جوه!\n\\end{tipbox}\n\n### طريقة استدعاء الـ Method\n\n[معلومة]\nتشريح الصيغة:\n\n\\textbf{الجزء & معناه \\\\\n`arrayName` & اسم الـ Array اللي عايز تعمل عليه العملية \\\\\n`.` & النقطة اللي بتربط الـ Array بالـ Method \\\\\n`methodName` & اسم العملية (زي `push`، `pop`...) \\\\\n`(arguments)` & القيم اللي بتمرّرها للـ Method (لو محتاجة) \\\\\n\\end{tabular}\n\\end{center}\n\\end{infobox}\n\n[تحذير]\nخد بالك: الـ Method هي في الأساس Function \\textenglish{--} يعني بتاخد Arguments وممكن ترجّع قيمة (Return Value). الفرق إنها مربوطة بالـ Array مش مستقلة.\n\\end{warningbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \narrayName.methodName(arguments);"
+      }
+    },
+    {
+      "name": "ميثودز الإضافة \\textenglish{--",
+      "explanation": "[نصيحة]\nتشبيه من الحياة \\textenglish{-- طابور الناس:}\n\nتخيّل طابور فيه 3 أشخاص:\n\n  • `push()` $\\Rightarrow$ شخص جديد بيقف في آخر الطابور.\n  • `unshift()` $\\Rightarrow$ شخص جديد بيتقدّم ويقف في أول الطابور.\n\n\\end{tipbox}\n\n### push()\n\n[معلومة]\nتعريف:\n\n  • \\textbf{الوظيفة: بتضيف عنصر (أو أكتر) في نهاية الـ Array.\n  • بتغيّر الأصلي؟ أيوه \\textenglish{--} بتعدّل على الـ Array الأصلي (Mutates).\n  • بترجّع إيه؟ طول الـ Array الجديد بعد الإضافة.\n\n\\end{infobox}\n\n[معلومة]\nتشريح الكود:\n\nالجزء & معناه \\\\\n`friends.push('Jay')` & ضيف النص `'Jay'` في آخر الـ Array \\\\\n`const newLength = ...` & احفظ القيمة اللي الـ Method رجّعتها \\\\\nالقيمة الراجعة & `4` \\textenglish{--} طول الـ Array الجديد \\\\\n\\end{tabular}\n\\end{center}\n\\end{infobox}\n\n[نصيحة]\nنصيحة: في أغلب الأوقات مش هتحتاج تحفظ الـ Return Value بتاع `push()`. بتستدعيها وخلاص:\n\n\\end{tipbox}\n\n### unshift()\n\n[معلومة]\nتعريف:\n\n  • \\textbf{الوظيفة: بتضيف عنصر (أو أكتر) في بداية الـ Array.\n  • بتغيّر الأصلي؟ أيوه \\textenglish{--} بتعدّل على الـ Array الأصلي (Mutates).\n  • بترجّع إيه؟ طول الـ Array الجديد بعد الإضافة.\n\n\\end{infobox}\n\n### مقارنة push()\n\n\\en{push() \\textenglish{-- بتضيف في الآخر:}\n\n\\end{comparebox}\n\nunshift() \\textenglish{-- بتضيف في الأول:}\n\n\\end{comparebox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const arr = ['A', 'B', 'C'];\narr.unshift('Z');\nconsole.log(arr);\n// "
+      }
+    },
+    {
+      "name": "ميثودز الحذف \\textenglish{--",
+      "explanation": "[نصيحة]\nتشبيه من الحياة \\textenglish{-- الطابور تاني:}\n\n  • `pop()` $\\Rightarrow$ آخر شخص في الطابور بيمشي.\n  • `shift()` $\\Rightarrow$ أول شخص في الطابور بيمشي (الباقي بيتقدّموا خطوة).\n\n\\end{tipbox}\n\n### pop()\n\n[معلومة]\nتعريف:\n\n  • \\textbf{الوظيفة: بتشيل آخر عنصر من الـ Array.\n  • بتاخد Arguments؟ لأ \\textenglish{--} مش محتاجة أي حاجة.\n  • بتغيّر الأصلي؟ أيوه.\n  • بترجّع إيه؟ العنصر اللي اتشال.\n\n\\end{infobox}\n\n[تحذير]\nخد بالك: `pop()` بترجّع العنصر اللي اتشال (مش الطول). ده بيختلف عن `push()` اللي بترجّع الطول!\n\\end{warningbox}\n\n### shift()\n\n[معلومة]\nتعريف:\n\n  • \\textbf{الوظيفة: بتشيل أول عنصر من الـ Array.\n  • بتاخد Arguments؟ لأ.\n  • بتغيّر الأصلي؟ أيوه.\n  • بترجّع إيه؟ العنصر اللي اتشال.\n\n\\end{infobox}\n\n### مقارنة pop()\n\n\\en{pop() \\textenglish{-- بتشيل من الآخر:}\n\n\\end{comparebox}\n\nshift() \\textenglish{-- بتشيل من الأول:}\n\n\\end{comparebox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const arr = ['A', 'B', 'C'];\nconst removed = arr.shift();\nconsole.log(removed);\nconsole.log(arr);"
+      }
+    },
+    {
+      "name": "ملخص الإضافة والحذف \\textenglish{--",
+      "explanation": "الـ 4 ميثودز على الـ Array:\n\n         unshift()                    push()\n        adds to                     adds to\n        BEGINNING                      END\n            |                           |\n            v                           v\n      +---+---+---+---+---+---+---+---+\n      |   | A | B | C | D | E | F |   |\n      +---+---+---+---+---+---+---+---+\n            ^                           ^\n            |                           |\n         shift()                      pop()\n       removes from                removes from\n        BEGINNING                      END\n\\end{verbatim}\n\nالـ Method & الفعل & المكان & بترجّع إيه \\\\\n`push()` & إضافة & الآخر & طول الـ Array الجديد \\\\\n`unshift()` & إضافة & الأول & طول الـ Array الجديد \\\\\n`pop()` & حذف & الآخر & العنصر اللي اتشال \\\\\n`shift()` & حذف & الأول & العنصر اللي اتشال \\\\\n\\end{tabular}\n\\end{center}\n\\end{codebox}\n\n[نصيحة]\nطريقة سهلة للحفظ:\n\n  • push / pop \\textenglish{--} بيشتغلوا على الآخر (زي كومة أطباق \\textenglish{--} بتحط فوق وبتشيل من فوق).\n  • unshift / shift \\textenglish{--} بيشتغلوا على الأول (shift = بتزحلق العناصر مكان، unshift = العكس).\n\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "ميثودز البحث \\textenglish{--",
+      "explanation": "[نصيحة]\nتشبيه من الحياة \\textenglish{-- دليل التليفونات:}\n\n  • `indexOf()` $\\Rightarrow$ ``الاسم ده في صفحة رقم كام؟'' (بيرجّع رقم الصفحة).\n  • `includes()` $\\Rightarrow$ ``الاسم ده موجود في الدليل ولّا لأ؟'' (بيرجّع أيوه أو لأ).\n\n\\end{tipbox}\n\n### indexOf()\n\n[معلومة]\nتعريف:\n\n  • \\textbf{الوظيفة: بترجّع الـ Index (المكان) بتاع أول ظهور للعنصر في الـ Array.\n  • لو العنصر مش موجود: بترجّع `-1`.\n  • بتغيّر الأصلي؟ لأ \\textenglish{--} بتقرأ بس.\n\n\\end{infobox}\n\n[معلومة]\nتشريح النتيجة:\n\nالبحث عن & النتيجة & السبب \\\\\n`'Steven'` & `1` & موجود في الـ Index رقم 1 \\\\\n`'Bob'` & `-1` & مش موجود في الـ Array خالص \\\\\n\\end{tabular}\n\\end{center}\n\\end{infobox}\n\n### includes()\n\n[معلومة]\nتعريف:\n\n  • \\textbf{الوظيفة: بتفحص لو العنصر موجود في الـ Array ولّا لأ.\n  • بترجّع إيه: `true` لو موجود، `false` لو مش موجود.\n  • بتغيّر الأصلي؟ لأ.\n  • بتستخدم إيه للمقارنة: Strict Equality (`===`).\n\n\\end{infobox}\n\n### includes()\n\nخطأ شائع:\n\n`includes()` بتستخدم Strict Equality (`===`) \\textenglish{-- يعني `'23'` (نص) مش نفس `23` (رقم)! ما بتعملش Type Coercion.\n\nلو ضفت رقم في الـ Array ودوّرت عليه كنص، هتحصل على `false`!\n\\end{errorbox}\n\n### مقارنة indexOf()\n\n\\en{indexOf() \\textenglish{-- بترجّع رقم:}\n\n\\end{comparebox}\n\nincludes() \\textenglish{-- بترجّع Boolean:}\n\n\\end{comparebox}\n\n[نصيحة]\nإمتى تستخدم مين؟\n\n  • `indexOf()` \\textenglish{--} لما محتاج تعرف مكان العنصر (رقم الـ Index).\n  • `includes()` \\textenglish{--} لما بس عايز تعرف موجود ولّا لأ (للاستخدام في `if`).\n\n\\end{tipbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const arr = ['A', 'B', 'C'];\nconsole.log(arr.includes('B'));  // true\nconsole.log(arr.includes('Z')); // false"
+      }
+    },
+    {
+      "name": "استخدام \\en{includes()",
+      "explanation": "[معلومة]\nالفكرة: بما إن `includes()` بترجّع Boolean (`true` أو `false`)، تقدر تستخدمها مباشرة كشرط في جملة `if`!\n\\end{infobox}\n\n[نصيحة]\nده من أكتر الاستخدامات شيوعاً لـ `includes()` \\textenglish{--} إنك تفحص لو حاجة موجودة في Array وتاخد قرار بناءً على كده!\n\\end{tipbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst friends = ['Michael', 'Steven', 'Peter'];\n\nif (friends.includes('Bob')) {\n  console.log('You have a friend called Bob');\n} else {\n  console.log('Bob is not in your friends list');\n}"
+      }
+    },
+    {
+      "name": "تتبع تنفيذ الكود خطوة بخطوة",
+      "explanation": "تعالى ناخد الكود الرئيسي من الفيديو ونتتبعه خطوة بخطوة:\n\nالخطوة 1: إنشاء الـ Array\n\n`const friends = ['Michael', 'Steven', 'Peter'];`\n\nIndex 0 & Index 1 & Index 2 \\\\\n`'Michael'` & `'Steven'` & `'Peter'` \\\\\n\\end{tabular}\n\\end{center}\n\nالطول: 3\n\\end{stepbox}\n\nالخطوة 2: `friends.push('Jay')`\n\nبتضيف `'Jay'` في الآخر.\n\nIndex 0 & Index 1 & Index 2 & Index 3 \\\\\n`'Michael'` & `'Steven'` & `'Peter'` & `'Jay'` \\\\\n\\end{tabular}\n\\end{center}\n\nالطول: 4. الـ Return Value: `4` (بس مش محفوظ في متغير).\n\\end{stepbox}\n\nالخطوة 3: `friends.unshift('John')`\n\nبتضيف `'John'` في الأول. كل العناصر بتتزحلق مكان لليمين.\n\nIndex 0 & Index 1 & Index 2 & Index 3 & Index 4 \\\\\n`'John'` & `'Michael'` & `'Steven'` & `'Peter'` & `'Jay'` \\\\\n\\end{tabular}\n\\end{center}\n\nالطول: 5\n\\end{stepbox}\n\nالخطوة 4: `friends.pop()` \\textenglish{-- المرة الأولى}\n\nبتشيل آخر عنصر (`'Jay'`).\n\nIndex 0 & Index 1 & Index 2 & Index 3 \\\\\n`'John'` & `'Michael'` & `'Steven'` & `'Peter'` \\\\\n\\end{tabular}\n\\end{center}\n\nالـ Return Value: `'Jay'` (العنصر المشال). الطول: 4\n\\end{stepbox}\n\nالخطوة 5: `friends.pop()` \\textenglish{-- المرة التانية}\n\nبتشيل آخر عنصر (`'Peter'`).\n\nIndex 0 & Index 1 & Index 2 \\\\\n`'John'` & `'Michael'` & `'Steven'` \\\\\n\\end{tabular}\n\\end{center}\n\nالـ Return Value: `'Peter'`. الطول: 3\n\\end{stepbox}\n\nالخطوة 6: `friends.shift()`\n\nبتشيل أول عنصر (`'John'`).\n\nIndex 0 & Index 1 \\\\\n`'Michael'` & `'Steven'` \\\\\n\\end{tabular}\n\\end{center}\n\nالـ Return Value: `'John'`. الطول: 2\n\\end{stepbox}\n\nالخطوة 7: عمليات البحث\n\n`friends.indexOf('Steven')` $\\Rightarrow$ بتدوّر على `'Steven'` $\\Rightarrow$ لقيتها في Index `1`\n\n`friends.includes('Steven')` $\\Rightarrow$ `'Steven'` موجود؟ $\\Rightarrow$ `true`\n\n`friends.includes('Bob')` $\\Rightarrow$ `'Bob'` موجود؟ $\\Rightarrow$ `false`\n\\end{stepbox}\n\nالناتج الكامل:",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const friends = ['Michael', 'Steven', 'Peter'];\n\n// \nfriends.push('Jay');\nfriends.unshift('John');\n\n// \nfriends.pop();\nfriends.pop();\nfriends.shift();\n\n// \nconsole.log(friends.indexOf('Steven'));\nconsole.log(friends.includes('Steven'));\nconsole.log(friends.includes('Bob'));"
+      }
+    },
+    {
+      "name": "المثال الكامل من الفيديو",
+      "explanation": "",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const friends = ['Michael', 'Steven', 'Peter'];\n\n// \nconst newLength = friends.push('Jay');\nconsole.log(friends);\nconsole.log(newLength);\n\nfriends.unshift('John');\nconsole.log(friends);\n\n// \nfriends.pop(); // \nconst popped = friends.pop(); // \nconsole.log(popped);\nconsole.log(friends);\n\nfriends.shift(); // \nconsole.log(friends);\n\n// \nconsole.log(friends.indexOf('Steven'));\nconsole.log(friends.indexOf('Bob'));\n\nconsole.log(friends.includes('Steven'));\nconsole.log(friends.includes('Bob'));\n\n// \nfriends.push(23);\nconsole.log(friends.includes('23'));\nconsole.log(friends.includes(23));\n\n// \nif (friends.includes('Steven')) {\n  console.log('You have a friend called Steven');\n}"
+      }
+    },
+    {
+      "name": "أمثلة إضافية متنوعة",
+      "explanation": "### مثال 1: قائمة مهام To-Do List\n\n### مثال 2: نظام صلاحيات بسيط\n\n### مثال 3: إزالة عنصر من الأول والآخر\n\n### مثال 4: إضافة عناصر متعددة مع تتبع الطول\n\n### مثال 5: \\en{indexOf()\n\n[نصيحة]\nلاحظ: استخدمنا `position + 1` لأن الـ Index بيبدأ من 0 بس الترتيب البشري بيبدأ من 1.\n\nوكمان استخدمنا `position !== -1` بدل `includes()` لأننا محتاجين \\textbf{المكان مش بس نعرف لو موجود.\n\\end{tipbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst winners = ['Ali', 'Sara', 'Omar', 'Mona', 'Hassan'];\n\nconst playerName = 'Omar';\nconst position = winners.indexOf(playerName);\n\nif (position !== -1) {\n  console.log(`${playerName} finished in position ${position + 1}`);\n} else {\n  console.log(`${playerName} did not participate`);\n}\n\nconst unknownPlayer = 'Khaled';\nconst pos2 = winners.indexOf(unknownPlayer);\n\nif (pos2 !== -1) {\n  console.log(`${unknownPlayer} finished in position ${pos2 + 1}`);\n} else {\n  console.log(`${unknownPlayer} did not participate`);\n}"
+      }
+    },
+    {
+      "name": "خد بالك \\textenglish{--",
+      "explanation": "الخطأ الشائع & الحل الصح \\\\\n\\endhead\nالخلط بين `push()` و`unshift()` & `push` = الآخر، `unshift` = الأول \\\\\nالخلط بين `pop()` و`shift()` & `pop` = الآخر، `shift` = الأول \\\\\nتوقع إن `pop()` بترجّع الطول & `pop()` بترجّع العنصر المشال مش الطول \\\\\nتوقع إن `push()` بترجّع الـ Array & `push()` بترجّع الطول الجديد مش الـ Array \\\\\nاستخدام `includes('23')` للبحث عن الرقم `23` & `includes()` بتستخدم `===` \\textenglish{--} لازم النوع يكون نفسه \\\\\nكتابة `unshift` بدل `shift` للحذف & `unshift` = إضافة، `shift` = حذف \\\\\nنسيان إن `indexOf()` بترجّع `-1` & لو العنصر مش موجود النتيجة `-1` مش `0` \\\\\nتمرير Argument لـ `pop()` أو `shift()` & مش محتاجين Arguments \\textenglish{--} بيشيلوا عنصر واحد بس \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "ملخص سريع",
+      "explanation": "المفهوم & الشرح باختصار \\\\\n\\endhead\nArray Methods & Functions مدمجة بنستدعيها على الـ Array بالنقطة \\\\\n`push(element)` & إضافة في الآخر \\textenglish{--} بترجّع الطول الجديد \\\\\n`unshift(element)` & إضافة في الأول \\textenglish{--} بترجّع الطول الجديد \\\\\n`pop()` & حذف من الآخر \\textenglish{--} بترجّع العنصر المشال \\\\\n`shift()` & حذف من الأول \\textenglish{--} بترجّع العنصر المشال \\\\\n`indexOf(element)` & بترجّع مكان العنصر (أو `-1`) \\\\\n`includes(element)` & بترجّع `true` أو `false` \\\\\nStrict Equality في `includes()` & بتقارن بـ `===` بدون تحويل أنواع \\\\\n`includes()` مع `if` & استخدام شائع لاتخاذ قرارات \\\\\nMutate & الميثود بتغيّر الـ Array الأصلي \\\\\nReturn Value & كل ميثود بترجّع حاجة مختلفة \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "\\en{Cheat Sheet",
+      "explanation": "[معلومة]\nمرجع سريع لـ Array Methods الأساسية:\n\n1. ميثودز الإضافة:\n\nالميثود & المكان & بترجّع \\\\\n`arr.push(el)` & الآخر & الطول الجديد \\\\\n`arr.unshift(el)` & الأول & الطول الجديد \\\\\n\\end{tabular}\n\\end{center}\n\n2. ميثودز الحذف:\n\nالميثود & المكان & بترجّع \\\\\n`arr.pop()` & الآخر & العنصر المشال \\\\\n`arr.shift()` & الأول & العنصر المشال \\\\\n\\end{tabular}\n\\end{center}\n\n3. ميثودز البحث:\n\nالميثود & بترجّع & لو مش موجود \\\\\n`arr.indexOf(el)` & Index (رقم) & `-1` \\\\\n`arr.includes(el)` & Boolean & `false` \\\\\n\\end{tabular}\n\\end{center}\n\\end{infobox}\n\nالأشكال العامة:",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \narr.push(element);      // \narr.unshift(element);   // \n\n// \nconst last = arr.pop();     // \nconst first = arr.shift();  // \n\n// \nconst idx = arr.indexOf(element);  // \nconst has = arr.includes(element); // true / false\n\n// \nif (arr.includes(element)) {\n  // \n}"
+      }
+    },
+    {
+      "name": "الفكرة في سطرين (\\en{TL;DR",
+      "explanation": "[نصيحة]\n  • إضافة: `push` آخر، `unshift` أول\n  • حذف: `pop` آخر، `shift` أول\n  • بحث: `indexOf` يرجع رقم أو `-1`، `includes` يرجع `true`/`false`\n  • `push` و `unshift` يرجعوا الطول الجديد\n\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "ليه ده موجود؟ (\\en{Why",
+      "explanation": "[معلومة]\nبدون `push`/`pop` هتعدّل المصفوفة يدوياً بطرق معقّدة. الـ methods دي بتغطي أغلب العمليات اليومية على القوائم.\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "النموذج الذهني (\\en{Mental Model",
+      "explanation": "[نصيحة]\nالتشبيه: المصفوفة زي طابور. `push` = حد واقف آخر الطابور، `pop` = آخر واحد يمشي. `unshift`/`shift` = الأول.\n\nالقاعدة: `indexOf` يرجع `-1` لو مش موجود. `includes` أوضح للشروط.\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "فخاخ شائعة + إزاي تكتشفها",
+      "explanation": "[تحذير]\nفخ 1: `includes` بتحسب النوع\n  • العرض: `[1,2,3].includes(\"1\")` = `false`\n  • السبب: `includes` بتستخدم `===`\n  • الحل: حوّل للنوع الصحيح أو اعرف الفرق\n\nفخ 2: `indexOf` مع `NaN`\n  • العرض: `[NaN].indexOf(NaN)` = `-1`\n  • السبب: `NaN !== NaN`\n  • الحل: `arr.some(x => Number.isNaN(x))` للتحقق من `NaN`\n\nفخ 3: `push` بيعمل mutation\n  • العرض: المصفوفة الأصلية بتتغيّر\n  • السبب: `push` بتعدّل in place\n  • الحل: `[...arr, el]` لو عايز مصفوفة جديدة\n\n\\end{warningbox}",
+      "example": null
+    },
+    {
+      "name": "أسئلة سينيور يسألهالك",
+      "explanation": "[معلومة]\n\n  • ليه `indexOf` بيرجع `-1` مش `undefined`؟\n  • إيه الفرق بين `indexOf` و `includes`؟\n  • ليه `push` بيرجع الطول مش المصفوفة؟\n  • إزاي تضيف لعناصر بدون mutation؟\n  • ليه `[NaN].indexOf(NaN)` = `-1`؟\n\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "مشاكل واقعية",
+      "explanation": "مشكلة 1: كود بيضيف عنصر للمصفوفة بـ `items.push(newItem)`. الـ `items` الأصلية اتعدّلت ومش عايز كده.\n\nتفكير السينيور خطوة بخطوة:\n  • `push` بيعمل mutation\n  • لو عايز مصفوفة جديدة: `const updated = [...items, newItem]`\n  • أو `items.slice().push(newItem)` مش هيشتغل صح --- `push` بيرجع رقم\n  • الحل: `const updated = [...items]; updated.push(newItem);`\n\nالحل: استخدام `[...items, newItem]`\n\\end{stepbox}\n\nمشكلة 2: `if (arr.indexOf(x) >= 0)` --- الكود بيستخدم `indexOf` في شروط كتير.\n\nتفكير السينيور خطوة بخطوة:\n  • `includes` أوضح وأقصر للتحقق من الوجود\n  • `arr.includes(x)` يعيد `true`/`false` مباشرة\n  • أسهل في القراءة من `indexOf(x) !== -1`\n\nالحل: `if (arr.includes(x))`\n\\end{stepbox}\n\nمشكلة 3: `const i = arr.indexOf(NaN)` --- `i` دايماً `-1` حتى لو المصفوفة فيها `NaN`.\n\nتفكير السينيور خطوة بخطوة:\n  • `NaN !== NaN` في JS\n  • `indexOf` بتستخدم `===`\n  • استخدم `arr.findIndex(x => Number.isNaN(x))`\n\nالحل: `arr.findIndex(x => Number.isNaN(x))`\n\\end{stepbox}",
+      "example": null
+    },
+    {
+      "name": "تمارين تطبيقية",
+      "explanation": "بدون ما تشغّل، إيه `[1,2,3].push(4)`؟\n\\end{codebox}\n\n[نصيحة]\nالإجابة: `4` --- `push` بيرجع الطول الجديد.\n\\end{tipbox}\n\n\\subsection*{المستوى 2: أصلح الـ Bug}\n\n`const arr = [1,2]; const x = arr.push(3);` --- المبرمج توقّع إن `x` هيبقى المصفوفة الجديدة.\n\\end{codebox}\n\n[نصيحة]\nالإجابة: `push` بيرجع الطول مش المصفوفة. المصفوفة بتتعدّل. لو عايز المصفوفة: `arr` نفسه، أو `[...arr, 3]`\n\\end{tipbox}\n\nاكتب تعبير يرجع `true` لو المصفوفة فيها العنصر `el`، `false` لو لأ.\n\\end{codebox}\n\n[نصيحة]\nالإجابة: `arr.includes(el)`\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "Checklist قبل ما تقول ``أنا فهمت''",
+      "explanation": "[معلومة]\nقبل ما تمشي للدرس الجاي، تأكد إنك:\n  • تعرف `push`, `pop`, `shift`, `unshift`\n  • تعرف إيه اللي بيرجع كل واحد\n  • تعرف الفرق بين `indexOf` و `includes`\n  • تعرف إن `push` بيعمل mutation\n  • تقدر تضيف عناصر بدون تعديل الأصلية\n\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "الدرس اللي بعده",
+      "explanation": "[معلومة]\nالدرس الجاي غالباً (Array Methods متقدمة مثل `map`, `filter`, `reduce`) --- دي هتستخدم الـ methods الأساسية كأساس.\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "معجم المصطلحات",
+      "explanation": "المصطلح & النطق بالعربي & المعنى \\\\\n\\endhead\nMethod & ميثود & Function مربوطة بـ Object أو Array \\\\\npush &",
+      "example": null
+    }
+  ],
+  "mcq": [
+    {
+      "question": "أي من الميثودز التالية تستخدم لإضافة عنصر في بداية المصفوفة؟",
+      "choices": [
+        "push()",
+        "pop()",
+        "unshift()",
+        "shift()"
+      ],
+      "answer": "unshift()"
+    },
+    {
+      "question": "ما هي القيمة التي ترجعها ميثود `push()`؟",
+      "choices": [
+        "العنصر الذي تم إضافته",
+        "طول المصفوفة الجديد",
+        "المصفوفة بعد التعديل",
+        "undefined"
+      ],
+      "answer": "طول المصفوفة الجديد"
+    },
+    {
+      "question": "ماذا ترجع ميثود `indexOf('X')` إذا لم يكن العنصر موجوداً في المصفوفة؟",
+      "choices": [
+        "0",
+        "false",
+        "undefined",
+        "-1"
+      ],
+      "answer": "-1"
+    },
+    {
+      "question": "أي ميثود تستخدم لحذف آخر عنصر من المصفوفة؟",
+      "choices": [
+        "pop()",
+        "shift()",
+        "delete()",
+        "remove()"
+      ],
+      "answer": "pop()"
+    },
+    {
+      "question": "ما هو ناتج تنفيذ الكود: `[1, 2, 3].includes('2')`؟",
+      "choices": [
+        "true",
+        "false",
+        "1",
+        "undefined"
+      ],
+      "answer": "false"
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "قم بإضافة كلمة 'Banana' إلى نهاية المصفوفة 'fruits'.",
+      "html": "<script></script>",
+      "solution": "const fruits = ['Apple', 'Orange'];\nfruits.push('Banana');"
+    },
+    {
+      "task": "قم بحذف العنصر الأول من المصفوفة 'queue' واحفظه في متغير باسم 'first'.",
+      "html": "<script></script>",
+      "solution": "const queue = ['Alice', 'Bob', 'Charlie'];\nconst first = queue.shift();"
+    },
+    {
+      "task": "اكتب شرط if يتحقق إذا كانت المصفوفة 'allowedRoles' تحتوي على 'admin' باستخدام includes، وقم بطباعة 'Access granted!' إذا كان موجوداً.",
+      "html": "<script></script>",
+      "solution": "const allowedRoles = ['editor', 'moderator', 'admin'];\nif (allowedRoles.includes('admin')) {\n  console.log('Access granted!');\n}"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "لإضافة عنصر في نهاية المصفوفة arr نكتب `arr.__________('Item');`",
+      "answer": "push"
+    },
+    {
+      "question": "لحذف العنصر الأول من المصفوفة arr نكتب `arr.__________();`",
+      "answer": "shift"
+    },
+    {
+      "question": "للبحث عن ما إذا كان العنصر موجوداً كقيمة بوليانية نكتب `arr.__________('Item');`",
+      "answer": "includes"
+    },
+    {
+      "question": "للحصول على ترتيب العنصر 'Item' داخل المصفوفة نكتب `arr.__________('Item');`",
+      "answer": "indexOf"
+    },
+    {
+      "question": "لإضافة عنصر في بداية المصفوفة arr نكتب `arr.__________('Item');`",
+      "answer": "unshift"
+    }
+  ]
+}

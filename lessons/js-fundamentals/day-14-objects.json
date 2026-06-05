@@ -1,0 +1,268 @@
+{
+  "title": "مقدمة عن الكائنات (Introduction to Objects)",
+  "goal": "فهم ما هي الكائنات (Objects) في جافا سكريبت وكيفية إنشائها باستخدام Object Literal Syntax لتخزين البيانات المنظمة كأسماء وقيم (Key-Value Pairs).",
+  "duration": "حوالي ساعتين",
+  "schedule": [
+    {
+      "time": "0:00 - 0:15",
+      "topic": "مقدمة والمشكلة مع المصفوفات (Arrays)"
+    },
+    {
+      "time": "0:15 - 0:45",
+      "topic": "ما هو الـ Object وكيفية إنشائه"
+    },
+    {
+      "time": "0:45 - 1:15",
+      "topic": "الفرق بين Objects و Arrays وأنواع القيم"
+    },
+    {
+      "time": "1:15 - 2:00",
+      "topic": "تتبع الكود، الأخطاء الشائعة والتمارين العملية"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "مقدمة",
+      "objectives": [],
+      "details": "في الدروس اللي فاتت اتعلمنا الـ Arrays \\textenglish{--} وهي طريقة ممتازة لتخزين مجموعة قيم مرتبطة ببعض. بس الـ Arrays عندها مشكلة: مفيش أسماء!\n\nتخيّل إنك عندك درج فيه 5 حاجات: اسم، لقب، عمر، وظيفة، وأصحاب. في الـ Array أنت بتقول ``الحاجة رقم 0'' و``الحاجة رقم 3'' \\textenglish{--} بس مش بتقدر تقول ``الاسم'' أو ``الوظيفة'' مباشرة.\n\nالـ Objects بتحل المشكلة دي! بدل ما تحط القيم في ترتيب ورقم، بتديها أسماء. يعني بدل ``العنصر رقم 0'' بتقول ``الـ firstName''. وده بيخلّي الكود أسهل في القراية والفهم.\n\nالـ Objects هي من أهم المفاهيم في JavaScript على الإطلاق، وفي الدرس ده هنتعلم أبسط طريقة لإنشائها.",
+      "key_tools": [],
+      "practice": ""
+    }
+  ],
+  "lessons": [
+    {
+      "name": "المشكلة \\textenglish{--",
+      "explanation": "[نصيحة]\nتشبيه من الحياة \\textenglish{-- بطاقة الهوية:}\n\nتخيّل إنك رحت مصلحة حكومية وقالولك ``هات بياناتك'':\n\n  • الـ Array = ورقة مكتوب فيها: ``أحمد، محمد، 25، مهندس، القاهرة''. مين يعرف إيه هو الاسم وإيه العمر وإيه المدينة؟ لازم تعد!\n  • الـ Object = بطاقة هوية مكتوب فيها: ``الاسم: أحمد، اللقب: محمد، العمر: 25، الوظيفة: مهندس، المدينة: القاهرة''. كل حاجة واضحة!\n\n\\end{tipbox}\n\n### الـ Array\n\n[تحذير]\nالمشكلة:\n\n  • `jonasArray[0]` \\textenglish{-- إيه ده؟ الاسم؟ اللقب؟ مش واضح!\n  • `jonasArray[3]` \\textenglish{--} لازم تعد من الأول علشان تعرف إن دي الوظيفة.\n  • لو حد تاني قرأ الكود مش هيفهم إيه في كل Index.\n  • لو غيّرت الترتيب، كل الأرقام هتبوظ!\n\n\\end{warningbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst jonasArray = [\n  'Jonas',\n  'Schmedtmann',\n  2037 - 1991,\n  'teacher',\n  ['Michael', 'Peter', 'Steven']\n];\n\n// \nconsole.log(jonasArray[0]); // \nconsole.log(jonasArray[3]); // "
+      }
+    },
+    {
+      "name": "إيه هو الـ \\en{Object",
+      "explanation": "[معلومة]\nتعريف: الـ Object هو Data Structure بنخزّن فيه بيانات على شكل أزواج مفتاح-قيمة (Key-Value Pairs). كل مفتاح (Key) هو اسم، وكل قيمة (Value) ممكن تكون أي نوع بيانات.\n\nكل Key في الـ Object اسمه Property.\n\\end{infobox}\n\n[نصيحة]\nتشبيه من الحياة \\textenglish{-- الملف الشخصي:}\n\nالـ Object زي الملف الشخصي بتاعك على Facebook أو LinkedIn:\n\n  • الاسم: أحمد $\\Rightarrow$ Key: `firstName`، Value: `'Ahmed'`\n  • العمر: 25 $\\Rightarrow$ Key: `age`، Value: `25`\n  • الوظيفة: مهندس $\\Rightarrow$ Key: `job`، Value: `'Engineer'`\n\nكل معلومة ليها اسم (الـ Key) وقيمة (الـ Value). مش محتاج تعد ولا تفتكر ترتيب!\n\\end{tipbox}\n\n### مكونات الـ Object\n\nتشريح الـ \\en{Object:\n\n\\end{codebox}\n\nالمصطلح & المعنى & مثال \\\\\n\\endhead\nObject & الكائن \\textenglish{--} الحاوية الكبيرة & `jonas` \\\\\nKey & المفتاح \\textenglish{--} اسم البيان & `firstName` \\\\\nValue & القيمة \\textenglish{--} محتوى البيان & `'Jonas'` \\\\\nProperty & الخاصية = Key + Value & `firstName: 'Jonas'` \\\\\nKey-Value Pair & زوج مفتاح-قيمة & `age: 46` \\\\\n\\end{longtable}\n\\end{center}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "  const jonas = {\n    firstName: 'Jonas',       \n    lastName: 'Schmedtmann',  \n    age: 46,                  \n    job: 'teacher',           \n    friends: ['Michael', 'Peter', 'Steven']  \n  };\n\n  |           |         |\n  |           |         +-- Value \n  |           +------------ : \n  +------------------------ Key "
+      }
+    },
+    {
+      "name": "إنشاء \\en{Object",
+      "explanation": "[معلومة]\nتعريف: الـ Object Literal Syntax هي أبسط طريقة لإنشاء Object في JavaScript. بنكتب الـ Object مباشرة في الكود باستخدام الأقواس المعقوفة `\\{ \\`}.\n\nاسمها Literal لأننا بنكتب محتوى الـ Object حرفياً في الكود.\n\\end{infobox}\n\n### الصيغة العامة\n\n[تحذير]\nخد بالك من الفرق بين الأقواس:\n\nالرمز & الاسم & الاستخدام \\\\\n`[ ]` & Square Brackets & تعريف Array \\\\\n`\\{ \\`} & Curly Braces & تعريف Object (أو Code Block) \\\\\n`( )` & Parentheses & استدعاء Function أو شرط `if` \\\\\n\\end{tabular}\n\\end{center}\n\\end{warningbox}\n\n### المثال الأساسي من الفيديو\n\n[معلومة]\nتشريح الكود:\n\nالـ Key & الـ Value & النوع \\\\\n`firstName` & `'Jonas'` & String \\\\\n`lastName` & `'Schmedtmann'` & String \\\\\n`age` & `2037 - 1991` = `46` & Number (Expression) \\\\\n`job` & `'teacher'` & String \\\\\n`friends` & `['Michael', 'Peter', 'Steven']` & Array \\\\\n\\end{tabular}\n\\end{center}\n\nلاحظ إن:\n  • القيمة ممكن تكون أي نوع بيانات!\n  • `age` فيها Expression (`2037 - 1991`) مش قيمة ثابتة بس.\n  • `friends` فيها Array كاملة كقيمة!\n  • الـ Properties مفصولة بفواصل (زي عناصر الـ Array).\n\n\\end{infobox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst jonas = {\n  firstName: 'Jonas',\n  lastName: 'Schmedtmann',\n  age: 2037 - 1991,\n  job: 'teacher',\n  friends: ['Michael', 'Peter', 'Steven']\n};\n\nconsole.log(jonas);"
+      }
+    },
+    {
+      "name": "قواعد كتابة الـ \\en{Object",
+      "explanation": "### الـ Keys\n\n[نصيحة]\nقواعد تسمية الـ \\en{Keys:\n\n  • بنستخدم camelCase زي المتغيرات: `firstName`، `lastName`.\n  • ممكن يكون اسم بسيط: `age`، `job`.\n  • لو الاسم فيه مسافة أو حرف خاص، لازم نحطه بين علامات تنصيص: `'first-name'`.\n  • كل Key لازم يكون فريد جوه نفس الـ Object (مينفعش اتنين بنفس الاسم).\n\n\\end{tipbox}\n\n### الفواصل بين الـ Properties\n\n[تحذير]\nخد بالك: لازم تحط \\textbf{فاصلة بين كل Property والتانية. نسيان الفاصلة من أكتر الأخطاء شيوعاً!\n\nالفاصلة بعد آخر Property اختيارية (بس يُفضّل حطها \\textenglish{--} اسمها Trailing Comma).\n\\end{warningbox}\n\n### كتابة الـ Object\n\nسطر واحد \\textenglish{-- لو الـ Object صغير:\n\n\\end{comparebox}\n\nعدة سطور \\textenglish{-- لو الـ Object كبير (الأفضل):}\n\n\\end{comparebox}\n\n[نصيحة]\nنصيحة: دايماً اكتب الـ Objects اللي فيها أكتر من Property أو 2 في عدة سطور \\textenglish{--} بيخلّي الكود أسهل في القراية.\n\\end{tipbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const jonas = {\n  firstName: 'Jonas',\n  lastName: 'Schmedtmann',\n  age: 2037 - 1991,\n  job: 'teacher',\n  friends: ['Michael', 'Peter', 'Steven']\n};"
+      }
+    },
+    {
+      "name": "الأقواس المعقوفة \\code{\\{ \\",
+      "explanation": "[تحذير]\nخد بالك: الأقواس المعقوفة `\\{ \\`} بتستخدم لحاجتين مختلفتين في JavaScript:\n\nالاستخدام & المكان & مثال \\\\\nCode Block & بعد `if`، `for`، `function` & `if (x) \\{ ... \\`} \\\\\nObject Literal & بعد `=` (تعيين) & `const obj = \\{ ... \\`} \\\\\n\\end{tabular}\n\\end{center}\n\nJavaScript بتعرف الفرق من السياق. لما الأقواس بتيجي بعد `=` أو في مكان قيمة، بتكون Object. لما بتيجي بعد `if` أو `function`، بتكون Code Block.\n\\end{warningbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nif (true) {\n  console.log('This is a code block');\n}\n\n// \nconst obj = {\n  name: 'Jonas'\n};\n\n// \nfunction greet() {\n  console.log('Hello!');\n}"
+      }
+    },
+    {
+      "name": "الفرق بين الـ \\en{Objects",
+      "explanation": "[نصيحة]\nتشبيه من الحياة:\n\n  • الـ Array = طابور فيه ناس. كل واحد له ترتيب (رقم 0، رقم 1...). لو عايز الشخص التالت، بتعد: 0، 1، 2.\n  • الـ Object = فصل دراسي كل طالب على كرسي عليه اسمه. عايز ``أحمد''؟ بتروح لكرسي ``أحمد'' مباشرة. مش محتاج تعد!\n\n\\end{tipbox}\n\nالنقطة & Array & Object \\\\\n\\endhead\nالرمز & `[ ]` & `\\{ \\`} \\\\\nالوصول للعناصر & بالرقم (Index): `arr[0]` & بالاسم (Key): `obj.name` \\\\\nالترتيب & مهم جداً! & مش مهم \\\\\nالعناصر اسمها & عنصر (Element) & خاصية (Property) \\\\\nالأفضل لإيه & بيانات مرتبة & بيانات مسمّاة \\\\\nمثال حقيقي & قائمة مهام بالترتيب & بيانات شخص \\\\\n\\end{longtable}\n\\end{center}\n\nArray \\textenglish{-- بيانات مرتبة:}\n\n\\end{comparebox}\n\nObject \\textenglish{-- بيانات مسمّاة:}\n\n\\end{comparebox}\n\n[معلومة]\nالقاعدة الذهبية:\n\n  • استخدم Arrays لما الترتيب مهم (قائمة مهام، نتائج مباراة، أيام الأسبوع...).\n  • استخدم Objects لما عايز تسمّي البيانات وتوصلها بالاسم (بيانات شخص، إعدادات تطبيق، بيانات منتج...).\n\n\\end{infobox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst person = {\n  firstName: 'Jonas',\n  age: 46,\n  job: 'teacher'\n};\n// "
+      }
+    },
+    {
+      "name": "أنواع القيم في الـ \\en{Properties",
+      "explanation": "[معلومة]\nالقاعدة: قيمة الـ Property ممكن تكون أي نوع بيانات في JavaScript \\textenglish{--} مش مقيّدة بنوع معيّن!\n\\end{infobox}\n\n[نصيحة]\nلاحظ: حتى الـ Object ممكن يحتوي على Object تاني جواه! ده اسمه Nested Object وهنتعامل معاه كتير.\n\\end{tipbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst everything = {\n  myString: 'Hello',              // \n  myNumber: 42,                   // \n  myBoolean: true,                // \n  myUndefined: undefined,         // \n  myNull: null,                   // \n  myArray: [1, 2, 3],             // \n  myObject: { nested: 'yes' },    // \n  myExpression: 2037 - 1991       // \n};\n\nconsole.log(everything);"
+      }
+    },
+    {
+      "name": "تتبع تنفيذ الكود خطوة بخطوة",
+      "explanation": "تعالى ناخد الكود الأساسي من الفيديو ونتتبعه:\n\nالخطوة 1: JavaScript بتشوف `const jonas = \\{ ... \\`}\n\nJavaScript بتعرف إن ده Object Literal (بسبب `\\{ \\`} بعد `=`). بتبدأ تقرأ الـ Properties واحدة واحدة.\n\\end{stepbox}\n\nالخطوة 2: قراءة الـ Properties\n\nالـ Key & العملية & الـ Value النهائية \\\\\n`firstName` & تخزين النص مباشرة & `'Jonas'` \\\\\n`lastName` & تخزين النص مباشرة & `'Schmedtmann'` \\\\\n`age` & حساب `2037 - 1991` & `46` \\\\\n`job` & تخزين النص مباشرة & `'teacher'` \\\\\n`friends` & إنشاء Array & `['Michael', 'Peter', 'Steven']` \\\\\n\\end{tabular}\n\\end{center}\n\nلاحظ: `age` فيها Expression اتحسبت وبقت `46`.\n\\end{stepbox}\n\nالخطوة 3: الـ Object اتخزّن في المتغير `jonas`\n\nدلوقتي المتغير `jonas` بيشاور على Object كامل في الذاكرة فيه 5 Properties.\n\nProperty & القيمة \\\\\n`firstName` & `'Jonas'` \\\\\n`lastName` & `'Schmedtmann'` \\\\\n`age` & `46` \\\\\n`job` & `'teacher'` \\\\\n`friends` & `['Michael', 'Peter', 'Steven']` \\\\\n\\end{tabular}\n\\end{center}\n\\end{stepbox}\n\nالخطوة 4: `console.log(jonas)`\n\nبتطبع الـ Object كله في الـ Console. المتصفح بيعرضه بشكل منظّم تقدر تفتحه وتتصفّح الـ Properties.\n\\end{stepbox}\n\nالناتج:",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const jonas = {\n  firstName: 'Jonas',\n  lastName: 'Schmedtmann',\n  age: 2037 - 1991,\n  job: 'teacher',\n  friends: ['Michael', 'Peter', 'Steven']\n};\n\nconsole.log(jonas);"
+      }
+    },
+    {
+      "name": "المثال الكامل من الفيديو",
+      "explanation": "",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst jonasArray = [\n  'Jonas',\n  'Schmedtmann',\n  2037 - 1991,\n  'teacher',\n  ['Michael', 'Peter', 'Steven']\n];\n\n// \nconst jonas = {\n  firstName: 'Jonas',\n  lastName: 'Schmedtmann',\n  age: 2037 - 1991,\n  job: 'teacher',\n  friends: ['Michael', 'Peter', 'Steven']\n};\n\nconsole.log(jonas);"
+      }
+    },
+    {
+      "name": "أمثلة إضافية متنوعة",
+      "explanation": "### مثال 1: بيانات طالب\n\n### مثال 2: بيانات منتج\n\n[نصيحة]\nلاحظ: في المثال ده عندنا Object جوه Object! الـ Property اسمها `specs` وقيمتها Object تاني فيه `ram` و`storage` و`screen`. ده اسمه Nested Object.\n\\end{tipbox}\n\n### مثال 3: إعدادات تطبيق\n\n### مثال 4: Object\n\n[نصيحة]\nلاحظ: `typeof` لأي Object بيرجّع `\"object\"`. وده منطقي \\textenglish{-- الـ Object هو نوع بيانات!\n\\end{tipbox}\n\n### مثال 5: بيانات مطعم\n\n[تحذير]\nخد بالك: المثال ده فيه Objects جوه Objects جوه Object! الـ `openingHours` هو Object، وكل يوم جواه هو Object تاني فيه `open` و`close`. ده هنتعلم نتعامل معاه في الدرس الجاي.\n\\end{warningbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst restaurant = {\n  name: 'Classico Italiano',\n  location: 'Via Angelo Tavanti 23, Firenze, Italy',\n  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],\n  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread'],\n  mainMenu: ['Pizza', 'Pasta', 'Risotto'],\n  openingHours: {\n    thu: { open: 12, close: 22 },\n    fri: { open: 11, close: 23 },\n    sat: { open: 0, close: 24 }\n  }\n};\n\nconsole.log(restaurant);"
+      }
+    },
+    {
+      "name": "خد بالك \\textenglish{--",
+      "explanation": "الخطأ الشائع & الحل الصح \\\\\n\\endhead\nنسيان الفاصلة بين الـ Properties & لازم فاصلة بعد كل Property (إلا الأخيرة اختيارياً) \\\\\nاستخدام `=` بدل `:` & جوه الـ Object بنستخدم `:` مش `=` \\\\\nاستخدام `[ ]` بدل `\\{ \\`} & الأقواس المربعة للـ Arrays والمعقوفة للـ Objects \\\\\nتكرار نفس الـ Key في الـ Object & كل Key لازم يكون فريد \\textenglish{--} لو كرّرته التاني بيكسب \\\\\nحط فاصلة منقوطة `;` بدل فاصلة `,` & بين الـ Properties بنستخدم `,` مش `;` \\\\\nنسيان إن الترتيب مش مهم في Objects & مش زي Arrays \\textenglish{--} الـ Object مفيهوش ترتيب ثابت \\\\\nالخلط بين Object Literal وCode Block & بعد `=` $\\Rightarrow$ Object. بعد `if` $\\Rightarrow$ Code Block \\\\\nنسيان إن الـ Key لازم اسم صالح & استخدم camelCase أو حط الاسم بين تنصيص \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "ملخص سريع",
+      "explanation": "المفهوم & الشرح باختصار \\\\\n\\endhead\nObject & Data Structure بتخزّن بيانات كـ Key-Value Pairs \\\\\nKey & اسم البيان (المفتاح) \\\\\nValue & محتوى البيان (القيمة) \\textenglish{--} أي نوع بيانات \\\\\nProperty & Key + Value مع بعض \\\\\nObject Literal Syntax & إنشاء Object بالأقواس المعقوفة `\\{ \\`} \\\\\nالترتيب & مش مهم في الـ Objects (عكس الـ Arrays) \\\\\nالفاصل بين Properties & فاصلة `,` \\\\\nالفاصل بين Key وValue & نقطتين `:` \\\\\nNested Object & Object جوه Object \\\\\nArray مقابل Object & Array = بيانات مرتبة، Object = بيانات مسمّاة \\\\\n`typeof` & بيرجّع `\"object\"` لأي Object \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "\\en{Cheat Sheet",
+      "explanation": "[معلومة]\nمرجع سريع لإنشاء الـ Objects:\n\n1. إنشاء Object بسيط:\n\\end{infobox}\n\n[معلومة]\n2. أنواع القيم المسموحة:\n\nالنوع & مثال \\\\\nString & `name: 'Ahmed'` \\\\\nNumber & `age: 25` \\\\\nBoolean & `isActive: true` \\\\\nArray & `hobbies: ['reading', 'coding']` \\\\\nObject & `address: \\{ city: 'Cairo' \\`} \\\\\nExpression & `year: 2037 - 1991` \\\\\nnull & `data: null` \\\\\nundefined & `value: undefined` \\\\\n\\end{tabular}\n\\end{center}\n\n3. متى تستخدم Array ومتى Object:\n\nاستخدم Array & استخدم Object \\\\\nقائمة مرتبة & بيانات مسمّاة \\\\\nالترتيب مهم & الترتيب مش مهم \\\\\nبتوصل بالرقم & بتوصل بالاسم \\\\\n`['a', 'b', 'c']` & `\\{ name: 'a' \\`} \\\\\n\\end{tabular}\n\\end{center}\n\\end{infobox}\n\nالشكل العام:",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \nconst person = {\n  firstName: 'Jonas',       // String\n  age: 46,                  // Number\n  isTeacher: true,          // Boolean\n  friends: ['A', 'B'],      // Array\n  address: {                // Nested Object\n    city: 'Lisbon',\n    country: 'Portugal'\n  }\n};"
+      }
+    },
+    {
+      "name": "معجم المصطلحات",
+      "explanation": "المصطلح & النطق بالعربي & المعنى \\\\\n\\endhead\nObject & أوبجكت & كائن \\textenglish{--} هيكل بيانات بـ Key-Value Pairs \\\\\nProperty & بروبرتي & خاصية = Key + Value \\\\\nKey & كي & المفتاح \\textenglish{--} اسم الـ Property \\\\\nValue & فاليو & القيمة \\textenglish{--} محتوى الـ Property \\\\\nKey-Value Pair & كي-فاليو بير & زوج مفتاح-قيمة \\\\\nObject Literal & أوبجكت ليترال & إنشاء Object بكتابته مباشرة \\\\\nCurly Braces & كيرلي بريسز & الأقواس المعقوفة `\\{ \\`} \\\\\nData Structure & داتا ستراكتشر & هيكل بيانات (طريقة تنظيم البيانات) \\\\\nNested Object & نيستد أوبجكت & Object جوه Object \\\\\nUnstructured Data & أن-ستراكتشرد داتا & بيانات مش مرتبة \\\\\nOrdered Data & أوردرد داتا & بيانات مرتبة (مناسبة للـ Arrays) \\\\\nTrailing Comma & تريلنج كوما & فاصلة بعد آخر عنصر (اختيارية) \\\\\nExpression & إكسبريشن & تعبير بينتج قيمة \\\\\nCode Block & كود بلوك & مجموعة أسطر كود بين `\\{ \\`} \\\\\nSyntax & سينتاكس & قواعد كتابة الكود \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "حل المشاكل \\en{Troubleshooting",
+      "explanation": "المشكلة & السبب & الحل \\\\\n\\endhead\nSyntaxError: Unexpected token &\nنسيت فاصلة بين الـ Properties &\nحط `,` بعد كل Property \\\\\nSyntaxError: Unexpected identifier &\nاستخدمت `=` بدل `:` &\nجوه الـ Object الفاصل هو `:` \\\\\nالـ Property التانية بتكسب الأولى &\nكرّرت نفس الـ Key &\nخلّي كل Key فريد \\\\\n`undefined` لما بتوصل لـ Property &\nالاسم مكتوب غلط &\nراجع Spelling وحالة الحروف \\\\\n`typeof` بيرجّع `\"object\"` للـ Array كمان &\nده سلوك طبيعي في JavaScript &\nاستخدم `Array.isArray()` للتفريق \\\\\nالـ Object مبيظهرش كامل في الـ Console &\nالمتصفح بيطويه &\nاضغط على السهم علشان تفتحه \\\\\nSyntaxError بسبب `;` بين الـ Properties &\nالفاصلة المنقوطة مش صح هنا &\nاستخدم `,` مش `;` \\\\\nReferenceError لما بتستخدم الـ Object &\nالـ Object لسه ما اتعرّفش &\nعرّفه قبل ما تستخدمه \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "تمارين عملية متدرجة",
+      "explanation": "### تمرين 1: سهل \\textenglish{--\n\nالمطلوب:\n\nاعمل Object اسمه `myProfile` فيه الـ Properties دي:\n  • `name` \\textenglish{--} اسمك\n  • `age` \\textenglish{--} عمرك (استخدم حساب من سنة ميلادك)\n  • `city` \\textenglish{--} مدينتك\n  • `isStudent` \\textenglish{--} هل أنت طالب؟ (Boolean)\n  • `hobbies` \\textenglish{--} هواياتك (Array فيه 3 هوايات)\n\nاطبع الـ Object كله بـ `console.log`.\n\\end{codebox}\n\n[نصيحة]\nالحل:\n\n\\end{tipbox}\n\n### تمرين 2: سهل \\textenglish{--\n\nالمطلوب:\n\nاعمل Object اسمه `book` لكتابك المفضّل فيه:\n  • `title` \\textenglish{--} عنوان الكتاب\n  • `author` \\textenglish{--} اسم المؤلف\n  • `pages` \\textenglish{--} عدد الصفحات (رقم)\n  • `isRead` \\textenglish{--} هل قرأته؟ (Boolean)\n  • `rating` \\textenglish{--} تقييمك من 5\n\n\\end{codebox}\n\n[نصيحة]\nالحل:\n\n\\end{tipbox}\n\n### تمرين 3: متوسط \\textenglish{--\n\nالمطلوب:\n\nعندك الـ Array ده:\n\nحوّله لـ Object اسمه `car` بحيث كل عنصر يكون ليه اسم مناسب:\n  • `brand`، `model`، `year`، `color`، `isAvailable`\n\n\\end{codebox}\n\n[نصيحة]\nالحل:\n\n\\end{tipbox}\n\n### تمرين 4: متوسط \\textenglish{--\n\nالمطلوب:\n\nاعمل Object اسمه `employee` فيه:\n  • `name` \\textenglish{--} اسم الموظف\n  • `department` \\textenglish{--} القسم\n  • `salary` \\textenglish{--} الراتب\n  • `skills` \\textenglish{--} Array فيه 3 مهارات\n  • `contact` \\textenglish{--} Object جواه `email` و`phone`\n  • `address` \\textenglish{--} Object جواه `city` و`street` و`building`\n\n\\end{codebox}\n\n[نصيحة]\nالحل:\n\n\\end{tipbox}\n\n### تمرين 5: صعب \\textenglish{--\n\nالمطلوب:\n\nاعمل Object اسمه `school` يمثّل مدرسة كاملة:\n  • `name` \\textenglish{--} اسم المدرسة\n  • `location` \\textenglish{--} Object فيه `city` و`country`\n  • `foundedYear` \\textenglish{--} سنة التأسيس\n  • `totalStudents` \\textenglish{--} عدد الطلاب\n  • `isPrivate` \\textenglish{--} خاصة ولّا حكومية\n  • `departments` \\textenglish{--} Array فيه 3 أقسام (كل قسم نص)\n  • `principal` \\textenglish{--} Object فيه `name` و`age` و`yearsOfExperience`\n  • `ratings` \\textenglish{--} Object فيه `academic` و`facilities` و`overall` (كل واحد رقم من 10)\n\nبعد ما تعمل الـ Object:\n  • اطبعه كامل.\n  • اطبع `typeof school`.\n  • اطبع عمر المدرسة (السنة الحالية ناقص سنة التأسيس).\n\n\\end{codebox}\n\n[نصيحة]\nالحل:\n\n\\end{tipbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const school = {\n  name: 'Future Academy',\n  location: {\n    city: 'Alexandria',\n    country: 'Egypt'\n  },\n  foundedYear: 1995,\n  totalStudents: 1200,\n  isPrivate: true,\n  departments: ['Science', 'Arts', 'Technology'],\n  principal: {\n    name: 'Dr. Hassan',\n    age: 55,\n    yearsOfExperience: 30\n  },\n  ratings: {\n    academic: 8.5,\n    facilities: 7.0,\n    overall: 8.0\n  }\n};\n\n// \nconsole.log(school);\n\n// \nconsole.log(typeof school);\n\n// \nconst schoolAge = 2025 - school.foundedYear;\nconsole.log('School age:', schoolAge);"
+      }
+    },
+    {
+      "name": "أسئلة نظرية",
+      "explanation": "• إيه الفرق الأساسي بين الـ Array والـ Object؟\n\n[نصيحة]\nالإجابة: الـ Array بتخزّن بيانات مرتبة وبتوصلها بالرقم (Index). الـ Object بتخزّن بيانات مسمّاة (Key-Value Pairs) وبتوصلها بالاسم (Key). في الـ Array الترتيب مهم، في الـ Object مش مهم.\n\\end{tipbox}\n\n• إيه معنى Object Literal Syntax؟\n\n[نصيحة]\nالإجابة: Object Literal معناه إننا بنكتب الـ Object حرفياً في الكود باستخدام الأقواس المعقوفة `\\{ \\`}. بنكتب كل الـ Properties مباشرة جوه الأقواس. دي أبسط طريقة لإنشاء Object في JavaScript.\n\\end{tipbox}\n\n• إيه الفرق بين Key وProperty؟\n\n[نصيحة]\nالإجابة: الـ Key هو الاسم بس (زي `firstName`). الـ Property هي الـ Key والـ Value مع بعض (زي `firstName: 'Jonas'`). يعني الـ Property = Key + `:` + Value.\n\\end{tipbox}\n\n• هل ممكن نحط Object جوه Object؟ وإيه اسم ده؟\n\n[نصيحة]\nالإجابة: أيوه! ده اسمه Nested Object. ممكن نحط Object كقيمة لـ Property في Object تاني. مثال: `address: \\{ city: 'Cairo', street: 'Main St' \\`}. وده شائع جداً في التطبيقات الحقيقية لتنظيم البيانات المعقدة.\n\\end{tipbox}\n\n• ليه الأقواس المعقوفة `\\{ \\`} مش بتعمل لبس مع الـ Code Blocks؟\n\n[نصيحة]\nالإجابة: JavaScript بتعرف الفرق من السياق. لما الأقواس المعقوفة بتيجي بعد `=` (في تعيين قيمة) أو في مكان قيمة، بتفهم إنها Object Literal. لما بتيجي بعد `if` أو `for` أو `function`، بتفهم إنها Code Block.\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "إيه اللي هتحتاجه بعد كده",
+      "explanation": "الدرس الجاي & هتتعلم فيه إيه & إيه علاقته بالدرس ده \\\\\n\\endhead\nDot vs. Bracket Notation &\nإزاي توصل لبيانات الـ Object &\nهتقدر تقرأ وتعدّل الـ Properties \\\\\nObject Methods &\nدوال جوه Objects &\nهتضيف سلوك (دوال) للـ Object مش بيانات بس \\\\\nIteration: The for Loop &\nتكرار كود تلقائي &\nهتلف على الـ Properties بتاعة Object \\\\\nDestructuring Objects &\nاستخراج قيم من Object بسهولة &\nطريقة حديثة (ES6) للوصول لبيانات الـ Object \\\\\nEnhanced Object Literals &\nاختصارات في كتابة الـ Objects &\nطرق أسهل لإنشاء Objects في ES6 \\\\\n\\end{longtable}\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "خاتمة",
+      "explanation": "[معلومة]\nملخص الدرس:\n\nفي الدرس ده اتعلمنا واحد من أهم المفاهيم في JavaScript \\textenglish{--} الـ Objects:\n\n  • الـ Object هو Data Structure بتخزّن بيانات على شكل Key-Value Pairs.\n  • كل Key-Value Pair اسمه Property.\n  • Object Literal Syntax \\textenglish{--} أبسط طريقة لإنشاء Object باستخدام `\\{ \\`}.\n  • القيمة ممكن تكون أي نوع: String، Number، Boolean، Array، أو حتى Object تاني.\n  • الترتيب مش مهم في الـ Objects (عكس الـ Arrays).\n  • Arrays للبيانات المرتبة، Objects للبيانات المسمّاة.\n  • الأقواس المعقوفة `\\{ \\`} بتستخدم لإنشاء Objects وكمان لـ Code Blocks \\textenglish{--} JavaScript بتفرّق من السياق.\n\nالدرس الجاي: هنتعلم إزاي نوصل لبيانات الـ Object ونعدّلها باستخدام الـ Dot Notation والـ Bracket Notation \\textenglish{--} وده مهم جداً علشان تقدر تستفيد من الـ Objects فعلاً!\n\\end{infobox}\n\n\\end{document}",
+      "example": null
+    }
+  ],
+  "mcq": [
+    {
+      "question": "كيف نقوم بإنشاء Object فارغ في JavaScript؟",
+      "choices": [
+        "const obj = [];",
+        "const obj = ();",
+        "const obj = {};",
+        "const obj = empty;"
+      ],
+      "answer": "const obj = {};"
+    },
+    {
+      "question": "ماذا يسمى الزوج المكون من اسم البيان ومحتواه داخل الـ Object؟",
+      "choices": [
+        "Array Element",
+        "Key-Value Pair (Property)",
+        "Code Block",
+        "Data Value"
+      ],
+      "answer": "Key-Value Pair (Property)"
+    },
+    {
+      "question": "ما الرمز المستخدم للفصل بين الخصائص (Properties) داخل الـ Object؟",
+      "choices": [
+        "الفاصلة المنقوطة (;)",
+        "الفاصلة العادية (,)",
+        "النقطة (.)",
+        "علامة الزائد (+)"
+      ],
+      "answer": "الفاصلة العادية (,)"
+    },
+    {
+      "question": "ماذا ترجع العملية typeof { name: 'Ali' } ؟",
+      "choices": [
+        "\"array\"",
+        "\"string\"",
+        "\"object\"",
+        "\"undefined\""
+      ],
+      "answer": "\"object\""
+    },
+    {
+      "question": "في أي من الحالات التالية يفضل استخدام Array بدلاً من Object؟",
+      "choices": [
+        "قائمة بأسماء أيام الأسبوع مرتبة.",
+        "بيانات سيارة معينة.",
+        "بيانات موظف (الاسم، الراتب، القسم).",
+        "إعدادات تطبيق مستخدم."
+      ],
+      "answer": "قائمة بأسماء أيام الأسبوع مرتبة."
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "قم بإنشاء Object يسمى 'myProfile' يحتوي على خصائص: name (اسمك كـ String)، age (عمرك كـ Number)، isStudent (كـ Boolean). ثم قم بطباعته في الكونسول.",
+      "html": "<h2>تمرين: إنشاء Object بسيط</h2>\n<p>افتح الكونسول لمشاهدة النتيجة.</p>",
+      "solution": "const myProfile = {\n  name: 'Ahmed',\n  age: 25,\n  isStudent: true\n};\nconsole.log(myProfile);"
+    },
+    {
+      "task": "حول المصفوفة التالية `['Toyota', 'Corolla', 2022]` إلى Object باسم `car` بخصائص `brand`، `model`، و `year`.",
+      "html": "<h2>تمرين: تحويل مصفوفة إلى كائن</h2>\n<p>افتح الكونسول لمشاهدة النتيجة.</p>",
+      "solution": "const car = {\n  brand: 'Toyota',\n  model: 'Corolla',\n  year: 2022\n};\nconsole.log(car);"
+    },
+    {
+      "task": "أنشئ Object يسمى `appSettings` يحتوي على الكائنات المتداخلة (Nested Object) للـ `font` والذي يحتوي على `size` بقيمة 16 و `family` بقيمة 'Arial'.",
+      "html": "<h2>تمرين: Nested Objects</h2>\n<p>افتح الكونسول لمشاهدة النتيجة.</p>",
+      "solution": "const appSettings = {\n  font: {\n    size: 16,\n    family: 'Arial'\n  }\n};\nconsole.log(appSettings);"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "لإنشاء Property في Object تفصل بين اسم الخاصية وقيمتها باستخدام علامة __________.",
+      "answer": ":"
+    },
+    {
+      "question": "المتغير const person = __________ يمثل Object فارغ.",
+      "answer": "{}"
+    },
+    {
+      "question": "نوع البيانات الذي نستخدمه لتخزين قيم مرتبطة بدون الاهتمام بالترتيب ويستخدم الـ Key-Value هو __________.",
+      "answer": "Object"
+    },
+    {
+      "question": "للفصل بين الخصائص المتعددة داخل الكائن نستخدم علامة __________.",
+      "answer": ","
+    },
+    {
+      "question": "يمكن وضع Array كقيمة لخاصية داخل الـ Object (صواب أم خطأ): __________.",
+      "answer": "صواب"
+    }
+  ]
+}

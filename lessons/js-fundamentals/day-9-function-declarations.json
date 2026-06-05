@@ -1,0 +1,291 @@
+{
+  "title": "Function Declarations vs. Expressions",
+  "goal": "تعلم الطرق المختلفة لكتابة الدوال في JavaScript (Function Declarations و Function Expressions) والفرق بينهما.",
+  "duration": "حوالي ساعتين",
+  "schedule": [
+    {
+      "time": "30 دقيقة",
+      "topic": "Function Declaration (إعلان الدالة)"
+    },
+    {
+      "time": "30 دقيقة",
+      "topic": "Function Expression (تعبير الدالة)"
+    },
+    {
+      "time": "30 دقيقة",
+      "topic": "مقارنة بين النوعين والـ Hoisting"
+    },
+    {
+      "time": "30 دقيقة",
+      "topic": "تطبيقات وتمارين عملية"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "مقدمة",
+      "objectives": [],
+      "details": "في JavaScript، في طرق مختلفة لكتابة الـ Functions. كل نوع بيشتغل بطريقة مشابهة بس في فروق مهمة لازم تعرفها.\r\n\r\nالدوال اللي اتعلمناها في الدرس اللي فات كانت Function Declarations. دلوقتي هنتعلم نوع تاني اسمه Function Expressions. ومهم إنك تعرف الاتنين كويس لأن كل واحد ليه مكانه واستخداماته.\r\n\r\n\n[نصيحة]\nملحوظة مهمة:\r\n\r\nحتى لو فضّلت نوع على التاني، لازم تعرف الاتنين. مش ممكن تتعلم واحد بس وتنسى التاني لأن الاتنين بيظهروا في أي كود JavaScript حقيقي.\r\n\\end{tipbox}",
+      "key_tools": [],
+      "practice": ""
+    }
+  ],
+  "lessons": [
+    {
+      "name": "\\en{Function Declaration",
+      "explanation": "### التعريف\n\n\r\nFunction Declaration هي الطريقة اللي اتعلمناها في الدرس اللي فات. بنستخدم الكلمة المفتاحية `function` متبوعة باسم الدالة.\r\n\r\n\n[معلومة]\nليه اسمها ``Declaration''؟\r\n\r\nلأننا بنعلن عن الدالة (بنعرّفها) باستخدام الكلمة المفتاحية `function` --- بالظبط زي ما بنعلن عن متغير باستخدام `const` أو `let`.\r\n\\end{infobox}\r\n\r\n\n### الشكل العام\n\n\r\n\r\n\n### مثال عملي: حساب العمر\n\n\r\n\r\n\n### تبسيط الـ `return\n\n\r\n\n[نصيحة]\nنصيحة مهمة:`\r\n\r\nلو كل اللي بتعمله هو حساب قيمة وبعدين `return` --- تقدر تعمل الاتنين في \\textbf{سطر واحد:\r\n\\end{tipbox}\r\n\r\n\r\n\n[معلومة]\nليه ده بيشتغل؟\r\n\r\n  • `2037 - birthYear` هي Expression (بتنتج قيمة)\r\n  • `return` بترجع أي قيمة أو expression\r\n  • مفيش حاجة غلط إنك تحسب وترجع في نفس السطر\r\n  • بنوفّر سطر ومتغير مالوش لازمة\r\n\r\n\\end{infobox}\r\n\r\n\n### استدعاء الدالة والتقاط النتيجة",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "function calcAge1(birthYear) {\r\n  return 2037 - birthYear;\r\n}\r\n\r\n// \r\nconst age1 = calcAge1(1991);\r\nconsole.log(age1);\r"
+      }
+    },
+    {
+      "name": "\\en{Function Expression",
+      "explanation": "### التعريف\n\n\r\nFunction Expression هي طريقة تانية لكتابة الدوال. بدل ما نعلن عن الدالة باسم، بنكتب الدالة من غير اسم وبنحفظها في متغير.\r\n\r\n\n### الشكل العام\n\n\r\n\r\n\n### مثال عملي: حساب العمر\n\n\r\n\r\n\n[معلومة]\nتشريح الكود:\r\n\r\nالجزء & معناه \\\\\r\n`const calcAge2` & المتغير اللي هيحفظ الدالة \\\\\r\n`=` & بنخزّن الدالة في المتغير \\\\\r\n`function(birthYear)` & الدالة نفسها (من غير اسم) \\\\\r\n`\\{ return 2037 - birthYear; \\`} & الـ Function Body \\\\\r\n`;` & فاصلة منقوطة في الآخر (لأنه statement) \\\\\r\n\\end{tabular}\r\n\\end{center}\r\n\\end{infobox}\r\n\r\n\n### الدالة المجهولة (Anonymous Function\n\n\r\n\n[تحذير]\nخد بالك:\r\n\r\nفي الـ Function Expression، الدالة نفسها \\textbf{مالهاش اسم. ده اسمه Anonymous Function (دالة مجهولة).\r\n\r\n  • Declaration: `function calcAge1`(birthYear) \\{ ... \\} --- الدالة ليها اسم\r\n  • Expression: `const calcAge2 = function(birthYear) \\{ ... \\`} --- الدالة مالهاش اسم\r\n\r\n\r\nالاسم اللي بنستخدمه (`calcAge2`) هو اسم المتغير مش اسم الدالة نفسها.\r\n\\end{warningbox}\r\n\r\n\n### استدعاء الـ Function Expression\n\n\r\nالاستدعاء بالظبط زي الـ \\en{Declaration --- مفيش أي فرق:",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const calcAge2 = function(birthYear) {\r\n  return 2037 - birthYear;\r\n};\r\n\r\n// \r\nconst age2 = calcAge2(1991);\r\nconsole.log(age2);\r"
+      }
+    },
+    {
+      "name": "مقارنة: \\en{Declaration",
+      "explanation": "### الكود جنب بعض\n\n\r\nالطريقة الأولى: Function Declaration\r\n\r\n\\end{comparebox}\r\n\r\nالطريقة التانية: Function Expression\r\n\r\n\\end{comparebox}\r\n\r\n\n[نصيحة]\nلاحظ:\r\n\r\n  • الاتنين بينتجوا نفس النتيجة بالظبط (`46`)\r\n  • الاتنين بنستدعيهم بـنفس الطريقة (اسم + أقواس + arguments)\r\n  • الاتنين بنلتقط النتيجة بـنفس الطريقة (في متغير)\r\n  • الفرق في طريقة الكتابة وفي حاجة مهمة اسمها Hoisting\r\n\r\n\\end{tipbox}\r\n\r\n\r\n\n### جدول المقارنة التفصيلي\n\n\r\nالمقارنة &\r\nFunction Declaration &\r\nFunction Expression \\\\\r\n\\endhead\r\n\r\nالشكل &\r\n`function name() \\{ \\`} &\r\n`const name = function() \\{ \\`} \\\\\r\n\r\nالدالة ليها اسم؟ &\r\nنعم &\r\nلا (Anonymous) \\\\\r\n\r\nمحفوظة في متغير؟ &\r\nلا (بتتعرّف مباشرة) &\r\nنعم \\\\\r\n\r\nطريقة الاستدعاء &\r\n`name(args)` &\r\n`name(args)` (نفس الطريقة) \\\\\r\n\r\nHoisting؟ &\r\nنعم (ممكن تتستدعى قبل التعريف) &\r\nلا (لازم التعريف الأول) \\\\\r\n\r\n`;` في الآخر؟ &\r\nلا &\r\nنعم (لأنه assignment statement) \\\\\r\n\r\n\\end{longtable}\r\n\\end{center}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// Function Expression\r\nconst calcAge2 = function(birthYear) {\r\n  return 2037 - birthYear;\r\n};\r\n\r\nconst age2 = calcAge2(1991);\r\nconsole.log(age2); // 46\r"
+      }
+    },
+    {
+      "name": "رسم توضيحي: الفرق بين النوعين",
+      "explanation": "[معلومة]\nتشريح الـ Function Declaration:\r\n\r\n`function` & `calcAge1` & `(birthYear)` & `\\{` & `return 2037 - birthYear;\\`} \\\\\r\n$\\downarrow$ & $\\downarrow$ & $\\downarrow$ & & $\\downarrow$ \\\\\r\nكلمة & اسم & Parameter & & Function Body \\\\\r\nمفتاحية & الدالة & & & \\\\\r\n\\end{tabular}\r\n\\end{center}\r\n\\end{infobox}\r\n\r\n\n[معلومة]\nتشريح الـ Function Expression:\r\n\r\n`const` & `calcAge2` & `=` & `function` & `(birthYear)` & `\\{...\\`} & `;` \\\\\r\n$\\downarrow$ & $\\downarrow$ & $\\downarrow$ & $\\downarrow$ & $\\downarrow$ & $\\downarrow$ & $\\downarrow$ \\\\\r\nتعريف & اسم & تخزين & دالة & Param & Body & نهاية \\\\\r\nمتغير & المتغير & & بدون اسم & & & الـ statement \\\\\r\n\\end{tabular}\r\n\\end{center}\r\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "مفهوم مهم: الـ \\en{Functions",
+      "explanation": "[معلومة]\nده من أهم المفاهيم في JavaScript:\r\n\r\nفي JavaScript، الدالة مش ``نوع'' زي `string` أو `number`. الدالة هي مجرد قيمة (value).\r\n\r\nوزي ما أي قيمة ممكن تتخزن في متغير:\r\n\r\n\r\n  • الـ Function Expression بتثبتلك الفكرة دي: الدالة = قيمة = ممكن تتخزن في متغير\r\n  • ده هيكون مهم جداً لما نتعلم Callback Functions و Higher-Order Functions بعدين\r\n\r\n\\end{infobox}\r\n\r\n\n[نصيحة]\nتشبيه:\r\n\r\nفكّر في المتغير كـصندوق:\r\n\r\nالصندوق & اللي جواه \\\\\r\n`const x` & الرقم `10` \\\\\r\n`const name` & النص `\"Jonas\"` \\\\\r\n`const calcAge` & الدالة بالكامل! \\\\\r\n\\end{tabular}\r\n\\end{center}\r\n\r\nكلهم صناديق (متغيرات) جواهم قيم --- بس نوع القيمة مختلف.\r\n\\end{tipbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const x = 10;         // \r\nconst name = \"Jonas\"; // \r\n\r\n// \r\nconst calcAge = function(birthYear) {\r\n  return 2037 - birthYear;\r\n};\r"
+      }
+    },
+    {
+      "name": "الـ \\en{Hoisting",
+      "explanation": "### إيه هو Hoisting\n\n\r\n\\en{Hoisting هي عملية بتحصل في JavaScript ورا الكواليس، بتخلّي بعض الحاجات ``تترفع'' لأول الكود قبل التنفيذ. هنتعلم عنها بالتفصيل في قسم How JavaScript Works Behind the Scenes.\r\n\r\nالمهم دلوقتي: الفرق العملي الأهم بين Declaration و Expression هو:\r\n\r\n\n[تحذير]\nالقاعدة:\r\n\r\n  • Function Declaration: ممكن تتستدعى قبل ما تتعرّف في الكود\r\n  • Function Expression: مش ممكن تتستدعى قبل ما تتعرّف\r\n\r\n\\end{warningbox}\r\n\r\n\n### Declaration\n\n\r\n\r\n\r\n\n[نصيحة]\nده بيشتغل! JavaScript بتقرأ الملف كله الأول وبـ``ترفع'' الـ Function Declarations لفوق. فلما توصل للاستدعاء، الدالة تكون معروفة فعلاً.\r\n\\end{tipbox\r\n\r\n\r\n\n### Expression\n\n\r\n\r\n\r\nده مش بيشتغل!\r\n\r\n  • الـ Function Expression محفوظة في متغير `const`\r\n  • المتغيرات المعرّفة بـ `const` و `let` \\textbf{مش بيتعملها hoisting\r\n  • فلما JavaScript توصل للاستدعاء، المتغير `calcAge2` لسه مش موجود\r\n  • فبتطلع ReferenceError\r\n\r\n\\end{errorbox}\r\n\r\n\n### رسم توضيحي للـ Hoisting\n\n\r\nالـ \\en{Declaration --- إيه اللي بيحصل ورا الكواليس:\r\n\r\nالكود اللي كتبته: & اللي JavaScript بتشوفه: \\\\\r\n& \\\\\r\n`age1 = calcAge1(1991);` & `function calcAge1(...) \\{...\\`} \\\\\r\n`function calcAge1(...) \\{...\\`} & `age1 = calcAge1(1991);` \\\\\r\n& \\\\\r\n(الاستدعاء أولاً) & (التعريف ``اترفع'' لفوق!) \\\\\r\n\\end{tabular}\r\n\\end{center}\r\n\\end{stepbox}\r\n\r\nالـ Expression --- مفيش Hoisting:\r\n\r\nالكود اللي كتبته: & اللي JavaScript بتشوفه: \\\\\r\n& \\\\\r\n`age2 = calcAge2(1991);` & `age2 = calcAge2(1991);` \\\\\r\n`const calcAge2 = function(...)` & `const calcAge2 = function(...)` \\\\\r\n& \\\\\r\n(الاستدعاء أولاً) & (نفس الترتيب --- فبيطلع خطأ!) \\\\\r\n\\end{tabular}\r\n\\end{center}\r\n\\end{stepbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \r\nconst age2 = calcAge2(1991); // \r\nconsole.log(age2);\r\n\r\n// \r\nconst calcAge2 = function(birthYear) {\r\n  return 2037 - birthYear;\r\n};\r"
+      }
+    },
+    {
+      "name": "تتبع الكود خطوة بخطوة",
+      "explanation": "الخطوة 1: JavaScript بتقرأ الملف --- بتلاقي Function Declaration (`calcAge1`) وبتحفظها.\r\n\\end{stepbox}\r\n\r\nالخطوة 2: سطر 5 --- `calcAge1(1991)` بتتنفذ:\r\n  • `birthYear = 1991`\r\n  • `2037 - 1991 = 46`\r\n  • `return 46`\r\n  • `age1 = 46`\r\n\r\n\\end{stepbox}\r\n\r\nالخطوة 3: سطر 8--10 --- Function Expression بتتحفظ في المتغير `calcAge2`. الدالة مش بتتنفذ --- بتتخزن بس.\r\n\\end{stepbox}\r\n\r\nالخطوة 4: سطر 11 --- `calcAge2(1991)` بتتنفذ:\r\n  • `birthYear = 1991`\r\n  • `2037 - 1991 = 46`\r\n  • `return 46`\r\n  • `age2 = 46`\r\n\r\n\\end{stepbox}\r\n\r\nالخطوة 5: سطر 13 --- `console.log(46, 46)` بتطبع النتيجتين.\r\n\\end{stepbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// Function Declaration\r\nfunction calcAge1(birthYear) {\r\n  return 2037 - birthYear;\r\n}\r\nconst age1 = calcAge1(1991);\r\n\r\n// Function Expression\r\nconst calcAge2 = function(birthYear) {\r\n  return 2037 - birthYear;\r\n};\r\nconst age2 = calcAge2(1991);\r\n\r\nconsole.log(age1, age2);\r"
+      }
+    },
+    {
+      "name": "أنهي نوع أختار؟ (رأي المحاضر والرأي العام)",
+      "explanation": "[معلومة]\nالإجابة المختصرة: في أغلب الأحوال، ده تفضيل شخصي. مفيش واحد ``غلط'' والتاني ``صح''.\r\n\\end{infobox}\r\n\r\n\n### رأي المحاضر (Jonas\n\n\r\n\n[نصيحة]\nالمحاضر بيفضّل \\en{Function Expressions. ليه؟\r\n\r\n  • بيجبرك تعرّف كل الدوال في الأول (فوق الكود) وبعدين تستدعيها تحت --- ده بيخلّي الكود منظم أكتر\r\n  • بيخلّي كل حاجة متخزنة في متغيرات (قيم ودوال) --- تناسق في الكود\r\n  • بيمنعك من الاعتماد على الـ Hoisting اللي ممكن يسبب مشاكل\r\n\r\n\r\nبس ده رأي شخصي! مطورين تانيين كتير بيفضّلوا Declarations.\r\n\\end{tipbox}\r\n\r\n\n### إمتى تستخدم كل واحد؟\n\n\r\nالموقف &\r\nDeclaration &\r\nExpression \\\\\r\nكود عادي (الاتنين بيشتغلوا) &\r\nممكن &\r\nممكن \\\\\r\nمحتاج تستدعي قبل التعريف &\r\nنعم &\r\nلا \\\\\r\nعايز كل حاجة في متغيرات &\r\nلا &\r\nنعم \\\\\r\nCallback Functions &\r\nممكن &\r\nالأشهر \\\\\r\nArrow Functions (هنتعلمها) &\r\n--- &\r\nنوع خاص منها \\\\\r\n\\end{tabular}\r\n\\end{center}\r\n\r\n\n[تحذير]\nالقاعدة الذهبية:\r\n\r\nمهما فضّلت نوع على التاني، لازم تعرف الاتنين كويس. مش ممكن تتعلم واحد بس وتنسى التاني لأن الاتنين بيظهروا في أي كود JavaScript حقيقي.\r\n\\end{warningbox}",
+      "example": null
+    },
+    {
+      "name": "أمثلة إضافية",
+      "explanation": "### مثال 1: نفس الدالة بالطريقتين\n\n\r\n\r\n\r\n\n### مثال 2: دالة الضريبة\n\n\r\n\r\n\r\n\r\n\n### مثال 3: إثبات إن الـ \\en{Hoisting",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "// \r\n// console.log(cube(3)); // ReferenceError!\r\n\r\nconst cube = function(n) {\r\n  return n * n * n;\r\n};\r\n\r\n// \r\nconsole.log(cube(3)); // 27\r"
+      }
+    },
+    {
+      "name": "قسم ``خد بالك'' -- الأخطاء الشائعة",
+      "explanation": "الخطأ & الصح \\\\\r\n\\endhead\r\n\r\nاستدعاء Expression قبل تعريفها &\r\nالـ Expression لازم تتعرّف الأول \\\\\r\n\r\nنسيان `;` بعد Expression &\r\nExpression هي assignment ولازم `;` \\\\\r\n\r\nالخلط بين اسم المتغير واسم الدالة &\r\nفي Expression: المتغير هو ``الاسم'' \\\\\r\n\r\nالفكر إن نوع أحسن من التاني &\r\nالاتنين صح ومحتاج تعرفهم \\\\\r\n\r\nالاعتماد على Hoisting بكثرة &\r\nأفضل تعرّف الدوال الأول وتستدعيها بعدين \\\\\r\n\r\nنسيان `return` في أي من النوعين &\r\nمن غيرها الدالة بترجع `undefined` \\\\\r\n\r\n\\end{longtable}\r\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "ملخص سريع",
+      "explanation": "المفهوم & الشرح \\\\\r\n\\endhead\r\n\r\nFunction Declaration &\r\n`function name() \\{ \\`} --- بنعلن عن الدالة باسم \\\\\r\n\r\nFunction Expression &\r\n`const name = function() \\{ \\`} --- بنحفظ الدالة في متغير \\\\\r\n\r\nAnonymous Function &\r\nدالة بدون اسم (في الـ Expression) \\\\\r\n\r\nFunctions كقيم &\r\nالدالة مجرد قيمة --- ممكن تتخزن في متغير \\\\\r\n\r\nHoisting &\r\nDeclaration ممكن تتستدعى قبل التعريف \\\\\r\n\r\n &\r\nExpression لازم تتعرّف الأول \\\\\r\n\r\nالاستدعاء &\r\nنفس الطريقة في الاتنين \\\\\r\n\r\nاختيار النوع &\r\nتفضيل شخصي --- لازم تعرف الاتنين \\\\\r\n\r\n\\end{longtable}\r\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "\\en{Cheat Sheet",
+      "explanation": "[معلومة]\n{\\Large\\bfseries Function Declaration vs Expression -- Quick Reference}\r\n\r\n\r\nFunction Declaration:\r\n\r\nFunction Expression:\r\n\r\n\r\n & Declaration & Expression \\\\\r\nاستدعاء قبل التعريف & ممكن & مش ممكن \\\\\r\nالدالة ليها اسم & نعم & لا (anonymous) \\\\\r\nمتخزنة في متغير & لا & نعم \\\\\r\n\\end{tabular}\r\n\\end{center}\r\n\\end{infobox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const calcAge = function(birthYear) {\r\n  return 2037 - birthYear;\r\n};\r\nconst age = calcAge(1991); // 46\r"
+      }
+    },
+    {
+      "name": "معجم المصطلحات (\\en{Glossary",
+      "explanation": "المصطلح & النطق & المعنى \\\\\r\n\\endhead\r\n\r\nFunction Declaration & فانكشن ديكلاريشن &\r\nتعريف دالة باسم باستخدام `function` \\\\\r\n\r\nFunction Expression & فانكشن إكسبريشن &\r\nحفظ دالة (بدون اسم) في متغير \\\\\r\n\r\nAnonymous Function & أنونيموس فانكشن &\r\nدالة بدون اسم \\\\\r\n\r\nHoisting & هويستينج &\r\n``رفع'' التعريفات لأول الكود \\\\\r\n\r\nExpression & إكسبريشن &\r\nأي كود بينتج قيمة \\\\\r\n\r\nDeclaration & ديكلاريشن &\r\nإعلان / تعريف \\\\\r\n\r\nValue & فاليو &\r\nقيمة (رقم، نص، دالة...) \\\\\r\n\r\nParameter & باراميتر &\r\nمتغير خاص بالدالة (في التعريف) \\\\\r\n\r\nArgument & أرجيومنت &\r\nالقيمة الفعلية (في الاستدعاء) \\\\\r\n\r\nLocal Variable & لوكال فاريابل &\r\nمتغير موجود بس جوه الدالة \\\\\r\n\r\nReferenceError & ريفيرنس إيرور &\r\nخطأ: المتغير مش معرّف لسه \\\\\r\n\r\n\\end{longtable}\r\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "حل المشاكل (\\en{Troubleshooting",
+      "explanation": "المشكلة & السبب & الحل \\\\\r\n\\endhead\r\n\r\nCannot access &\r\nبتستدعي Expression &\r\nحط التعريف \\\\\r\nbefore initialization &\r\nقبل تعريفها &\r\nقبل الاستدعاء \\\\\r\n\r\nالنتيجة `undefined` &\r\nنسيت `return` &\r\nأضف `return` \\\\\r\n\r\nis not a function &\r\nاسم الدالة غلط &\r\nتأكد من \\\\\r\n &\r\nأو مش معرّفة &\r\nالاسم بالظبط \\\\\r\n\r\nالكود بيشتغل مع &\r\nده Hoisting طبيعي &\r\nمفيش مشكلة \\\\\r\nDeclaration قبل التعريف &\r\nبس مش مستحسن &\r\n(الأفضل: عرّف الأول) \\\\\r\n\r\n\\end{longtable}\r\n\\end{center}",
+      "example": null
+    },
+    {
+      "name": "تمارين عملية متدرجة",
+      "explanation": "### تمرين 1: سهل --- حوّل Declaration\n\n\r\nالمطلوب: حوّل الدالة دي من Declaration لـ Expression:\r\n\r\n\\end{codebox\r\n\r\n\n[نصيحة]\nالحل:\r\n\\end{tipbox}\r\n\r\n\n### تمرين 2: متوسط --- اكتب الاتنين\n\n\r\nالمطلوب: اكتب دالة اسمها `isAdult` بتاخد سنة ميلاد وبترجع `true` لو العمر 18 أو أكتر، و `false` لو أقل. اكتبها بالطريقتين.\r\n\\end{codebox}\r\n\r\n\n[نصيحة]\nالحل:\r\n\\end{tipbox}\r\n\r\n\r\n\n### تمرين 3: متوسط --- توقع النتيجة\n\n\r\nالمطلوب: إيه نتيجة الكود ده؟ وليه؟\r\n\r\n\\end{codebox}\r\n\r\n\n[نصيحة]\nالإجابة: النتيجة = `8`.\r\n\r\nده بيشتغل لأن `add` معرّفة كـ Function Declaration والـ Declarations بيتعملها Hoisting --- يعني بتترفع لأول الكود.\r\n\\end{tipbox}\r\n\r\n\n### تمرين 4: متوسط --- توقع الخطأ\n\n\r\nالمطلوب: إيه نتيجة الكود ده؟ وليه؟\r\n\r\n\\end{codebox}\r\n\r\n\n[نصيحة]\nالإجابة: ReferenceError: Cannot access 'multiply' before initialization\r\n\r\nده مش بيشتغل لأن `multiply` معرّفة كـ Function Expression في متغير `const`. المتغيرات بـ `const` مش بيتعملها Hoisting --- فلما JavaScript توصل للاستدعاء، المتغير لسه مش موجود.\r\n\\end{tipbox}\r\n\r\n\r\n\n### تمرين 5: صعب --- اكتب برنامج كامل\n\n\r\nالمطلوب: اكتب الدوال دي (بأي طريقة تفضّلها):\r\n\r\n  • `calcAge(birthYear)` --- بترجع العمر\r\n  • `isRetired(age)` --- بترجع `true` لو العمر 65 أو أكتر\r\n  • بعدين استخدم الاتنين: احسب العمر وتأكد لو الشخص متقاعد\r\n\r\n\\end{codebox}\r\n\r\n\n[نصيحة]\nالحل:\r\n\\end{tipbox}",
+      "example": {
+        "html": "<div id='app'></div>",
+        "css": "body { font-family: sans-serif; }",
+        "javascript": "const calcAge = function(birthYear) {\r\n  return 2024 - birthYear;\r\n};\r\n\r\nconst isRetired = function(age) {\r\n  return age >= 65;\r\n};\r\n\r\n// \r\nconst myAge = calcAge(1955);\r\nconsole.log(myAge);            // 69\r\nconsole.log(isRetired(myAge)); // true\r\n\r\nconst age2 = calcAge(1990);\r\nconsole.log(age2);             // 34\r\nconsole.log(isRetired(age2));  // false\r"
+      }
+    },
+    {
+      "name": "أسئلة نظرية لاختبار فهمك",
+      "explanation": "• إيه الفرق الأساسي في الشكل بين Declaration و Expression؟\r\n\r\n\n[نصيحة]\nالإجابة: الـ Declaration بتستخدم `function name()` مباشرة. الـ Expression بتحفظ دالة بدون اسم (anonymous) في متغير: `const name = function() \\{\\`}.\r\n\\end{tipbox}\r\n\r\n• إيه هي الـ Anonymous Function؟\r\n\r\n\n[نصيحة]\nالإجابة: دالة بدون اسم. بتظهر في الـ Function Expression --- الدالة نفسها مالهاش اسم، الاسم اللي بنستخدمه هو اسم المتغير اللي مخزنة فيه.\r\n\\end{tipbox}\r\n\r\n• ليه بنقول إن الـ Functions في JavaScript هي ``قيم''؟\r\n\r\n\n[نصيحة]\nالإجابة: لأن الدالة مش ``نوع'' (type) --- هي مجرد قيمة (value) زي الرقم أو النص. وزي أي قيمة، ممكن تتخزن في متغير. وده بالظبط اللي بنعمله في الـ Function Expression.\r\n\\end{tipbox}\r\n\r\n• إيه هو Hoisting وإيه علاقته بالموضوع ده؟\r\n\r\n\n[نصيحة]\nالإجابة: Hoisting هو إن JavaScript بـ``ترفع'' بعض التعريفات لأول الكود قبل التنفيذ. الـ Function Declarations بيتعملها Hoisting (فتقدر تستدعيها قبل تعريفها). الـ Function Expressions في `const/let` مش بيتعملها Hoisting.\r\n\\end{tipbox}\r\n\r\n• هل في نوع ``أحسن'' من التاني؟\r\n\r\n\n[نصيحة]\nالإجابة: لا --- ده تفضيل شخصي. في مطورين بيفضّلوا Declarations وفي مطورين بيفضّلوا Expressions. المهم إنك تعرف الاتنين لأن الاتنين بيظهروا في الكود الحقيقي.\r\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "إيه اللي هتحتاجه بعد كده",
+      "explanation": "[معلومة]\nالدرس الجاي: Arrow Functions\r\n\r\nفي الدرس الجاي هنتعلم نوع تالت من الدوال اسمه Arrow Functions (دوال السهم). دي طريقة أقصر وأحدث (من ES6) لكتابة الـ Function Expressions.\r\n\r\n\r\nالنوع & الحالة \\\\\r\nFunction Declaration & اتعلمناه \\\\\r\nFunction Expression & اتعلمناه (النهاردة) \\\\\r\nArrow Function & الدرس الجاي \\\\\r\n\\end{tabular}\r\n\\end{center}\r\n\r\n\r\nكمان هنتعلم بعد كده:\r\n  • Functions Calling Other Functions --- دالة بتستدعي دالة تانية\r\n  • Default Parameters --- قيم افتراضية للـ parameters\r\n  • Closures --- من أهم المفاهيم المتقدمة في JavaScript\r\n  • Callback Functions --- دوال بتتمرر كـ arguments لدوال تانية\r\n\r\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "الفكرة في سطرين (\\en{TL;DR",
+      "explanation": "[نصيحة]\n  • Declaration: `function name() \\{\\`} --- بتتعرف قبل التنفيذ (hoisting)\r\n  • Expression: `const name = function() \\{\\`} --- بتتعرف وقت الوصول للسطر\r\n  • الاتنين قيم ممكن نمرّرهم ونخزنهم\r\n  • الاختيار بينهم غالباً تفضيل أو متطلبات الـ scope\r\n\r\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "ليه ده موجود؟ (\\en{Why",
+      "explanation": "[معلومة]\nفي لغة الدوال قيم. التعريف كتعبير بيخليك تمرّر الدالة كـ callback أو تحفظها في متغير. الفرق في الـ hoisting: التعريف ممكن تستدعيه قبل السطر، التعبير لأ.\r\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "النموذج الذهني (\\en{Mental Model",
+      "explanation": "[نصيحة]\nالتشبيه: Declaration زي إنك تعلن قبل ما الحفل يبدأ. Expression زي إنك تحط الآلة في الصندوق وتفتحه لما تحتاج.\r\n\r\nالقاعدة: `function f() \\{\\`} تتعرف لكل الملف. `const f = function() \\{\\`} تتعرف من السطر للأسفل بس.\r\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "فخاخ شائعة + إزاي تكتشفها",
+      "explanation": "[تحذير]\nفخ 1: استدعاء Expression قبل تعريفها\r\n  • العرض: `ReferenceError` أو `TypeError`\r\n  • السبب: `const f = function...` مش بيتعمله hoisting للقيمة\r\n  • الاختبار: `sayHi(); const sayHi = function() \\{\\`;} --- خطأ\r\n  • الحل: استدعِ بعد التعريف، أو استخدم Declaration\r\n\r\n\r\nفخ 2: خلط `function name()` و `const name = function name()`\r\n  • العرض: سلوك مختلف مع الـ recursion\r\n  • السبب: في التعبير، الاسم الداخلي اختياري\r\n  • الحل: اعرف إن `const f = function f() \\{\\`} الاسم `f` جوا للـ recursion\r\n\r\n\\end{warningbox}",
+      "example": null
+    },
+    {
+      "name": "أسئلة سينيور يسألهالك",
+      "explanation": "[معلومة]\n\r\n  • ليه Function Declaration بتتستدعى قبل تعريفها؟\r\n  • إيه الفرق بين Declaration و Expression في الـ hoisting؟\r\n  • إمتى تفضّل Expression؟\r\n  • ليه الدوال قيم في JavaScript؟\r\n  • إزاي Expression بيفيد مع الـ callbacks؟\r\n\r\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "مشاكل واقعية",
+      "explanation": "مشكلة 1: `button.onclick = handleClick` والـ `handleClick` معرّفة بعد السطر ده. خطأ `handleClick is not a function`.\r\n\r\nتفكير السينيور خطوة بخطوة:\r\n  • الترتيب مهم: السكربت بيتنفّذ من فوق لتحت\r\n  • لو `handleClick` expression، وقت السطر دي لسه مش معرّفة\r\n  • الحل: انقل التعريف فوق، أو استخدم Declaration\r\n\r\nالحل: تعريف `handleClick` قبل `button.onclick = handleClick`\r\n\\end{stepbox}\r\n\r\nمشكلة 2: دالة داخل `if` بتستخدم `const f = function...`. الكود برّا الـ `if` مش قادر يستدعي `f`.\r\n\r\nتفكير السينيور خطوة بخطوة:\r\n  • `const f` جوا الـ `if` معناها scope الـ `f` داخل البلوك بس\r\n  • برّا الـ `if` مفيش `f`\r\n  • عرّف `let f` برّا، وتعيّن جوا الـ `if`\r\n\r\nالحل: `let f; if (cond) f = function() \\{\\`;} ثم استدعاء `f()` برّا\r\n\\end{stepbox}\r\n\r\nمشكلة 3: `setTimeout(sayHi(), 1000)` --- الدالة بتتنفّذ فوراً مش بعد ثانية.\r\n\r\nتفكير السينيور خطوة بخطوة:\r\n  • `sayHi()` بتستدعي الدالة وتُرجع ناتجها\r\n  • `setTimeout` محتاج reference للدالة مش استدعاء\r\n  • `setTimeout(sayHi, 1000)` --- من غير أقواس\r\n\r\nالحل: `setTimeout(sayHi, 1000)` (بدون `()`)\r\n\\end{stepbox}",
+      "example": null
+    },
+    {
+      "name": "تمارين تطبيقية",
+      "explanation": "بدون ما تشغّل، `foo(); function foo() \\{ console.log(1); \\`} --- إيه الناتج؟\r\n\\end{codebox}\r\n\r\n\n[نصيحة]\nالإجابة: `1` --- الـ Declaration بتتعرّف قبل التنفيذ.\r\n\\end{tipbox}\r\n\r\n\\subsection*{المستوى 2: أصلح الـ Bug}\r\n\r\n`bar(); const bar = function() \\{ console.log(2); \\`;} بيطلع خطأ. ليه؟\r\n\\end{codebox}\r\n\r\n\n[نصيحة]\nالإجابة: Expression مش بتتعرف قبل السطر. انقل الاستدعاء لتحت التعريف.\r\n\\end{tipbox}\r\n\r\n\r\nاكتب دالة كـ Expression بتاخد رقم وترجع ضربه في 2. احفظها في `double`.\r\n\\end{codebox}\r\n\r\n\n[نصيحة]\nالإجابة: `const double = function(n) \\{ return n * 2; \\`;}\r\n\\end{tipbox}",
+      "example": null
+    },
+    {
+      "name": "Checklist قبل ما تقول ``أنا فهمت''",
+      "explanation": "[معلومة]\nقبل ما تمشي للدرس الجاي، تأكد إنك:\r\n  • تعرف الفرق بين Declaration و Expression\r\n  • تعرف معنى hoisting للدوال\r\n  • تقدر تمرّر دالة كـ argument\r\n  • تعرف ليه `setTimeout(fn, 1000)` من غير `()`\r\n  • تعرف إمتى تستخدم كل نوع\r\n\r\n\\end{infobox}",
+      "example": null
+    },
+    {
+      "name": "الدرس اللي بعده",
+      "explanation": "[معلومة]\nالدرس الجاي (Arrow Functions) هيقدّم شكل مختصر للـ Expression، وده هيكون أساسي في الـ callbacks و array methods.\r\n\\end{infobox}\r\n\r\n\r\n\r\n\r\n\r\n\n[معلومة]\n{\\Large\\bfseries كده خلصت الهاندبوك!}\r\n\r\n\r\n{\\large ارجعله في أي وقت كمرجع سريع}\r\n\r\n\r\nخلاصة الدرس:\r\n\r\n  • Function Declaration: `function name() \\{ \\`} --- ممكن تتستدعى قبل التعريف\r\n  • Function Expression: `const name = function() \\{ \\`} --- لازم تتعرّف الأول\r\n  • الـ Functions في JavaScript هي مجرد قيم\r\n  • الاتنين بيشتغلوا بنفس الطريقة عند الاستدعاء\r\n  • اختيار النوع = تفضيل شخصي\r\n  • لازم تعرف الاتنين\r\n\r\n\r\n\r\nالدرس الجاي: Arrow Functions!\r\n\\end{center}\r\n\\end{infobox}\r\n\r\n\\end{document}",
+      "example": null
+    }
+  ],
+  "mcq": [
+    {
+      "question": "ما الفرق الرئيسي بين Function Declaration و Function Expression من حيث الـ Hoisting؟",
+      "choices": [
+        "كلاهما لا يدعمان الـ Hoisting.",
+        "الـ Expression يمكن استدعاؤها قبل التعريف.",
+        "الـ Declaration يمكن استدعاؤها قبل تعريفها في الكود.",
+        "كلاهما يجب تعريفهما في أعلى الملف."
+      ],
+      "answer": "الـ Declaration يمكن استدعاؤها قبل تعريفها في الكود."
+    },
+    {
+      "question": "ما هو المقصود بالـ Anonymous Function؟",
+      "choices": [
+        "دالة بدون parameters.",
+        "دالة لا تحتوي على الكلمة return.",
+        "دالة بدون اسم ويتم تخزينها في متغير.",
+        "دالة تقوم بطباعة undefined دائماً."
+      ],
+      "answer": "دالة بدون اسم ويتم تخزينها في متغير."
+    },
+    {
+      "question": "ماذا يحدث إذا قمت باستدعاء Function Expression (محفوظة في const) قبل سطر تعريفها؟",
+      "choices": [
+        "تُرجع undefined.",
+        "تعمل بصورة طبيعية.",
+        "تُعطي TypeError.",
+        "تُعطي ReferenceError."
+      ],
+      "answer": "تُعطي ReferenceError."
+    },
+    {
+      "question": "كيف يتم التعامل مع الدوال (Functions) في JavaScript؟",
+      "choices": [
+        "الدوال تعتبر قيم (Values) يمكن تخزينها في متغيرات.",
+        "الدوال نوع خاص لا يمكن وضعه في متغير.",
+        "الدوال يمكن تخزينها فقط في مصفوفات.",
+        "الدوال لا تتواجد إلا بداخل Objects."
+      ],
+      "answer": "الدوال تعتبر قيم (Values) يمكن تخزينها في متغيرات."
+    },
+    {
+      "question": "لماذا نفضل أحياناً استخدام Function Expressions على Declarations؟",
+      "choices": [
+        "لأنها أسرع في الأداء.",
+        "لأنها تجبر المبرمج على تعريف الدالة قبل استخدامها مما ينظم الكود.",
+        "لأنها الطريقة الوحيدة لاستخدام المعاملات (Parameters).",
+        "لأنها تقلل من حجم الذاكرة المستخدمة."
+      ],
+      "answer": "لأنها تجبر المبرمج على تعريف الدالة قبل استخدامها مما ينظم الكود."
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "قم بتحويل الدالة من Function Declaration إلى Function Expression وقم بتخزينها في متغير const باسم `double`:\n`function double(num) { return num * 2; }`",
+      "html": "<!-- لا يوجد واجهة مرئية -->",
+      "solution": "const double = function(num) {\n  return num * 2;\n};"
+    },
+    {
+      "task": "اكتب دالة اسمها `isAdult` باستخدام الـ Function Expression (خزنها في متغير const)، تأخذ parameter اسمه `age`، وترجع `true` لو العمر أكبر من أو يساوي 18، و `false` لو أقل.",
+      "html": "<!-- لا يوجد واجهة مرئية -->",
+      "solution": "const isAdult = function(age) {\n  return age >= 18;\n};"
+    },
+    {
+      "task": "استخدم Function Declaration لكتابة دالة `greet` تأخذ parameter باسم `name` وترجع نص يبدأ بـ 'Hello, ' ثم الاسم. قم باستدعاء الدالة وتمرير 'Ahmed' وطباعة النتيجة.",
+      "html": "<!-- لا يوجد واجهة مرئية -->",
+      "solution": "console.log(greet('Ahmed'));\n\nfunction greet(name) {\n  return `Hello, ${name}`;\n}"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "لكتابة Function Expression وتخزينها في متغير `calc`، نستخدم الكلمة المفتاحية:\n`const calc = __________(a, b) { return a + b; };`",
+      "answer": "function"
+    },
+    {
+      "question": "لكي نجعل الدالة تُرجع ناتج العملية الحسابية نستخدم الكلمة:\n`const calcAge = function(year) { __________ 2024 - year; };`",
+      "answer": "return"
+    },
+    {
+      "question": "بفضل الـ __________، يمكننا استدعاء الـ Function Declaration قبل كتابة سطر تعريفها في الكود.",
+      "answer": "Hoisting"
+    },
+    {
+      "question": "الدالة التي ليس لها اسم والتي نستخدمها بداخل الـ Function Expression تسمى بـ __________ Function.",
+      "answer": "Anonymous"
+    },
+    {
+      "question": "عند استخدام const لحفظ Function Expression، يُفضل أن ننهي التعبير بـ __________ في نهاية قوس الإغلاق.",
+      "answer": ";"
+    }
+  ]
+}

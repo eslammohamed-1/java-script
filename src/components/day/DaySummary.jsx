@@ -1,3 +1,5 @@
+import LessonContent from '../shared/LessonContent';
+
 export default function DaySummary({ summary, goal }) {
   if (!summary?.length) return null;
 
@@ -43,7 +45,9 @@ export default function DaySummary({ summary, goal }) {
                     </ul>
                   )}
                 </td>
-                <td className="summary-table__details">{row.details}</td>
+                <td className="summary-table__details">
+                  {row.details ? <LessonContent text={row.details} /> : null}
+                </td>
                 <td>
                   {row.key_tools?.length > 0 && (
                     <div className="chips">

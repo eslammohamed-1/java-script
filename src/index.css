@@ -3339,6 +3339,10 @@ a {
    MOBILE RESPONSIVE UPDATES
    ============================================= */
 @media (max-width: 768px) {
+  body {
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
+  }
+
   .app-header__nav {
     display: none;
   }
@@ -3364,12 +3368,6 @@ a {
     grid-template-columns: 1fr;
   }
 
-  .pomodoro {
-    bottom: 1rem;
-    left: 1rem;
-    width: 180px;
-  }
-
   .achievement-toast {
     max-width: calc(100vw - 2rem);
     padding: 0.75rem 1rem;
@@ -3379,19 +3377,29 @@ a {
     margin: 0 1rem;
   }
 
+  .layout .main-content {
+    padding-bottom: 1rem;
+  }
+
+  .pomodoro {
+    bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  }
+
   /* Bottom mobile nav */
   .mobile-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 100;
-    background: var(--surface);
+    z-index: 200;
+    background: rgba(21, 29, 46, 0.97);
+    backdrop-filter: blur(10px);
     border-top: 1px solid var(--border);
     display: flex;
     justify-content: space-around;
-    padding: 0.5rem 0;
-    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    padding: 0.45rem 0.25rem;
+    padding-bottom: max(0.45rem, env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.35);
   }
 
   .mobile-nav__btn {
@@ -3417,7 +3425,7 @@ a {
 
 @media (min-width: 769px) {
   .mobile-nav {
-    display: none;
+    display: none !important;
   }
 }
 

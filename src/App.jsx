@@ -6,6 +6,7 @@ import Layout from './components/Layout';
 import ThemeToggle from './components/ThemeToggle';
 import PomodoroTimer from './components/PomodoroTimer';
 import AchievementToast from './components/AchievementToast';
+import MobileNav from './components/MobileNav';
 import { updateStreak } from './utils/gamification';
 
 const Dashboard = lazy(() => import('./components/Dashboard'));
@@ -80,11 +81,18 @@ export default function App() {
     }
   }
 
-  const showNav = view !== VIEWS.LAYOUT;
+  function handleMobileNav(target) {
+    if (target === VIEWS.DASHBOARD) goToDashboard();
+    else if (target === VIEWS.LESSONS) goToLessons();
+    else if (target === VIEWS.SEARCH) setView(VIEWS.SEARCH);
+    else if (target === VIEWS.CHEATSHEET) setView(VIEWS.CHEATSHEET);
+  }
+
+  const showTopNav = view !== VIEWS.LAYOUT;
 
   return (
     <>
-      {showNav && (
+      {showTopNav && (
         <header className="app-header">
           <div className="app-header__brand">
             <div className="app-header__logo" onClick={goToDashboard} style={{ cursor: 'pointer' }}>JS</div>
@@ -174,6 +182,12 @@ export default function App() {
       </Suspense>
 
       <PomodoroTimer />
+
+      <MobileNav
+        view={view === VIEWS.MODULES ? VIEWS.LESSONS : view}
+        views={VIEWS}
+        onNavigate={handleMobileNav}
+      />
 
       {toast && (
         <AchievementToast

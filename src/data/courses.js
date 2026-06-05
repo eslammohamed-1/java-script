@@ -1,38 +1,3 @@
-import day1 from '../../jsons/day-1-dom-basics.json';
-import day2 from '../../jsons/day-2-events.json';
-import workshop from '../../jsons/jonas-style-dom-events-projects-interactive.json';
-import finalExam from '../../jsons/final-exam.json';
-import { normalizeCourse } from '../utils/normalizeCourse';
-import { normalizeWorkshop } from '../utils/normalizeWorkshop';
-
-export const modules = [
-  {
-    id: 'day-1',
-    type: 'day-course',
-    label: 'اليوم الأول',
-    data: normalizeCourse(day1),
-  },
-  {
-    id: 'day-2',
-    type: 'day-course',
-    label: 'اليوم الثاني',
-    data: normalizeCourse(day2),
-  },
-  {
-    id: 'final-exam',
-    type: 'day-course',
-    label: 'الاختبار النهائي',
-    data: normalizeCourse(finalExam),
-    isExam: true,
-  },
-  {
-    id: 'workshop',
-    type: 'projects-workshop',
-    label: 'ورشة المشاريع',
-    data: normalizeWorkshop(workshop),
-  },
-];
-
 export const DAY_SECTIONS = [
   { id: 'overview', label: 'نظرة عامة' },
   { id: 'schedule', label: 'الجدول' },

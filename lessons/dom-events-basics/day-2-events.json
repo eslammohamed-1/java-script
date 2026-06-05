@@ -118,7 +118,7 @@
       "name": "target vs currentTarget و Event Bubbling",
       "explanation": "event.target هو العنصر اللي حصل عليه الحدث فعليًا. event.currentTarget هو العنصر اللي عليه الـ listener. Bubbling يعني الحدث يطلع من الابن للأب — تقدر توقفه بـ stopPropagation.",
       "example": {
-        "html": "<div id='box' style='padding:30px;background:#eee;'>\n  <button id='innerBtn'>Click Inner</button>\n</div>\n<p id='info'></p>",
+        "html": "<div id='box' style='padding:30px;background:#1f2a3d;color:#eef2f7;border-radius:8px;'>\n  <button id='innerBtn'>Click Inner</button>\n</div>\n<p id='info'></p>",
         "javascript": "let box = document.querySelector('#box');\nlet info = document.querySelector('#info');\n\nbox.addEventListener('click', function(event) {\n  info.textContent = 'target: ' + event.target.id + ' | currentTarget: ' + event.currentTarget.id;\n});\n\n// event.stopPropagation() يمنع الحدث من الوصول للأب"
       },
       "senior_hints": [
@@ -261,7 +261,7 @@
         "تغيير اللون حسب قيمة الرقم"
       ],
       "html": "<h1 id='count'>0</h1>\n<button id='increase'>Increase</button>\n<button id='decrease'>Decrease</button>\n<button id='reset'>Reset</button>",
-      "javascript": "let countElement = document.querySelector('#count');\nlet increaseBtn = document.querySelector('#increase');\nlet decreaseBtn = document.querySelector('#decrease');\nlet resetBtn = document.querySelector('#reset');\nlet count = 0;\nfunction updateCount() {\n  countElement.textContent = count;\n  if (count > 0) countElement.style.color = 'green';\n  else if (count < 0) countElement.style.color = 'red';\n  else countElement.style.color = 'black';\n}\nincreaseBtn.addEventListener('click', function() { count++; updateCount(); });\ndecreaseBtn.addEventListener('click', function() { count--; updateCount(); });\nresetBtn.addEventListener('click', function() { count = 0; updateCount(); });"
+      "javascript": "let countElement = document.querySelector('#count');\nlet increaseBtn = document.querySelector('#increase');\nlet decreaseBtn = document.querySelector('#decrease');\nlet resetBtn = document.querySelector('#reset');\nlet count = 0;\nfunction updateCount() {\n  countElement.textContent = count;\n  if (count > 0) countElement.style.color = 'green';\n  else if (count < 0) countElement.style.color = 'red';\n  else countElement.style.color = '#c8d1dc';\n}\nincreaseBtn.addEventListener('click', function() { count++; updateCount(); });\ndecreaseBtn.addEventListener('click', function() { count--; updateCount(); });\nresetBtn.addEventListener('click', function() { count = 0; updateCount(); });"
     },
     {
       "name": "To Do List",

@@ -8,13 +8,14 @@ import CodeWritingTests from './day/CodeWritingTests';
 import FillInBlankTests from './day/FillInBlankTests';
 import Projects from './day/Projects';
 import FinalHomework from './day/FinalHomework';
+import ExamResult from './day/ExamResult';
 import WorkshopOverview from './workshop/WorkshopOverview';
 import GlobalSeniorHints from './workshop/GlobalSeniorHints';
 import PracticePlan from './workshop/PracticePlan';
 import SuccessMetrics from './workshop/SuccessMetrics';
 import ProjectWorkshop from './workshop/ProjectWorkshop';
-import ExamResult from './day/ExamResult';
 import { getDaySections, WORKSHOP_SECTIONS } from '../data/courses';
+import { progressKey } from '../data/lessons';
 import {
   loadProgress,
   markVisited,
@@ -23,9 +24,10 @@ import {
   calcWorkshopProgress,
 } from '../utils/progress';
 
-export default function Layout({ module, moduleId, onBack }) {
+export default function Layout({ lesson, module, onBack, onBackToLessons }) {
   const { data } = module;
   const isWorkshop = data.type === 'projects-workshop';
+  const storageKey = progressKey(lesson.id, module.id);
 
   const sections = isWorkshop
     ? WORKSHOP_SECTIONS
@@ -35,38 +37,38 @@ export default function Layout({ module, moduleId, onBack }) {
   const [activeProject, setActiveProject] = useState(
     isWorkshop ? data.projects[0]?.id : null
   );
-  const [progress, setProgress] = useState(() => loadProgress(moduleId));
+  const [progress, setProgress] = useState(() => loadProgress(storageKey));
 
   const percent = isWorkshop
     ? calcWorkshopProgress(data, progress)
     : calcDayProgress(data, progress);
 
   const refreshProgress = useCallback(() => {
-    setProgress(loadProgress(moduleId));
-  }, [moduleId]);
+    setProgress(loadProgress(storageKey));
+  }, [storageKey]);
 
   useEffect(() => {
-    const updated = markVisited(moduleId, activeSection);
+    const updated = markVisited(storageKey, activeSection);
     if (isWorkshop && activeSection === 'projects' && activeProject) {
-      markVisited(moduleId, `project-${activeProject}`);
-      setProgress(loadProgress(moduleId));
+      markVisited(storageKey, `project-${activeProject}`);
+      setProgress(loadProgress(storageKey));
     } else {
       setProgress(updated);
     }
-  }, [activeSection, activeProject, moduleId, isWorkshop]);
+  }, [activeSection, activeProject, storageKey, isWorkshop]);
 
   function handleCorrect(itemId) {
-    markCompleted(moduleId, itemId);
+    markCompleted(storageKey, itemId);
     refreshProgress();
   }
 
   function handleAnnotate() {
-    markCompleted(moduleId, `annotate-${activeProject}`);
+    markCompleted(storageKey, `annotate-${activeProject}`);
     refreshProgress();
   }
 
   function handleChecklistDone() {
-    markCompleted(moduleId, `checklist-${activeProject}`);
+    markCompleted(storageKey, `checklist-${activeProject}`);
     refreshProgress();
   }
 
@@ -146,12 +148,23 @@ export default function Layout({ module, moduleId, onBack }) {
       <header className="app-header">
         <div className="app-header__brand">
           <div className="app-header__logo">JS</div>
-          <span>{data.title}</span>
+          <span className="app-header__breadcrumb">
+            {lesson.title} / {data.title}
+          </span>
         </div>
         <ProgressBar percent={percent} />
-        <button type="button" className="app-header__back" onClick={onBack}>
-          ← العودة
-        </button>
+        <div className="app-header__actions">
+          <button type="button" className="app-header__back" onClick={onBack}>
+            ← الأقسام
+          </button>
+          <button
+            type="button"
+            className="app-header__back app-header__back--muted"
+            onClick={onBackToLessons}
+          >
+            كل الدروس
+          </button>
+        </div>
       </header>
 
       <div className="layout">

@@ -1,0 +1,41 @@
+{
+  "id": "dom-events-basics",
+  "title": "JavaScript DOM & Events",
+  "description": "منهج تفاعلي بالعربية يغطي أساسيات DOM والأحداث، ثم اختبار شامل، ثم ورشة مشاريع عملية بأسلوب Jonas",
+  "badge": "الدرس الأول",
+  "level": "مبتدئ → بداية متوسط",
+  "estimatedDuration": "حوالي 3 أسابيع",
+  "learningPath": [
+    { "num": 1, "title": "اليوم الأول", "desc": "DOM — اختيار العناصر، تعديل المحتوى، classList" },
+    { "num": 2, "title": "اليوم الثاني", "desc": "Events — addEventListener، forms، delegation" },
+    { "num": 3, "title": "الاختبار النهائي", "desc": "مراجعة شاملة قبل الورشة" },
+    { "num": 4, "title": "ورشة المشاريع", "desc": "Guess My Number، Modal، Pig Game" }
+  ],
+  "modules": [
+    {
+      "id": "day-1",
+      "type": "day-course",
+      "label": "اليوم الأول",
+      "source": "day-1-dom-basics.json"
+    },
+    {
+      "id": "day-2",
+      "type": "day-course",
+      "label": "اليوم الثاني",
+      "source": "day-2-events.json"
+    },
+    {
+      "id": "final-exam",
+      "type": "day-course",
+      "label": "الاختبار النهائي",
+      "source": "final-exam.json",
+      "isExam": true
+    },
+    {
+      "id": "workshop",
+      "type": "projects-workshop",
+      "label": "ورشة المشاريع",
+      "source": "jonas-style-dom-events-projects-interactive.json"
+    }
+  ]
+}

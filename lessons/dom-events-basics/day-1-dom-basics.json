@@ -291,7 +291,7 @@
       "زر حذف الكارت"
     ],
     "html": "<div id='card' class='card'>\n  <h2 id='name'>Islam Mohamed</h2>\n  <p id='job'>Frontend Student</p>\n  <ul id='skills'>\n    <li>HTML</li>\n    <li>CSS</li>\n  </ul>\n  <button id='changeBtn'>Change Info</button>\n  <button id='addSkillBtn'>Add Skill</button>\n  <button id='deleteBtn'>Delete Card</button>\n</div>",
-    "css": ".card { width: 300px; padding: 20px; background-color: #eee; border-radius: 10px; font-family: Arial; }\n.highlight { background-color: #222; color: white; }",
+    "css": ".card { width: 300px; padding: 20px; background-color: #1e293b; color: #eef2f7; border-radius: 10px; font-family: Arial; }\n.highlight { background-color: #334155; color: #fde68a; }",
     "javascript": "let name = document.querySelector('#name');\nlet job = document.querySelector('#job');\nlet card = document.querySelector('#card');\nlet skills = document.querySelector('#skills');\nlet changeBtn = document.querySelector('#changeBtn');\nlet addSkillBtn = document.querySelector('#addSkillBtn');\nlet deleteBtn = document.querySelector('#deleteBtn');\n\nchangeBtn.addEventListener('click', function() {\n  name.textContent = 'Islam DOM Master';\n  job.textContent = 'JavaScript Developer';\n  card.classList.toggle('highlight');\n});\n\naddSkillBtn.addEventListener('click', function() {\n  let li = document.createElement('li');\n  li.textContent = 'JavaScript DOM';\n  skills.appendChild(li);\n});\n\ndeleteBtn.addEventListener('click', function() {\n  card.remove();\n});"
   },
   "final_homework": [

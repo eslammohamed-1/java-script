@@ -1,5 +1,10 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import AnnotatedCodeBlock from './AnnotatedCodeBlock';
+import ProjectLab from '../shared/ProjectLab';
+import {
+  extractProjectCode,
+  extractStarterCode,
+} from '../../utils/extractProjectCode';
 
 function ChecklistModal({ items, onClose, onComplete }) {
   const [checked, setChecked] = useState({});
@@ -46,10 +51,24 @@ function ChecklistModal({ items, onClose, onComplete }) {
   );
 }
 
-export default function ProjectWorkshop({ project, onAnnotate, onChecklistDone }) {
+export default function ProjectWorkshop({
+  project,
+  lessonId,
+  onAnnotate,
+  onChecklistDone,
+}) {
   const [hideSolution, setHideSolution] = useState(false);
   const [showSeniorHints, setShowSeniorHints] = useState(false);
   const [showChecklist, setShowChecklist] = useState(false);
+
+  const starter = useMemo(
+    () => extractStarterCode(project.codeBlocks),
+    [project.codeBlocks]
+  );
+  const solution = useMemo(
+    () => extractProjectCode(project.codeBlocks),
+    [project.codeBlocks]
+  );
 
   const allSeniorNotes = project.codeBlocks?.flatMap((b) =>
     (b.annotations ?? []).map((a) => ({
@@ -127,6 +146,13 @@ export default function ProjectWorkshop({ project, onAnnotate, onChecklistDone }
           </ol>
         </div>
       )}
+
+      <ProjectLab
+        storageKey={`${lessonId}-${project.id}`}
+        starter={starter}
+        solution={hideSolution ? null : solution}
+        title={`طبّق: ${project.name}`}
+      />
 
       {showSeniorHints && allSeniorNotes?.length > 0 && (
         <div className="hint-box">

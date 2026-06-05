@@ -100,6 +100,7 @@ export default function Layout({ lesson, module, onBack, onBackToLessons }) {
               {project && (
                 <ProjectWorkshop
                   project={project}
+                  lessonId={lesson.id}
                   onAnnotate={handleAnnotate}
                   onChecklistDone={handleChecklistDone}
                 />
@@ -133,7 +134,7 @@ export default function Layout({ lesson, module, onBack, onBackToLessons }) {
           />
         );
       case 'projects':
-        return <Projects projects={data.projects} />;
+        return <Projects projects={data.projects} lessonId={lesson.id} />;
       case 'homework':
         return <FinalHomework items={data.final_homework} />;
       case 'exam-result':

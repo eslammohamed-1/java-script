@@ -692,6 +692,14 @@ a {
   color: var(--info);
 }
 
+.senior-hints__rich {
+  margin: 0;
+}
+
+.senior-hints__rich .lesson-content__p {
+  font-size: 0.9rem;
+}
+
 /* Legacy hint-box (workshop panels) */
 .hint-box {
   background: var(--accent-bg);

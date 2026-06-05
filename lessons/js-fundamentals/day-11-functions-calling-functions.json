@@ -32,12 +32,12 @@
   "lessons": [
     {
       "name": "تشبيه من الحياة: المصنع وماكينة التقطيع",
-      "explanation": "[معلومة]\nالسيناريو:\n\n  • عندنا مصنع عصير (fruitProcessor) بيستقبل فواكه\n  • بس المصنع محتاج الفاكهة تكون مقطّعة قطع صغيرة الأول\n  • فعندنا ماكينة تقطيع (cutFruitPieces) بتقطّع كل فاكهة لـ 4 قطع\n  • المصنع بيبعت الفاكهة للماكينة الأول\n  • الماكينة بترجّع القطع\n  • المصنع بياخد القطع ويعمل بيها العصير\n\n\\end{infobox}\n\n### رسم توضيحي لتدفق البيانات\n\nتدفق البيانات بين الدالتين:\n\nأنت & $\\longrightarrow$ & المصنع & $\\longrightarrow$ & ماكينة التقطيع \\\\\n & & fruitProcessor & & cutFruitPieces \\\\\n & & & & \\\\\n2 تفاح & $\\longrightarrow$ & `apples = 2` & $\\longrightarrow$ & `fruit = 2` \\\\\n3 برتقان & $\\longrightarrow$ & `oranges = 3` & $\\longrightarrow$ & `fruit = 3` \\\\\n & & & & \\\\\n & & & $\\longleftarrow$ & `return 2 * 4 = 8` \\\\\n & & & $\\longleftarrow$ & `return 3 * 4 = 12` \\\\\n & & & & \\\\\n & $\\longleftarrow$ & ``Juice with 8 & & \\\\\n & & pieces of apple & & \\\\\n & & and 12 pieces & & \\\\\n & & of orange.'' & & \\\\\n\\end{tabular}\n\\end{center}\n\\end{flowbox}",
+      "explanation": "[معلومة]\nالسيناريو:\n\n  • عندنا مصنع عصير (fruitProcessor) بيستقبل فواكه\n  • بس المصنع محتاج الفاكهة تكون مقطّعة قطع صغيرة الأول\n  • فعندنا ماكينة تقطيع (cutFruitPieces) بتقطّع كل فاكهة لـ 4 قطع\n  • المصنع بيبعت الفاكهة للماكينة الأول\n  • الماكينة بترجّع القطع\n  • المصنع بياخد القطع ويعمل بيها العصير\n\n\\end{infobox}\n\n### رسم توضيحي لتدفق البيانات\n\nتدفق البيانات بين الدالتين:\n\nأنت & $\\longrightarrow$ & المصنع & $\\longrightarrow$ & ماكينة التقطيع \\\\\n & & fruitProcessor & & cutFruitPieces \\\\\n & & & & \\\\\n2 تفاح & $\\longrightarrow$ & `apples = 2` & $\\longrightarrow$ & `fruit = 2` \\\\\n3 برتقان & $\\longrightarrow$ & `oranges = 3` & $\\longrightarrow$ & `fruit = 3` \\\\\n & & & & \\\\\n & & & $\\longleftarrow$ & `return 2 * 4 = 8` \\\\\n & & & $\\longleftarrow$ & `return 3 * 4 = 12` \\\\\n & & & & \\\\\n & $\\longleftarrow$ & ``Juice with 8 & & \\\\\n & & pieces of apple & & \\\\\n & & and 12 pieces & & \\\\\n & & of orange.'' & & \\\\\n\\end{tabular}\n\n\\end{flowbox}",
       "example": null
     },
     {
       "name": "الكود الكامل",
-      "explanation": "### دالة التقطيع (cutFruitPieces\n\n[معلومة]\nتشريح:\n\n  • بتاخد parameter واحد: `fruit` (عدد الفواكه)\n  • بترجع العدد مضروب في 4 (يعني بتقطّع كل واحدة 4 قطع)\n  • لو بعتنالها 2: بترجع `2 * 4 = 8`\n  • لو بعتنالها 3: بترجع `3 * 4 = 12`\n\\end{itemize\n\\end{infobox}\n\n### دالة المصنع (\\en{fruitProcessor\n\n### الاستدعاء والنتيجة",
+      "explanation": "### دالة التقطيع (cutFruitPieces\n\n[معلومة]\nتشريح:\n\n  • بتاخد parameter واحد: `fruit` (عدد الفواكه)\n  • بترجع العدد مضروب في 4 (يعني بتقطّع كل واحدة 4 قطع)\n  • لو بعتنالها 2: بترجع `2 * 4 = 8`\n  • لو بعتنالها 3: بترجع `3 * 4 = 12`\n\\end{itemize}\n\\end{infobox}\n\n### دالة المصنع (\\en{fruitProcess}o}r}\n\n}### الاستدعاء والنتيجة",
       "example": {
         "html": "<div id='app'></div>",
         "css": "body { font-family: sans-serif; }",
@@ -55,20 +55,20 @@
     },
     {
       "name": "ملخص تدفق البيانات",
-      "explanation": "الخطوة & إيه اللي بيحصل & المتغير & القيمة \\\\\n\\endhead\n\n1 & استدعاء `fruitProcessor(2, 3)` & `apples` & `2` \\\\\n & & `oranges` & `3` \\\\\n\n2 & استدعاء `cutFruitPieces(2)` & `fruit` & `2` \\\\\n & إرجاع `2 * 4` & return & `8` \\\\\n\n3 & حفظ النتيجة & `applePieces` & `8` \\\\\n\n4 & استدعاء `cutFruitPieces(3)` & `fruit` & `3` \\\\\n & إرجاع `3 * 4` & return & `12` \\\\\n\n5 & حفظ النتيجة & `orangePieces` & `12` \\\\\n\n6 & بناء النص & `juice` & `\"Juice with 8...\"` \\\\\n\n7 & إرجاع النص & return & الـ String الكامل \\\\\n\n\\end{longtable}\n\\end{center}",
+      "explanation": "الخطوة & إيه اللي بيحصل & المتغير & القيمة \\\\\n\\endhead\n\n1 & استدعاء `fruitProcessor(2, 3)` & `apples` & `2` \\\\\n & & `oranges` & `3` \\\\\n\n2 & استدعاء `cutFruitPieces(2)` & `fruit` & `2` \\\\\n & إرجاع `2 * 4` & return & `8` \\\\\n\n3 & حفظ النتيجة & `applePieces` & `8` \\\\\n\n4 & استدعاء `cutFruitPieces(3)` & `fruit` & `3` \\\\\n & إرجاع `3 * 4` & return & `12` \\\\\n\n5 & حفظ النتيجة & `orangePieces` & `12` \\\\\n\n6 & بناء النص & `juice` & `\"Juice with 8...\"` \\\\\n\n7 & إرجاع النص & return & الـ String الكامل \\\\\n\n\\end{longtable}",
       "example": null
     },
     {
-      "name": "النقطة المهمة: بنمرر \\en{parameter",
+      "name": "النقطة المهمة: بنمرر \\en{parame}t}e}r}",
       "explanation": "[تحذير]\nخد بالك (ده اللي بيلخبط ناس كتير):\n\nلما بنستدعي `cutFruitPieces` جوه `fruitProcessor`، مش بنمررلها رقم ثابت كتبناه إحنا --- بنمررلها الـ parameter اللي جاي من الدالة الأولى!\n\nيعني:\n  • `apples` ده parameter جاي من `fruitProcessor`\n  • قيمته بتتحدد لما حد يستدعي `fruitProcessor`\n  • لو حد استدعاها بـ `fruitProcessor(2, 3)` $\\rightarrow$ `apples = 2`\n  • لو حد استدعاها بـ `fruitProcessor(10, 5)` $\\rightarrow$ `apples = 10`\n  • وبعدين القيمة دي بتتمرر لـ `cutFruitPieces`\n\nيعني البيانات بتتدفق من الاستدعاء الخارجي $\\rightarrow$ للدالة الأولى $\\rightarrow$ للدالة التانية.\n\\end{warningbox}",
       "example": {
         "html": "<div id='app'></div>",
         "css": "body { font-family: sans-serif; }",
-        "javascript": "// :\nconst applePieces = cutFruitPieces(2); // \n\n//  parameter :\nconst applePieces = cutFruitPieces(apples); // "
+        "javascript": "// :\nconst applePieces = cutFruitPieces(2); // \n\n//  parameter :\nconst applePieces = cutFruitPieces(apples); //"
       }
     },
     {
-      "name": "ليه ما نضربش في 4 مباشرة؟ (مبدأ \\en{DRY",
+      "name": "ليه ما نضربش في 4 مباشرة؟ (مبدأ \\en{D}R}Y}",
       "explanation": "### السؤال الوجيه\n\nممكن تسأل: ليه ما كتبناش كده بدل ما نعمل دالة منفصلة؟\n\n### الإجابة: 3 أسباب مهمة\n\n[معلومة]\nالسبب 1: ده اللي بيحصل في الواقع\n\nفي الكود الحقيقي، الدوال بتستدعي دوال تانية طول الوقت. لازم تتعوّد على الفكرة دي.\n\\end{infobox}\n\n[معلومة]\nالسبب 2: مبدأ DRY (Don't Repeat Yourself)\n\nتخيل إن مش بس تفاح وبرتقان --- تخيل 10 أنواع فاكهة! هتكتب `* 4` عشر مرات؟\n\n\\end{infobox}\n\n[معلومة]\nالسبب 3: سهولة التعديل\n\nتخيل إن ماكينة التقطيع اتغيّرت وبقت بتقطّع 3 قطع بدل 4:\n\n  • بدون دالة منفصلة: لازم تغيّر الـ `4` في كل سطر (10 أماكن!)\n  • مع دالة منفصلة: بتغيّر في مكان واحد بس:\n\n\\end{infobox}\n\n### المقارنة العملية\n\n  • `2 * 3 = 6` قطع تفاح (بدل 8)\n  • `3 * 3 = 9` قطع برتقان (بدل 12)\n  • غيّرنا سطر واحد بس والنتيجة كلها اتغيّرت!",
       "example": {
         "html": "<div id='app'></div>",
@@ -87,22 +87,22 @@
     },
     {
       "name": "رسم توضيحي: النمط العام",
-      "explanation": "النمط العام لدالة بتستدعي دالة تانية:\n\nالكود الخارجي \\\\\n$\\downarrow$ argument \\\\\nالدالة الرئيسية (Main Function) \\\\\n$\\downarrow$ بتمرر قيمة كـ argument \\\\\nالدالة المساعدة (Helper Function) \\\\\n$\\downarrow$ `return` \\\\\nالدالة الرئيسية (بتاخد النتيجة وتكمّل) \\\\\n$\\downarrow$ `return` \\\\\nالكود الخارجي (بياخد النتيجة النهائية) \\\\\n\\end{tabular}\n\\end{center}\n\nالقاعدة: الدالة المساعدة بتعمل جزء من الشغل، والدالة الرئيسية بتجمّع كل حاجة مع بعض.\n\\end{flowbox}",
+      "explanation": "النمط العام لدالة بتستدعي دالة تانية:\n\nالكود الخارجي \\\\\n$\\downarrow$ argument \\\\\nالدالة الرئيسية (Main Function) \\\\\n$\\downarrow$ بتمرر قيمة كـ argument \\\\\nالدالة المساعدة (Helper Function) \\\\\n$\\downarrow$ `return` \\\\\nالدالة الرئيسية (بتاخد النتيجة وتكمّل) \\\\\n$\\downarrow$ `return` \\\\\nالكود الخارجي (بياخد النتيجة النهائية) \\\\\n\\end{tabular}\n\nالقاعدة: الدالة المساعدة بتعمل جزء من الشغل، والدالة الرئيسية بتجمّع كل حاجة مع بعض.\n\\end{flowbox}",
       "example": null
     },
     {
       "name": "قسم ``خد بالك'' -- الأخطاء الشائعة",
-      "explanation": "الخطأ & الصح \\\\\n\\endhead\n\nنسيان إن الدالة المساعدة &\nلازم تكون معرّفة قبل ما \\\\\nلازم تكون معرّفة &\nتتستدعى (أو تكون Declaration) \\\\\n\nنسيان الـ `return` في الدالة المساعدة &\nمن غيرها الدالة الرئيسية هتاخد `undefined` \\\\\n\nنسيان حفظ نتيجة الاستدعاء &\n`const result = helper(x)` \\\\\nفي متغير &\nمش بس `helper(x)` \\\\\n\nتمرير رقم ثابت بدل الـ parameter &\nمرّر الـ parameter: `helper(apples)` \\\\\n\nتكرار نفس الكود بدل دالة منفصلة &\nاعمل دالة مساعدة واستدعيها (DRY) \\\\\n\n\\end{longtable}\n\\end{center}",
+      "explanation": "الخطأ & الصح \\\\\n\\endhead\n\nنسيان إن الدالة المساعدة &\nلازم تكون معرّفة قبل ما \\\\\nلازم تكون معرّفة &\nتتستدعى (أو تكون Declaration) \\\\\n\nنسيان الـ `return` في الدالة المساعدة &\nمن غيرها الدالة الرئيسية هتاخد `undefined` \\\\\n\nنسيان حفظ نتيجة الاستدعاء &\n`const result = helper(x)` \\\\\nفي متغير &\nمش بس `helper(x)` \\\\\n\nتمرير رقم ثابت بدل الـ parameter &\nمرّر الـ parameter: `helper(apples)` \\\\\n\nتكرار نفس الكود بدل دالة منفصلة &\nاعمل دالة مساعدة واستدعيها (DRY) \\\\\n\n\\end{longtable}",
       "example": null
     },
     {
       "name": "ملخص سريع",
-      "explanation": "المفهوم & الشرح \\\\\n\\endhead\n\nدالة بتستدعي دالة &\nدالة رئيسية بتستخدم دالة مساعدة جواها \\\\\n\nتدفق البيانات &\nargument $\\rightarrow$ دالة رئيسية $\\rightarrow$ دالة مساعدة $\\rightarrow$ `return` \\\\\n\nليه نفصل في دوال؟ &\nDRY + سهولة التعديل + إعادة الاستخدام \\\\\n\nتمرير parameter مش رقم &\nبنمرر الـ parameter اللي جاي من الدالة الرئيسية \\\\\n\nسلسلة دوال &\nدالة بتستدعي دالة بتستدعي دالة (ممكن!) \\\\\n\n\\end{longtable}\n\\end{center}",
+      "explanation": "المفهوم & الشرح \\\\\n\\endhead\n\nدالة بتستدعي دالة &\nدالة رئيسية بتستخدم دالة مساعدة جواها \\\\\n\nتدفق البيانات &\nargument $\\rightarrow$ دالة رئيسية $\\rightarrow$ دالة مساعدة $\\rightarrow$ `return` \\\\\n\nليه نفصل في دوال؟ &\nDRY + سهولة التعديل + إعادة الاستخدام \\\\\n\nتمرير parameter مش رقم &\nبنمرر الـ parameter اللي جاي من الدالة الرئيسية \\\\\n\nسلسلة دوال &\nدالة بتستدعي دالة بتستدعي دالة (ممكن!) \\\\\n\n\\end{longtable}",
       "example": null
     },
     {
-      "name": "\\en{Cheat Sheet",
-      "explanation": "[معلومة]\n{\\Large\\bfseries Functions Calling Functions -- Quick Reference}\n\nالنمط الأساسي:\n\nالخطوات:\n\n  • اكتب الدالة المساعدة (اللي بتعمل حاجة بسيطة ومحددة)\n  • اكتب الدالة الرئيسية (اللي بتستدعي المساعدة جواها)\n  • استدعي الدالة الرئيسية من الكود بتاعك\n  • احفظ نتيجة كل استدعاء في متغير\n\n\\end{infobox}",
+      "name": "\\en{Cheat Sh}e}e}t}",
+      "explanation": "[معلومة]\n\nالنمط الأساسي:\n\nالخطوات:\n\n  • اكتب الدالة المساعدة (اللي بتعمل حاجة بسيطة ومحددة)\n  • اكتب الدالة الرئيسية (اللي بتستدعي المساعدة جواها)\n  • استدعي الدالة الرئيسية من الكود بتاعك\n  • احفظ نتيجة كل استدعاء في متغير\n\n\\end{infobox}",
       "example": {
         "html": "<div id='app'></div>",
         "css": "body { font-family: sans-serif; }",
@@ -110,27 +110,27 @@
       }
     },
     {
-      "name": "معجم المصطلحات (\\en{Glossary",
-      "explanation": "المصطلح & النطق & المعنى \\\\\n\\endhead\n\nHelper Function & هيلبر فانكشن &\nدالة مساعدة بتعمل جزء من الشغل \\\\\n\nMain Function & مين فانكشن &\nالدالة الرئيسية اللي بتنظّم كل حاجة \\\\\n\nData Flow & داتا فلو &\nتدفق البيانات بين الدوال \\\\\n\nDRY & دراي &\nما تكررش نفسك \\\\\n\nReusable & ريوزابل &\nقابل لإعادة الاستخدام \\\\\n\nCall Stack & كول ستاك &\nترتيب تنفيذ الدوال (هنتعلمه بعدين) \\\\\n\nNested Call & نيستد كول &\nاستدعاء دالة جوه دالة \\\\\n\nSingle Responsibility & سنجل ريسبونسيبيلتي &\nكل دالة مسئولة عن حاجة واحدة \\\\\n\n\\end{longtable}\n\\end{center}",
+      "name": "معجم المصطلحات (\\en{Gloss}a}r}y}",
+      "explanation": "المصطلح & النطق & المعنى \\\\\n\\endhead\n\nHelper Function & هيلبر فانكشن &\nدالة مساعدة بتعمل جزء من الشغل \\\\\n\nMain Function & مين فانكشن &\nالدالة الرئيسية اللي بتنظّم كل حاجة \\\\\n\nData Flow & داتا فلو &\nتدفق البيانات بين الدوال \\\\\n\nDRY & دراي &\nما تكررش نفسك \\\\\n\nReusable & ريوزابل &\nقابل لإعادة الاستخدام \\\\\n\nCall Stack & كول ستاك &\nترتيب تنفيذ الدوال (هنتعلمه بعدين) \\\\\n\nNested Call & نيستد كول &\nاستدعاء دالة جوه دالة \\\\\n\nSingle Responsibility & سنجل ريسبونسيبيلتي &\nكل دالة مسئولة عن حاجة واحدة \\\\\n\n\\end{longtable}",
       "example": null
     },
     {
-      "name": "حل المشاكل (\\en{Troubleshooting",
-      "explanation": "المشكلة & السبب & الحل \\\\\n\\endhead\n\nالنتيجة `undefined` &\nالدالة المساعدة &\nأضف `return` \\\\\n &\nمفيهاش `return` &\nفي الدالة المساعدة \\\\\n\nالنتيجة `NaN` &\nبتمرر `undefined` &\nتأكد إنك بتمرر \\\\\n &\nللدالة المساعدة &\nالـ parameter الصح \\\\\n\nis not a function &\nالدالة المساعدة &\nعرّفها قبل الاستدعاء \\\\\n &\nمش معرّفة &\nأو استخدم Declaration \\\\\n\nالنتيجة مش متوقعة &\nتدفق البيانات غلط &\nاتبع الخطوات \\\\\n &\n &\nبالورقة والقلم \\\\\n\n\\end{longtable}\n\\end{center}",
+      "name": "حل المشاكل (\\en{Troubleshoot}i}n}g}",
+      "explanation": "المشكلة & السبب & الحل \\\\\n\\endhead\n\nالنتيجة `undefined` &\nالدالة المساعدة &\nأضف `return` \\\\\n &\nمفيهاش `return` &\nفي الدالة المساعدة \\\\\n\nالنتيجة `NaN` &\nبتمرر `undefined` &\nتأكد إنك بتمرر \\\\\n &\nللدالة المساعدة &\nالـ parameter الصح \\\\\n\nis not a function &\nالدالة المساعدة &\nعرّفها قبل الاستدعاء \\\\\n &\nمش معرّفة &\nأو استخدم Declaration \\\\\n\nالنتيجة مش متوقعة &\nتدفق البيانات غلط &\nاتبع الخطوات \\\\\n &\n &\nبالورقة والقلم \\\\\n\n\\end{longtable}",
       "example": null
     },
     {
-      "name": "الفكرة في سطرين (\\en{TL;DR",
+      "name": "الفكرة في سطرين (\\en{T}L};DR",
       "explanation": "[نصيحة]\n  • دالة ممكن تستدعي دالة تانية من جواها\n  • القيمة المرجعة من الدالة الداخلية ممكن تستخدم في الخارجية\n  • ترتيب الاستدعاء مهم: الداخلية بتنفّذ الأول\n  • ده أساس الـ composition والـ helper functions\n\n\\end{tipbox}",
       "example": null
     },
     {
-      "name": "ليه ده موجود؟ (\\en{Why",
+      "name": "ليه ده موجود؟ (\\en{W}h}y}",
       "explanation": "[معلومة]\nبدون دوال مساعدة، الكود بينحشر في دالة واحدة ضخمة. تقسيم المهمة لدوال أصغر بيخلي الكود أسهل في الفهم والاختبار والصيانة.\n\\end{infobox}",
       "example": null
     },
     {
-      "name": "النموذج الذهني (\\en{Mental Model",
+      "name": "النموذج الذهني (\\en{Mental Mo}d}e}l}",
       "explanation": "[نصيحة]\nالتشبيه: الدالة الخارجية زي مدير: بتفوض مهمة فرعية لدالة تانية، وتستنى الناتج عشان تكمل.\n\nالقاعدة: اللي جوا بيتنفّذ أولاً. الناتج بيرجع للدالة اللي استدعته، وهكذا لفوق.\n\\end{tipbox}",
       "example": null
     },

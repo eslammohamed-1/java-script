@@ -1,3 +1,6 @@
+import LessonContent from './LessonContent';
+import { hasLessonMarkup } from '../../utils/parseLessonMarkup';
+
 function normalizeHint(hint) {
   if (typeof hint === 'string') {
     return { title: null, explanation: hint, practice: null };
@@ -26,7 +29,14 @@ export default function SeniorHints({ hints, title = 'شرح احترافي' }) 
               {hint.title && (
                 <h4 className="senior-hints__card-title">{hint.title}</h4>
               )}
-              <p className="senior-hints__card-text">{hint.explanation}</p>
+              {hasLessonMarkup(hint.explanation) ? (
+                <LessonContent
+                  text={hint.explanation}
+                  className="senior-hints__rich"
+                />
+              ) : (
+                <p className="senior-hints__card-text">{hint.explanation}</p>
+              )}
               {hint.practice && (
                 <p className="senior-hints__card-practice">
                   <strong>تطبيق عملي:</strong> {hint.practice}

@@ -39,8 +39,8 @@
   ],
   "lessons": [
     {
-      "name": "ليه نحتاج \\en{Arrays",
-      "explanation": "### المشكلة: بدون Arrays\n\nالطريقة القديمة -- متغير لكل قيمة:\n\\end{codebox\n\n### الحل: باستخدام Arrays\n\n[معلومة]\nتشبيه من الحياة:\n\nالـ Array زي صف الكراسي في السينما:\n\n  • كل كرسي له رقم (index)\n  • الترقيم بيبدأ من 0 مش 1\n  • تقدر تشيل حد وتقعّد حد مكانه\n  • عدد الكراسي (length) = 3\n\\end{itemize\n\nIndex 0 & Index 1 & Index 2 \\\\\nMichael & Steven & Peter \\\\\n\\end{tabular}\n\\end{center}\n\\end{infobox}",
+      "name": "ليه نحتاج \\en{Arr}a}y}s}",
+      "explanation": "### المشكلة: بدون Arrays\n\nالطريقة القديمة -- متغير لكل قيمة:\n\\en{Arr}a}y}s}\n\n[معلومة]\nتشبيه من الحياة:\n\nالـ Array زي صف الكراسي في السينما:\n\n  • كل كرسي له رقم (index)\n  • الترقيم بيبدأ من 0 مش 1\n  • تقدر تشيل حد وتقعّد حد مكانه\n  • عدد الكراسي (length) = 3\n\\end{itemize}\nMichael & Steven & Peter \\\\\n\\end{tabular}\n\n\\end{infobox}",
       "example": {
         "html": "<div id='app'></div>",
         "css": "body { font-family: sans-serif; }",
@@ -48,8 +48,8 @@
       }
     },
     {
-      "name": "طرق إنشاء \\en{Array",
-      "explanation": "### الطريقة الأولى: Literal Syntax\n\nدي الطريقة الأكثر استخداماً وهي اللي هتستخدمها في أغلب الوقت.\n\n### الطريقة التانية: Array Function\n\n[تحذير]\n\\textbf{تحذير: لازم تكتب `new` قبل `Array()` وإلا مش هيشتغل صح.\n\\end{warningbox\n\n### مقارنة بين الطريقتين\n\nالمقارنة & Literal Syntax `[]` & `new Array()` \\\\\nالشكل & `[\"a\", \"b\"]` & `new Array(\"a\", \"b\")` \\\\\nالاستخدام & الأكثر شيوعاً & نادر الاستخدام \\\\\nلازم `new`؟ & لا & نعم لازم \\\\\n\\end{tabular}\n\\end{center}\n\n[نصيحة]\nنصيحة: الـ Array ممكن تخزن أي عدد من القيم، وأي نوع بيانات --- أرقام، نصوص، أو حتى Arrays تانية!\n\\end{tipbox}",
+      "name": "طرق إنشاء \\en{Ar}r}a}y}",
+      "explanation": "### الطريقة الأولى: Literal Syntax\n\nدي الطريقة الأكثر استخداماً وهي اللي هتستخدمها في أغلب الوقت.\n\n### الطريقة التانية: Array Function\n\n[تحذير]\n\\textbf{تحذ}ي}ر}: لازم تكتب `new` قبل `Array()` وإلا مش هيشتغل صح.\n\\end{warningbox}\nالشكل & `[\"a\", \"b\"]` & `new Array(\"a\", \"b\")` \\\\\nالاستخدام & الأكثر شيوعاً & نادر الاستخدام \\\\\nلازم `new`؟ & لا & نعم لازم \\\\\n\\end{tabular}\n\n[نصيحة]\nنصيحة: الـ Array ممكن تخزن أي عدد من القيم، وأي نوع بيانات --- أرقام، نصوص، أو حتى Arrays تانية!\n\\end{tipbox}",
       "example": {
         "html": "<div id='app'></div>",
         "css": "body { font-family: sans-serif; }",
@@ -57,8 +57,8 @@
       }
     },
     {
-      "name": "الوصول لعناصر الـ \\en{Array",
-      "explanation": "[تحذير]\nخد بالك: الـ Arrays بتبدأ من صفر (Zero-Based)\n\nالعنصر & الـ Index \\\\\nالعنصر الأول & `0` \\\\\nالعنصر التاني & `1` \\\\\nالعنصر التالت & `2` \\\\\n\\end{tabular}\n\\end{center}\n\nيعني الترقيم بيبدأ من صفر مش من واحد!\n\\end{warningbox}",
+      "name": "الوصول لعناصر الـ \\en{Ar}r}a}y}",
+      "explanation": "[تحذير]\nخد بالك: الـ Arrays بتبدأ من صفر (Zero-Based)\n\nالعنصر & الـ Index \\\\\nالعنصر الأول & `0` \\\\\nالعنصر التاني & `1` \\\\\nالعنصر التالت & `2` \\\\\n\\end{tabular}\n\nيعني الترقيم بيبدأ من صفر مش من واحد!\n\\end{warningbox}",
       "example": {
         "html": "<div id='app'></div>",
         "css": "body { font-family: sans-serif; }",
@@ -66,7 +66,7 @@
       }
     },
     {
-      "name": "خاصية \\code{length",
+      "name": "خاصية \\code{len}g}t}h}",
       "explanation": "الـ `.length` دي حاجة اسمها Property (خاصية)، هنتكلم عنها أكتر لما نوصل لموضوع الـ Objects.\n\n[تحذير]\nخد بالك: `length` مش Zero-Based\n\n  • آخر index = `2`\n  • لكن `length` = `3` (العدد الفعلي للعناصر)\n  • يعني `length` بيديك العدد الحقيقي مش الـ index\n\n\\end{warningbox}",
       "example": {
         "html": "<div id='app'></div>",
@@ -84,7 +84,7 @@
       }
     },
     {
-      "name": "تعديل عناصر الـ \\en{Array",
+      "name": "تعديل عناصر الـ \\en{Ar}r}a}y}",
       "explanation": "[معلومة]\nإيه اللي حصل بالتفصيل؟\n\n  • في الأول الـ Array كانت: `[\"Michael\", \"Steven\", \"Peter\"]`\n  • غيّرنا العنصر في الـ index رقم 2\n  • بقت: `[\"Michael\", \"Steven\", \"Jay\"]`\n  • أي `console.log` بعد التغيير هيعرض الحالة الجديدة\n\n\\end{infobox}",
       "example": {
         "html": "<div id='app'></div>",
@@ -93,7 +93,7 @@
       }
     },
     {
-      "name": "\\code{const",
+      "name": "\\code{co}n}s}t}",
       "explanation": "دي نقطة مهمة جداً وبتلخبط ناس كتير:\n\n[تحذير]\nخد بالك (مهم جداً):\n\n  • الـ Primitive Values (زي الأرقام والنصوص) --- مش ممكن تتغير لما تكون `const`\n  • الـ Arrays مش Primitive --- ممكن تتغير من جوه حتى لو `const`\n  • اللي مش ممكن هو إنك تستبدل الـ Array كلها بواحدة جديدة\n  • السبب: طريقة JavaScript في تخزين الحاجات في الـ Memory (هنتعلم عنها في قسم How JavaScript Works Behind the Scenes)\n\n\\end{warningbox}",
       "example": {
         "html": "<div id='app'></div>",
@@ -102,7 +102,7 @@
       }
     },
     {
-      "name": "أنواع بيانات مختلفة في \\en{Array",
+      "name": "أنواع بيانات مختلفة في \\en{Ar}r}a}y}",
       "explanation": "[نصيحة]\nفي أي موضع في الـ Array، JavaScript بتتوقع Expression:\n\nيعني تقدر تحط:\n  • قيم مباشرة: `\"Jonas\"` أو `46`\n  • متغيرات: `firstName`\n  • عمليات حسابية: `2037 - 1991`\n  • Arrays تانية: `friends`\n  • استدعاء Functions\n\n\\end{tipbox}",
       "example": {
         "html": "<div id='app'></div>",
@@ -111,8 +111,8 @@
       }
     },
     {
-      "name": "تمرين عملي: \\en{Functions",
-      "explanation": "### الدالة المستخدمة\n\n### اللي مش هيشتغل\n\nأخطاء شائعة:\n\n  • لو عملت عملية `+` على Array: JavaScript بتحولها لـ String وتلزقها!\n  • لو عملت عملية `-` على Array: النتيجة `NaN` (Not a Number)\n  • الحل: استخدم عناصر فردية مش الـ Array كلها\n\n\\end{errorbox}\n\n### الطريقة الصح\n\n### الطريقة الأحسن: تخزين النتائج في Array\n\n[نصيحة]\nليه ده بيشتغل؟\n\nلأن استدعاء الـ Function هو Expression (بينتج قيمة). JavaScript بتنفذ الـ Function الأول، وبعدين بتحط النتيجة في الـ Array.\n\n\\textbf{القاعدة: لو بدأت بـ Array، حاول تخلّص بـ Array جديدة.\n\\end{tipbox}",
+      "name": "تمرين عملي: \\en{Functi}o}n}s}",
+      "explanation": "### الدالة المستخدمة\n\n### اللي مش هيشتغل\n\nأخطاء شائعة:\n\n  • لو عملت عملية `+` على Array: JavaScript بتحولها لـ String وتلزقها!\n  • لو عملت عملية `-` على Array: النتيجة `NaN` (Not a Number)\n  • الحل: استخدم عناصر فردية مش الـ Array كلها\n\n\\end{errorbox}\n\n### الطريقة الصح\n\n### الطريقة الأحسن: تخزين النتائج في Array\n\n[نصيحة]\nليه ده بيشتغل؟\n\nلأن استدعاء الـ Function هو Expression (بينتج قيمة). JavaScript بتنفذ الـ Function الأول، وبعدين بتحط النتيجة في الـ Array.\n\n\\textbf{القاع}د}ة}: لو بدأت بـ Array، حاول تخلّص بـ Array جديدة.\n\\end{tipbox}",
       "example": {
         "html": "<div id='app'></div>",
         "css": "body { font-family: sans-serif; }",
@@ -121,27 +121,27 @@
     },
     {
       "name": "قسم ``خد بالك'' -- الأخطاء الشائعة",
-      "explanation": "الخطأ & الصح \\\\\n\\endhead\n\nالفاصلة جوه الـ String &\nالفاصلة برّه الـ String \\\\\n\n`Array(1,2,3)` بدون `new` &\n`new Array(1,2,3)` \\\\\n\n`friends = [\"new\"]` لما تكون `const` &\n`friends[0] = \"new\"` تغيير عنصر بس \\\\\n\n`calcAge(yearsArray)` تمرير Array كاملة &\n`calcAge(years[0])` تمرير عنصر واحد \\\\\n\nافتراض إن `length` بيبدأ من 0 &\n`length` = العدد الفعلي (3 مش 2) \\\\\n\n\\end{longtable}\n\\end{center}",
+      "explanation": "الخطأ & الصح \\\\\n\\endhead\n\nالفاصلة جوه الـ String &\nالفاصلة برّه الـ String \\\\\n\n`Array(1,2,3)` بدون `new` &\n`new Array(1,2,3)` \\\\\n\n`friends = [\"new\"]` لما تكون `const` &\n`friends[0] = \"new\"` تغيير عنصر بس \\\\\n\n`calcAge(yearsArray)` تمرير Array كاملة &\n`calcAge(years[0])` تمرير عنصر واحد \\\\\n\nافتراض إن `length` بيبدأ من 0 &\n`length` = العدد الفعلي (3 مش 2) \\\\\n\n\\end{longtable}",
       "example": null
     },
     {
       "name": "ملخص سريع",
-      "explanation": "المفهوم & الكود & ملاحظة \\\\\n\\endhead\n\nإنشاء Array &\n`const arr = [1, 2, 3]` &\nLiteral Syntax (الأشهر) \\\\\n\nإنشاء Array (طريقة 2) &\n`new Array(1, 2, 3)` &\nأقل استخداماً \\\\\n\nالوصول لعنصر &\n`arr[0]` &\nZero-Based \\\\\n\nعدد العناصر &\n`arr.length` &\nمش Zero-Based \\\\\n\nآخر عنصر &\n`arr[arr.length - 1]` &\nتلقائي \\\\\n\nتعديل عنصر &\n`arr[0] = \"new\"` &\nMutation \\\\\n\n`const` + Array &\nتقدر تغير عناصر &\nمش ممكن تستبدل الكل \\\\\n\n\\end{longtable}\n\\end{center}",
+      "explanation": "المفهوم & الكود & ملاحظة \\\\\n\\endhead\n\nإنشاء Array &\n`const arr = [1, 2, 3]` &\nLiteral Syntax (الأشهر) \\\\\n\nإنشاء Array (طريقة 2) &\n`new Array(1, 2, 3)` &\nأقل استخداماً \\\\\n\nالوصول لعنصر &\n`arr[0]` &\nZero-Based \\\\\n\nعدد العناصر &\n`arr.length` &\nمش Zero-Based \\\\\n\nآخر عنصر &\n`arr[arr.length - 1]` &\nتلقائي \\\\\n\nتعديل عنصر &\n`arr[0] = \"new\"` &\nMutation \\\\\n\n`const` + Array &\nتقدر تغير عناصر &\nمش ممكن تستبدل الكل \\\\\n\n\\end{longtable}",
       "example": null
     },
     {
-      "name": "\\en{Cheat Sheet",
-      "explanation": "[معلومة]\n{\\Large\\bfseries Arrays -- Quick Reference}\n\nالعملية & الكود \\\\\nإنشاء & `const a = [1, 2, 3]` \\\\\nإنشاء (طريقة 2) & `const a = new Array(1, 2, 3)` \\\\\nوصول & `a[0]` \\\\\nتعديل & `a[0] = 99` \\\\\nالطول & `a.length` \\\\\nآخر عنصر & `a[a.length - 1]` \\\\\nأنواع مختلفة & `[\"text\", 42, true, [1,2]]` \\\\\n\\end{tabular}\n\\end{center}\n\\end{infobox}",
+      "name": "\\en{Cheat Sh}e}e}t}",
+      "explanation": "[معلومة]\n\nالعملية & الكود \\\\\nإنشاء & `const a = [1, 2, 3]` \\\\\nإنشاء (طريقة 2) & `const a = new Array(1, 2, 3)` \\\\\nوصول & `a[0]` \\\\\nتعديل & `a[0] = 99` \\\\\nالطول & `a.length` \\\\\nآخر عنصر & `a[a.length - 1]` \\\\\nأنواع مختلفة & `[\"text\", 42, true, [1,2]]` \\\\\n\\end{tabular}\n\n\\end{infobox}",
       "example": null
     },
     {
-      "name": "معجم المصطلحات (\\en{Glossary",
-      "explanation": "المصطلح & النطق & المعنى \\\\\n\\endhead\n\nArray & أراي &\nمصفوفة -- هيكل بيانات بيخزن عناصر مرتبة \\\\\n\nIndex & إندكس &\nرقم ترتيب العنصر في الـ Array \\\\\n\nZero-Based & زيرو بيسد &\nالترقيم بيبدأ من صفر \\\\\n\nLength & لينث &\nعدد العناصر \\\\\n\nMutate & ميوتيت &\nتغيير/تعديل البيانات \\\\\n\nLiteral & ليترال &\nكتابة القيمة مباشرة في الكود \\\\\n\nExpression & إكسبريشن &\nأي كود بينتج قيمة \\\\\n\nStatement & ستيتمنت &\nأمر/تعليمة مش بتنتج قيمة \\\\\n\nImmutable & إميوتابل &\nمش ممكن يتغير \\\\\n\nProperty & بروبرتي &\nخاصية مرتبطة بالـ Object/Array \\\\\n\nData Structure & داتا ستراكتشر &\nطريقة تنظيم وتخزين البيانات \\\\\n\nNaN & نان &\nNot a Number -- نتيجة عملية حسابية غلط \\\\\n\n\\end{longtable}\n\\end{center}",
+      "name": "معجم المصطلحات (\\en{Gloss}a}r}y}",
+      "explanation": "المصطلح & النطق & المعنى \\\\\n\\endhead\n\nArray & أراي &\nمصفوفة -- هيكل بيانات بيخزن عناصر مرتبة \\\\\n\nIndex & إندكس &\nرقم ترتيب العنصر في الـ Array \\\\\n\nZero-Based & زيرو بيسد &\nالترقيم بيبدأ من صفر \\\\\n\nLength & لينث &\nعدد العناصر \\\\\n\nMutate & ميوتيت &\nتغيير/تعديل البيانات \\\\\n\nLiteral & ليترال &\nكتابة القيمة مباشرة في الكود \\\\\n\nExpression & إكسبريشن &\nأي كود بينتج قيمة \\\\\n\nStatement & ستيتمنت &\nأمر/تعليمة مش بتنتج قيمة \\\\\n\nImmutable & إميوتابل &\nمش ممكن يتغير \\\\\n\nProperty & بروبرتي &\nخاصية مرتبطة بالـ Object/Array \\\\\n\nData Structure & داتا ستراكتشر &\nطريقة تنظيم وتخزين البيانات \\\\\n\nNaN & نان &\nNot a Number -- نتيجة عملية حسابية غلط \\\\\n\n\\end{longtable}",
       "example": null
     },
     {
-      "name": "حل المشاكل (\\en{Troubleshooting",
-      "explanation": "الـ Error & السبب & الحل \\\\\n\\endhead\n\nAssignment to &\nبتحاول تستبدل &\nغيّر عناصر \\\\\nconstant variable &\nArray كاملة بـ `const` &\nفردية بس \\\\\n\n`undefined` &\nالـ index أكبر &\nراجع \\\\\nلما بتجيب عنصر &\nمن حجم الـ Array &\n`length` \\\\\n\n`NaN` &\nعملية حسابية &\nاستخدم عنصر \\\\\nفي العمليات &\nعلى Array كاملة &\nفردي `arr[0]` \\\\\n\nidentifier has &\nفي متغير بنفس &\nغيّر اسم \\\\\nalready been declared &\nالاسم معرّف قبل كده &\nالمتغير \\\\\n\n\\end{longtable}\n\\end{center}",
+      "name": "حل المشاكل (\\en{Troubleshoot}i}n}g}",
+      "explanation": "الـ Error & السبب & الحل \\\\\n\\endhead\n\nAssignment to &\nبتحاول تستبدل &\nغيّر عناصر \\\\\nconstant variable &\nArray كاملة بـ `const` &\nفردية بس \\\\\n\n`undefined` &\nالـ index أكبر &\nراجع \\\\\nلما بتجيب عنصر &\nمن حجم الـ Array &\n`length` \\\\\n\n`NaN` &\nعملية حسابية &\nاستخدم عنصر \\\\\nفي العمليات &\nعلى Array كاملة &\nفردي `arr[0]` \\\\\n\nidentifier has &\nفي متغير بنفس &\nغيّر اسم \\\\\nalready been declared &\nالاسم معرّف قبل كده &\nالمتغير \\\\\n\n\\end{longtable}",
       "example": null
     },
     {
@@ -150,17 +150,17 @@
       "example": null
     },
     {
-      "name": "الفكرة في سطرين (\\en{TL;DR",
+      "name": "الفكرة في سطرين (\\en{T}L};DR",
       "explanation": "[نصيحة]\n  • المصفوفة = قائمة مرتبة بعناصر (رقم، نص، أي حاجة)\n  • الوصول بالـ index: `arr[0]` أول عنصر (من صفر)\n  • `arr.length` عدد العناصر\n  • `const` للـ array مش بيمنع تعديل العناصر جواها\n\n\\end{tipbox}",
       "example": null
     },
     {
-      "name": "ليه ده موجود؟ (\\en{Why",
+      "name": "ليه ده موجود؟ (\\en{W}h}y}",
       "explanation": "[معلومة]\nبدون مصفوفات، تخزين قائمة من العناصر هيبقى متغير منفصل لكل واحد. المصفوفة بتخليك تعمل loop عليها، تبحث، تضيف، تحذف بسهولة.\n\\end{infobox}",
       "example": null
     },
     {
-      "name": "النموذج الذهني (\\en{Mental Model",
+      "name": "النموذج الذهني (\\en{Mental Mo}d}e}l}",
       "explanation": "[نصيحة]\nالتشبيه: المصفوفة زي رف فيه صناديق مرقّمة من 0. كل صندوق فيه عنصر. الرقم على الصندوق = الـ index.\n\nالقاعدة: الـ index يبدأ من 0. `arr[arr.length - 1]` = آخر عنصر.\n\\end{tipbox}",
       "example": null
     },
@@ -191,7 +191,7 @@
     },
     {
       "name": "الدرس اللي بعده",
-      "explanation": "[معلومة]\nالدرس الجاي (Array Operations/Methods) هيوضّح `push`, `pop`, `shift`, `unshift`, `indexOf`, `includes` وغيرها.\n\\end{infobox}\n\n[معلومة]\n{\\Large\\bfseries كده خلصت الهاندبوك!}\n\n{\\large ارجعله في أي وقت كمرجع سريع}\n\nفي الدرس الجاي هنتعلم Array Operations/Methods وهنعمل عمليات أكتر على الـ Arrays\n\\end{center}\n\\end{infobox}\n\n\\end{document}",
+      "explanation": "[معلومة]\nالدرس الجاي (Array Operations/Methods) هيوضّح `push`, `pop`, `shift`, `unshift`, `indexOf`, `includes` وغيرها.\n\\end{infobox}\n\n[معلومة]\n\nفي الدرس الجاي هنتعلم Array Operations/Methods وهنعمل عمليات أكتر على الـ Arrays\n\n\\end{infobox}",
       "example": null
     }
   ],

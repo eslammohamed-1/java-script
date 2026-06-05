@@ -4,16 +4,27 @@ const BOX_STARTS = {
   '[تحذير]': 'warning',
 };
 
-const BOX_ENDS = {
-  '\\end{infobox}': 'info',
-  '\\end{infobox': 'info',
-  '\\end{tipbox}': 'tip',
-  '\\end{warningbox}': 'warning',
-  '\\end{errorbox}': 'error',
-  '\\end{comparebox}': 'compare',
-  '\\end{codebox}': 'code',
-  '\\end{stepbox}': 'step',
+const BOX_TYPE_MAP = {
+  infobox: 'info',
+  tipbox: 'tip',
+  warningbox: 'warning',
+  errorbox: 'error',
+  comparebox: 'compare',
+  codebox: 'code',
+  stepbox: 'step',
+  flowbox: 'info',
+  verbatim: 'code',
 };
+
+const NOISE_END_TAGS = new Set([
+  'center',
+  'document',
+  'tabular',
+  'longtable',
+  'itemize',
+  'enumerate',
+  'mdframed',
+]);
 
 const NOISE_PATTERNS = [
   /^\\end\{center\}$/,
@@ -25,7 +36,30 @@ const NOISE_PATTERNS = [
   /^\\end\{itemize\}$/,
   /^\\end\{itemize$/,
   /^\\begin\{itemize\}$/,
+  /^\\end\{mdframed\}$/,
+  /^\\end\{mdframed$/,
+  /^\\end\{verbatim\}$/,
+  /^\\end\{verbatim$/,
 ];
+
+function matchBoxEnd(trimmed) {
+  const m = trimmed.match(/^\\end\{([a-zA-Z]+)(.*)$/);
+  if (!m) return null;
+  const tag = m[1];
+  const rest = m[2];
+  if (rest && !/^[`}\s]*$/.test(rest)) return null;
+  if (NOISE_END_TAGS.has(tag)) return { kind: 'noise' };
+  return { kind: 'box', variant: BOX_TYPE_MAP[tag] ?? 'info' };
+}
+
+function stripTrailingEndMarkers(text) {
+  return text
+    .split('\n')
+    .filter((line) => !/^\\end\{[a-zA-Z]+[`}\s]*$/.test(line.trim()))
+    .join('\n')
+    .replace(/\n?\\end\{[a-zA-Z]+[`}\s]*$/g, '')
+    .trim();
+}
 
 const MATH_REPLACEMENTS = [
   [/\\Rightarrow/g, '→'],
@@ -171,7 +205,7 @@ export function parseLessonMarkup(text) {
   let boxLines = [];
 
   function flushParagraph() {
-    const content = paragraphLines.join('\n').trim();
+    const content = stripTrailingEndMarkers(paragraphLines.join('\n'));
     if (content) blocks.push({ type: 'paragraph', content });
     paragraphLines = [];
   }
@@ -206,7 +240,7 @@ export function parseLessonMarkup(text) {
 
   function flushBox() {
     if (boxType && boxLines.length) {
-      const content = boxLines.join('\n').trim();
+      const content = stripTrailingEndMarkers(boxLines.join('\n'));
       if (content) {
         blocks.push({ type: 'box', variant: boxType, content });
       }
@@ -235,25 +269,22 @@ export function parseLessonMarkup(text) {
       continue;
     }
 
-    let closedBox = false;
-    for (const [marker, variant] of Object.entries(BOX_ENDS)) {
-      if (trimmed === marker || trimmed.startsWith(marker)) {
-        flushList();
-        flushTable();
-        if (boxType) {
-          flushBox();
-        } else {
-          const orphan = paragraphLines.join('\n').trim();
-          paragraphLines = [];
-          if (orphan) {
-            blocks.push({ type: 'box', variant, content: orphan });
-          }
+    const boxEnd = matchBoxEnd(trimmed);
+    if (boxEnd) {
+      if (boxEnd.kind === 'noise') continue;
+      flushList();
+      flushTable();
+      if (boxType) {
+        flushBox();
+      } else {
+        const orphan = stripTrailingEndMarkers(paragraphLines.join('\n'));
+        paragraphLines = [];
+        if (orphan) {
+          blocks.push({ type: 'box', variant: boxEnd.variant, content: orphan });
         }
-        closedBox = true;
-        break;
       }
+      continue;
     }
-    if (closedBox) continue;
 
     if (BOX_STARTS[trimmed]) {
       flushParagraph();

@@ -15,6 +15,8 @@ import GlobalSeniorHints from './workshop/GlobalSeniorHints';
 import PracticePlan from './workshop/PracticePlan';
 import SuccessMetrics from './workshop/SuccessMetrics';
 import ProjectWorkshop from './workshop/ProjectWorkshop';
+import NotesPanel from './shared/NotesPanel';
+import ThemeToggle from './ThemeToggle';
 import { getDaySections, WORKSHOP_SECTIONS } from '../data/courses';
 import { progressKey } from '../data/lessons';
 import {
@@ -24,8 +26,9 @@ import {
   calcDayProgress,
   calcWorkshopProgress,
 } from '../utils/progress';
+import { awardXP } from '../utils/gamification';
 
-export default function Layout({ lesson, module, onBack, onBackToLessons }) {
+export default function Layout({ lesson, module, onBack, onBackToLessons, onShowToast }) {
   const { data } = module;
   const isWorkshop = data.type === 'projects-workshop';
   const storageKey = progressKey(lesson.id, module.id);
@@ -39,6 +42,7 @@ export default function Layout({ lesson, module, onBack, onBackToLessons }) {
     isWorkshop ? data.projects[0]?.id : null
   );
   const [progress, setProgress] = useState(() => loadProgress(storageKey));
+  const [showNotes, setShowNotes] = useState(false);
 
   const percent = isWorkshop
     ? calcWorkshopProgress(data, progress)
@@ -50,8 +54,13 @@ export default function Layout({ lesson, module, onBack, onBackToLessons }) {
 
   useEffect(() => {
     const updated = markVisited(storageKey, activeSection);
+    const result = awardXP('visitSection');
+    if (result.newBadges?.length > 0 && onShowToast) {
+      onShowToast(result.newBadges[0]);
+    }
     if (isWorkshop && activeSection === 'projects' && activeProject) {
       markVisited(storageKey, `project-${activeProject}`);
+      awardXP('visitProject');
       setProgress(loadProgress(storageKey));
     } else {
       setProgress(updated);
@@ -60,6 +69,10 @@ export default function Layout({ lesson, module, onBack, onBackToLessons }) {
 
   function handleCorrect(itemId) {
     markCompleted(storageKey, itemId);
+    const result = awardXP('correctAnswer');
+    if (result.newBadges?.length > 0 && onShowToast) {
+      onShowToast(result.newBadges[0]);
+    }
     refreshProgress();
   }
 
@@ -148,11 +161,13 @@ export default function Layout({ lesson, module, onBack, onBackToLessons }) {
       case 'homework':
         return <FinalHomework items={data.final_homework} />;
       case 'exam-result':
-        return <ExamResult module={data} progress={progress} />;
+        return <ExamResult module={data} progress={progress} onShowToast={onShowToast} />;
       default:
         return null;
     }
   }
+
+  const notesSectionKey = `${lesson.id}/${module.id}/${activeSection}`;
 
   return (
     <>
@@ -165,6 +180,15 @@ export default function Layout({ lesson, module, onBack, onBackToLessons }) {
         </div>
         <ProgressBar percent={percent} />
         <div className="app-header__actions">
+          <button
+            type="button"
+            className={`app-header__notes-btn ${showNotes ? 'app-header__notes-btn--active' : ''}`}
+            onClick={() => setShowNotes(!showNotes)}
+            title="ملاحظاتي"
+          >
+            📝
+          </button>
+          <ThemeToggle />
           <button type="button" className="app-header__back" onClick={onBack}>
             ← الأقسام
           </button>
@@ -199,7 +223,16 @@ export default function Layout({ lesson, module, onBack, onBackToLessons }) {
           </ul>
         </aside>
 
-        <main className="main-content">{renderContent()}</main>
+        <main className="main-content">
+          <div className="main-content__body animate-fade-in" key={activeSection}>
+            {renderContent()}
+          </div>
+          {showNotes && (
+            <div className="main-content__notes animate-slide-up">
+              <NotesPanel sectionKey={notesSectionKey} />
+            </div>
+          )}
+        </main>
       </div>
     </>
   );

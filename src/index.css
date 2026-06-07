@@ -1252,6 +1252,15 @@ a {
   font-weight: 600;
 }
 
+.quiz-explanation {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid currentColor;
+  opacity: 0.85;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
 /* Fill in blank */
 .fill-item {
   margin-bottom: 1.25rem;

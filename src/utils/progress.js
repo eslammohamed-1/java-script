@@ -34,8 +34,19 @@ export function markCompleted(moduleId, itemId) {
 export function calcDayProgress(module, progress) {
   if (module.type === 'improved-course') {
     const sections = ['overview', 'content'];
+    if (module.mcq?.length) sections.push('mcq');
+    if (module.complete_code_tests?.length) sections.push('fill-blank');
+
+    const totalItems =
+      sections.length +
+      (module.mcq?.length ?? 0) +
+      (module.complete_code_tests?.length ?? 0);
+
     const done = progress.visited.filter((v) => sections.includes(v)).length;
-    return Math.min(100, Math.round((done / sections.length) * 100));
+    const completed = progress.completed.length;
+    return totalItems > 0
+      ? Math.min(100, Math.round(((done + completed) / totalItems) * 100))
+      : 0;
   }
 
   const isExam =

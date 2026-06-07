@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function MCQItem({ question, choices, answer, index, onCorrect }) {
+function MCQItem({ question, choices, answer, explanation, index, onCorrect }) {
   const [selected, setSelected] = useState(null);
   const [checked, setChecked] = useState(false);
 
@@ -56,6 +56,9 @@ function MCQItem({ question, choices, answer, index, onCorrect }) {
           {selected === answer
             ? '✓ إجابة صحيحة!'
             : `✗ إجابة خاطئة. الإجابة الصحيحة: ${answer}`}
+          {explanation && (
+            <div className="quiz-explanation">{explanation}</div>
+          )}
         </div>
       )}
     </div>
@@ -74,6 +77,7 @@ export default function MCQQuiz({ mcq, onCorrect }) {
           question={item.question}
           choices={item.choices}
           answer={item.answer}
+          explanation={item.explanation}
           onCorrect={onCorrect}
         />
       ))}

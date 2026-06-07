@@ -21,10 +21,19 @@ export const WORKSHOP_SECTIONS = [
 
 export function getDaySections(data, isExam = false) {
   if (data.type === 'improved-course') {
-    return [
+    const sections = [
       { id: 'overview', label: 'نظرة عامة' },
       { id: 'content', label: 'المحتوى' },
     ];
+
+    if (data.mcq?.length > 0) {
+      sections.push({ id: 'mcq', label: 'اختبار MCQ' });
+    }
+    if (data.complete_code_tests?.length > 0) {
+      sections.push({ id: 'fill-blank', label: 'أكمل الفراغ' });
+    }
+
+    return sections;
   }
 
   const has = {

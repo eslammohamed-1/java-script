@@ -1,0 +1,1588 @@
+{
+  "metadata": {
+    "sourceFile": "Truthy and Falsy Values.tex",
+    "convertedAt": "2026-06-07T06:30:33.924579+00:00",
+    "title": "Truthy and Falsy Values في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "تصحيح عدد القيم Falsy: عمليًا للمبتدئين false و 0 و '' و null و undefined و NaN، ومع إضافة 0n و -0 في الدقة الحديثة",
+        "توضيح أن document.all حالة تاريخية خاصة ونادرة وليست مناسبة للمبتدئين",
+        "توضيح الفرق بين false كقيمة Boolean و falsy كتصنيف لقيم تتحول إلى false",
+        "إضافة Boolean() كتحويل صريح، وشرح أماكن التحويل الضمني داخل if و logical operators",
+        "توضيح Zero Bug وطرق تجنبه باستخدام مقارنات صريحة و nullish coalescing ??",
+        "توضيح أن [] و {} و function(){} قيم Truthy حتى لو فارغة",
+        "إضافة شرح مبكر لسلوك || و && وإرجاعهما للقيم نفسها وليس true/false دائمًا",
+        "تحسين أمثلة فحص المصفوفات باستخدام Array.isArray و length",
+        "تحسين Troubleshooting و Cheat Sheet والتمارين والأسئلة النظرية"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox",
+      "comparebox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "Truthy and Falsy Values في JavaScript",
+    "الدرس الشامل لفهم القيم الحقيقية والمزيفة وكيفية تعامل JavaScript معها",
+    "من كورس The Complete JavaScript Course",
+    "القسم: JavaScript Fundamentals - Part 1"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "الربط بالمفاهيم السابقة وأهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قبل ما تبدأ، راجع المفاهيم دي:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "Type Conversion and Coercion: التحويل الصريح والضمني.",
+                "If / Else Statements: الشروط واتخاذ القرارات.",
+                "Data Types: خصوصًا Number و String و Undefined و Null و NaN.",
+                "Basic Operators: خصوصًا logical operators لاحقًا و comparisons."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد الدرس هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفهم الفرق بين truthy و falsy.",
+                "تحفظ القيم falsy المهمة وتتجنب Zero Bug.",
+                "تستخدم Boolean() للتحويل الصريح.",
+                "تفهم التحويل الضمني داخل if و || و &&.",
+                "تفرق بين empty string و string فيه مسافة.",
+                "تعرف أن [] و {} truthy حتى لو فاضيين.",
+                "تستخدم ?? بدل || عندما تكون 0 أو \"\" قيمًا صالحة.",
+                "تكتب شروط أوضح وأكثر أمانًا."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "JavaScript لا تشترط أن يكون الشرط داخل if قيمة Boolean صريحة. أي قيمة يمكن أن توضع في سياق منطقي، واللغة تحولها ضمنيًا إلى true أو false."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Truthy/Falsy هو وصف لسلوك القيمة عند تحويلها إلى Boolean، وليس نوعًا جديدًا من أنواع البيانات."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الفهم الدقيق للـ truthy/falsy مهم جدًا لأن bugs كثيرة تأتي من الاعتماد على if (value) أو value || default بدون فهم القيم التي تتحول إلى false."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه هي الـ Falsy Values؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Falsy values هي قيم ليست false بالضرورة، لكنها تتحول إلى false عند استخدامها في Boolean context مثل if أو Boolean(value)."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تشبيه حارس السينما: أي قيمة في قائمة falsy يرفضها الحارس كأنها false، وأي قيمة غيرها يسمح لها كأنها true."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تصحيح علمي: في الشرح التعليمي القديم كثيرًا نقول 5 قيم falsy غير false: 0 و \"\" و undefined و null و NaN. لكن الأدق في JavaScript الحديثة أن القائمة تشمل أيضًا false نفسها، و -0، و 0n. وهناك document.all كحالة تاريخية خاصة ونادرة في المتصفحات."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "القيمة",
+              "Falsy؟",
+              "ملاحظة"
+            ],
+            [
+              "false",
+              "نعم",
+              "Boolean false نفسها"
+            ],
+            [
+              "0",
+              "نعم",
+              "الصفر الرقمي"
+            ],
+            [
+              "-0",
+              "نعم",
+              "صفر سالب؛ حالة رقمية دقيقة"
+            ],
+            [
+              "0n",
+              "نعم",
+              "BigInt صفر"
+            ],
+            [
+              "\"\" أو '' أو ``",
+              "نعم",
+              "Empty String فقط"
+            ],
+            [
+              "null",
+              "نعم",
+              "غياب قيمة متعمد"
+            ],
+            [
+              "undefined",
+              "نعم",
+              "قيمة غير معطاة"
+            ],
+            [
+              "NaN",
+              "نعم",
+              "رقم غير صالح"
+            ],
+            [
+              "document.all",
+              "نعم خاص جدًا",
+              "حالة legacy نادرة في المتصفحات، لا تعتمد عليها"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "للمبتدئ: احفظ الأساسيات العملية: false, 0, \"\", null, undefined, NaN. ثم أضف 0n و -0 عندما تتعامل مع BigInt أو تفاصيل دقيقة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفرق بين false و Falsy",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "false قيمة Boolean صريحة. أما falsy فهو وصف لأي قيمة تتحول إلى false عند الحاجة إلى Boolean."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(false === 0);\nconsole.log(Boolean(0));\nconsole.log(Boolean(''));\nconsole.log(Boolean(undefined));"
+        },
+        {
+          "type": "output",
+          "text": "false\nfalse\nfalse\nfalse"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "0 ليس false. لكنه يتحول إلى false في سياق منطقي. الفرق مهم جدًا عند المقارنات الصارمة ===."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "التحويل اليدوي Explicit Conversion باستخدام Boolean()",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(Boolean(0));\nconsole.log(Boolean(undefined));\nconsole.log(Boolean(''));\nconsole.log(Boolean('Jonas'));\nconsole.log(Boolean({}));\nconsole.log(Boolean([]));"
+        },
+        {
+          "type": "output",
+          "text": "false\nfalse\nfalse\ntrue\ntrue\ntrue"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "القيمة",
+                  "النتيجة",
+                  "السبب"
+                ],
+                [
+                  "0",
+                  "false",
+                  "Falsy"
+                ],
+                [
+                  "undefined",
+                  "false",
+                  "Falsy"
+                ],
+                [
+                  "\"\"",
+                  "false",
+                  "Empty string"
+                ],
+                [
+                  "\"Jonas\"",
+                  "true",
+                  "String غير فارغ"
+                ],
+                [
+                  "{}",
+                  "true",
+                  "Object موجود"
+                ],
+                [
+                  "[]",
+                  "true",
+                  "Array object موجودة"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "لغز Empty String مقابل Empty Object",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "النص الفاضي \"\" falsy لأنه لا يحتوي أي characters. أما object أو array الفارغ فهو truthy لأنه كيان موجود في الذاكرة."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(Boolean(''));\nconsole.log(Boolean(' '));\nconsole.log(Boolean({}));\nconsole.log(Boolean([]));"
+        },
+        {
+          "type": "output",
+          "text": "false\ntrue\ntrue\ntrue"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "\" \" فيه مسافة، لذلك ليس empty string، ويعتبر truthy. استخدم trim() لو عايز تعتبر المسافات فقط كأنها فارغة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "التحويل الضمني في الواقع",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Boolean coercion يحدث تلقائيًا في Logical Context مثل if condition، وكذلك مع logical operators مثل || و && و !."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const money = 0;\n\nif (money) {\n  console.log(\"Don't spend it all ;)\");\n} else {\n  console.log('You should get a job!');\n}\""
+        },
+        {
+          "type": "output",
+          "text": "You should get a job!"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "money قيمته 0.",
+                "if يحتاج Boolean context.",
+                "0 يتحول إلى false.",
+                "يتم تنفيذ else."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "استخدام Falsy لاختبار وجود المتغيرات",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let height;\n\nif (height) {\n  console.log('YAY! Height is defined');\n} else {\n  console.log('Height is UNDEFINED');\n}\""
+        },
+        {
+          "type": "output",
+          "text": "Height is UNDEFINED"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "height قيمته undefined، وهي falsy، لذلك يدخل else."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشكلة الصفر The Zero Bug",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let height = 0;\n\nif (height) {\n  console.log('YAY! Height is defined');\n} else {\n  console.log('Height is UNDEFINED');\n}"
+        },
+        {
+          "type": "output",
+          "text": "Height is UNDEFINED"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المتغير معرف وقيمته 0، لكن 0 falsy، لذلك if (height) يفشل. هذا bug منطقي شائع."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "حلول أفضل حسب الهدف:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let height = 0;\n\nif (height !== undefined && height !== null) {\n  console.log('Height is defined');\n}\n\nif (typeof height === 'number' && !Number.isNaN(height)) {\n  console.log('Height is a valid number');\n}\n\nconst finalHeight = height ?? 180; // يحافظ على 0 ولا يستبدله"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Logical Operators وعلاقتها بـ Truthy/Falsy",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "معلومة مهمة: || و && لا يرجعان true/false دائمًا. هما يرجعان إحدى القيم نفسها بناءً على truthy/falsy."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(0 || 'default');\nconsole.log('Ahmed' || 'default');\nconsole.log(0 && 'hello');\nconsole.log('Ahmed' && 'hello');\nconsole.log(!0);\nconsole.log(!'Ahmed');"
+        },
+        {
+          "type": "output",
+          "text": "default\nAhmed\n0\nhello\ntrue\nfalse"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "|| يرجع أول قيمة truthy، أو آخر قيمة لو كلهم falsy.",
+                "&& يرجع أول قيمة falsy، أو آخر قيمة لو كلهم truthy.",
+                "! يحول إلى Boolean ثم يعكسها."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "|| مقابل ??",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "|| يستخدم falsy، لذلك يستبدل 0 و \"\" و NaN. أما ?? فيستخدم nullish فقط: null أو undefined."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(0 || 10);\nconsole.log(0 ?? 10);\nconsole.log('' || 'default');\nconsole.log('' ?? 'default');\nconsole.log(null ?? 'default');\nconsole.log(undefined ?? 'default');"
+        },
+        {
+          "type": "output",
+          "text": "10\n0\ndefault\n\ndefault\ndefault"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم ?? عندما تكون 0 أو empty string قيمًا صالحة لا تريد استبدالها."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "مسافة داخل النص Truthy",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const spaceString = ' ';\n\nif (spaceString) {\n  console.log('This is Truthy!');\n} else {\n  console.log('This is Falsy!');\n}"
+        },
+        {
+          "type": "output",
+          "text": "This is Truthy!"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "النص يحتوي مسافة، وليس empty string."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "الأرقام السالبة Truthy",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const temperature = -5;\n\nif (temperature) {\n  console.log(\"It's cold, but the value is Truthy!\");\n}"
+        },
+        {
+          "type": "output",
+          "text": "It's cold, but the value is Truthy!"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أي رقم غير 0 يعتبر truthy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "NaN Falsy",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const calculation = 23 / 'Jonas';\n\nif (calculation) {\n  console.log('Valid Number');\n} else {\n  console.log('Invalid Number (Falsy)');\n}"
+        },
+        {
+          "type": "output",
+          "text": "Invalid Number (Falsy)"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "NaN من القيم falsy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Array فارغة Truthy",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const emptyArray = [];\n\nif (emptyArray) {\n  console.log('Array exists!');\n} else {\n  console.log('No array!');\n}"
+        },
+        {
+          "type": "output",
+          "text": "Array exists!"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "array object موجودة، لذلك truthy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فحص المصفوفات والكائنات بطريقة صحيحة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "if (arr) لا يعني أن المصفوفة فيها عناصر. يعني فقط أن arr قيمة truthy وليست null/undefined تقريبًا."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const items = [];\n\nif (items.length > 0) {\n  console.log('المصفوفة فيها عناصر');\n} else {\n  console.log('المصفوفة فاضية');\n}\n\nif (Array.isArray(items) && items.length > 0) {\n  console.log('Valid non-empty array');\n}"
+        },
+        {
+          "type": "output",
+          "text": "المصفوفة فاضية"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "للـ object العادي، استخدم Object.keys(obj).length لفحص هل يحتوي properties."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "قسم خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الغلطة الشائعة",
+              "التصحيح والسبب"
+            ],
+            [
+              "اعتبار \"false\" falsy",
+              "خطأ؛ هو string غير فارغ لذلك truthy"
+            ],
+            [
+              "استخدام if (number) للتحقق من وجود رقم",
+              "انتبه للصفر؛ استخدم فحصًا صريحًا"
+            ],
+            [
+              "اعتبار [] أو {} falsy",
+              "خطأ؛ كلاهما truthy"
+            ],
+            [
+              "كتابة boolean()",
+              "الصحيح Boolean()"
+            ],
+            [
+              "الخلط بين \"\" و \" \"",
+              "الأول falsy والثاني truthy"
+            ],
+            [
+              "استخدام || للقيم الافتراضية مع 0",
+              "استخدم ?? لو 0 قيمة صالحة"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع للمقارنة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "القيمة/النوع",
+              "Boolean Evaluation"
+            ],
+            [
+              "false",
+              "Falsy"
+            ],
+            [
+              "0, -0, 0n",
+              "Falsy"
+            ],
+            [
+              "1, -1, 0.5",
+              "Truthy"
+            ],
+            [
+              "\"\", '', ``",
+              "Falsy"
+            ],
+            [
+              "\"Hello\", \"0\", \"false\", \" \"",
+              "Truthy"
+            ],
+            [
+              "undefined, null, NaN",
+              "Falsy"
+            ],
+            [
+              "{}, [], function(){}",
+              "Truthy"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "Falsy Values",
+                  "Truthy Examples"
+                ],
+                [
+                  "false",
+                  "true"
+                ],
+                [
+                  "0, -0, 0n",
+                  "42, -99, 3.14"
+                ],
+                [
+                  "\"\"",
+                  "\"Jonas\", \" \", \"0\""
+                ],
+                [
+                  "undefined",
+                  "[]"
+                ],
+                [
+                  "null",
+                  "{}"
+                ],
+                [
+                  "NaN",
+                  "function(){}"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "if (userName) {\n  // userName is truthy\n}\n\nif (userName?.trim()) {\n  // non-empty after trimming spaces\n}\n\nconst limit = settings.limit ?? 10; // keeps 0\nconst fallback = value || 'default'; // replaces all falsy values\n\nif (Array.isArray(items) && items.length > 0) {\n  console.log('non-empty array');\n}"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات Glossary",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "المعنى بالعربي",
+              "النطق التقريبي"
+            ],
+            [
+              "Truthy",
+              "قيمة تُعامل كـ true",
+              "تروثي"
+            ],
+            [
+              "Falsy",
+              "قيمة تُعامل كـ false",
+              "فولسي"
+            ],
+            [
+              "Boolean",
+              "نوع منطقي true/false",
+              "بوليان"
+            ],
+            [
+              "Explicit",
+              "صريح/يدوي",
+              "إكسبليسيت"
+            ],
+            [
+              "Implicit Coercion",
+              "تحويل ضمني",
+              "إمبليسيت كويرشن"
+            ],
+            [
+              "Condition",
+              "شرط",
+              "كونديشن"
+            ],
+            [
+              "Zero Bug",
+              "مشكلة الصفر في الشروط",
+              "زيرو بج"
+            ],
+            [
+              "Nullish Coalescing",
+              "استخدام ?? للقيم null/undefined",
+              "نلش كواليسنج"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "else ينفذ مع 0",
+              "0 falsy",
+              "استخدم فحصًا صريحًا أو ??"
+            ],
+            [
+              "if ينفذ مع نص فيه مسافات",
+              "\" \" truthy",
+              "استخدم trim()"
+            ],
+            [
+              "boolean() Error",
+              "حرف b صغير",
+              "استخدم Boolean()"
+            ],
+            [
+              "if ينفذ مع []",
+              "array فارغة truthy",
+              "افحص arr.length"
+            ],
+            [
+              "\"false\" يدخل if",
+              "string غير فارغ truthy",
+              "حوّل أو قارن صراحة"
+            ],
+            [
+              "value || default يستبدل 0",
+              "0 falsy",
+              "استخدم value ?? default"
+            ],
+            [
+              "Object فارغ يدخل if",
+              "{} truthy",
+              "افحص Object.keys(obj).length"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين عملية متدرجة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تمرين 1: اكتشف نتيجة النص",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "حدد نتيجة Boolean(\"false\")."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(Boolean('false'));"
+            },
+            {
+              "type": "output",
+              "text": "true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 2: النص الفاضي",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "حدد ناتج شرط luggage = \"\"."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const luggage = '';\nif (luggage) {\n  console.log('You have luggage!');\n} else {\n  console.log('No luggage for you.');\n}"
+            },
+            {
+              "type": "output",
+              "text": "No luggage for you."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 3: تحديد الخصم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اشرح لماذا if (discount) مع discount=0 قد يكون bug."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const discount = 0;\n\nif (discount !== null && discount !== undefined) {\n  console.log(`Discount value is ${discount}`);\n} else {\n  console.log('No discount info');\n}"
+            },
+            {
+              "type": "output",
+              "text": "Discount value is 0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 4: التحقق من المصفوفة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اطبع أن المصفوفة فاضية عند items = []."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const items = [];\n\nif (items.length) {\n  console.log('المصفوفة فيها عناصر');\n} else {\n  console.log('المصفوفة فاضية');\n}"
+            },
+            {
+              "type": "output",
+              "text": "المصفوفة فاضية"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 5: حل Zero Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تحقق من height = 0 كرقم صالح."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let height = 0;\n\nif (typeof height === 'number' && !Number.isNaN(height)) {\n  console.log('Height is a valid number!');\n} else {\n  console.log('Height is UNDEFINED');\n}"
+            },
+            {
+              "type": "output",
+              "text": "Height is a valid number!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 6: || vs ??",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اجعل x=0 يرجع 0 وليس default."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const x = 0;\nconsole.log(x ?? 10);"
+            },
+            {
+              "type": "output",
+              "text": "0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة نظرية سريعة",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "ما الفرق بين falsy و false؟",
+              "answer": "false قيمة Boolean صريحة، أما falsy فهو وصف لأي قيمة تتحول إلى false في Boolean context."
+            },
+            {
+              "question": "لماذا undefined falsy؟",
+              "answer": "لأنه يمثل عدم وجود قيمة معطاة."
+            },
+            {
+              "question": "لماذا NaN falsy؟",
+              "answer": "لأنه يمثل رقمًا غير صالح ولا ينبغي اعتباره قيمة ناجحة في شرط."
+            },
+            {
+              "question": "لماذا [] truthy؟",
+              "answer": "لأنها object موجود في الذاكرة حتى لو لا تحتوي عناصر."
+            },
+            {
+              "question": "ما الفرق بين || و ؟؟",
+              "answer": "|| يفحص كل falsy values، أما ?? يفحص null و undefined فقط."
+            },
+            {
+              "question": "كيف تتجنب Zero Bug؟",
+              "answer": "باستخدام فحص صريح مثل value !== undefined أو ?? أو typeof حسب الحالة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده؟",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الدرس الجاي",
+              "ليه truthy/falsy مهم؟"
+            ],
+            [
+              "Equality Operators",
+              "== قد يحول القيم ضمنيًا مثل 0 == false"
+            ],
+            [
+              "Logical Operators",
+              "&& و || يعتمدون على truthy/falsy ويعيدون values"
+            ],
+            [
+              "Default Parameters",
+              "تحديد قيم افتراضية بوعي"
+            ],
+            [
+              "Nullish Coalescing",
+              "حل Zero Bug في قيم افتراضية"
+            ],
+            [
+              "Optional Chaining",
+              "التعامل مع null/undefined بأمان"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Falsy الأساسية: false, 0, \"\", undefined, null, NaN، ومع الدقة: -0 و 0n.",
+                "كل شيء آخر غالبًا Truthy، مثل \"0\" و \"false\" و [] و {}.",
+                "if يحول القيمة إلى Boolean ضمنيًا.",
+                "|| و && يعتمدان على truthy/falsy ولا يرجعان Boolean دائمًا."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فهم truthy/falsy يمنع bugs صامتة في الشروط والقيم الافتراضية، خصوصًا مع 0 و empty string و arrays الفارغة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تخيل كل قيمة لها ضوء: falsy = مطفي، truthy = شغال. if (x) يسأل هل الضوء شغال؟"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: value || \"default\" مع 0 أو \"\"."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(0 || 'default');\nconsole.log(0 ?? 'default');"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: [] و {} truthy."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if ([]) console.log('نعم');\nif ({}) console.log('نعم');"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: \"0\" و \"false\" truthy."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if ('0') console.log(1);\nif ('false') console.log(1);"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "ليه 0 || 5 يرجع 5؟",
+                "إيه الفرق بين || و ؟؟",
+                "ليه [] truthy و \"\" falsy؟",
+                "إمتى x && y يرجع x وإمتى y؟",
+                "كيف تؤثر falsy على defaults؟",
+                "ما الفرق بين if (value) و value != null؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: limit = settings.limit || 10 يستبدل 0."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "0 falsy.",
+                "|| يرجع 10.",
+                "استخدم ??."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const limit = settings.limit ?? 10;"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: if (arr) يعمل مع [] رغم أنها فارغة."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "[] truthy.",
+                "افحص length."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (Array.isArray(arr) && arr.length > 0) console.log(\"has items\");"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: displayName default مع empty string."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "حدد هل empty string قيمة صالحة أم لا.",
+                "استخدم ?? أو || حسب المطلوب."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const displayName = user.name?.trim() || \"مجهول\";"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ما نتيجة console.log(0 || \"hello\")؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الإجابة: \"hello\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح الـ Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "const pages = input.value || 1 يستبدل 0. ما الحل لو 0 قيمة صالحة؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "حوّل بشكل واضح واستخدم ?? حسب مصدر القيمة. مثال: const pages = Number(input.value); ثم تعامل مع NaN، أو استخدم x ?? 1 لو القيمة قد تكون null/undefined."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: حل مشكلة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب تعبير يرجع x لو موجودة، أو 10 كافتراضي، مع الحفاظ على x=0."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "x ?? 10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تحفظ قيم falsy الأساسية والدقيقة.",
+                "تعرف أن [] و {} truthy.",
+                "تعرف الفرق بين || و ??.",
+                "تتوقع x || y و x && y.",
+                "تتجنب Zero Bug.",
+                "تستخدم trim() مع النصوص التي قد تحتوي مسافات فقط."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس الجاي Equality Operators سيكمل موضوع التحويل، خصوصًا كيف يعمل == مقارنة بـ === ولماذا 0 == false تكون true بينما 0 === false تكون false."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Truthy/Falsy من أهم مفاهيم JavaScript. حفظ القيم falsy وفهم أن باقي القيم truthy سيجنبك أخطاء كثيرة، خصوصًا Zero Bug وفحص arrays والقيم الافتراضية."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 30,
+    "subsections": 13,
+    "subsubsections": 0,
+    "blocks": 185,
+    "codeBlocks": 28,
+    "outputs": 19,
+    "boxes": 60,
+    "tables": 8,
+    "lists": 11
+  }
+}

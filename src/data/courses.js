@@ -20,6 +20,13 @@ export const WORKSHOP_SECTIONS = [
 ];
 
 export function getDaySections(data, isExam = false) {
+  if (data.type === 'improved-course') {
+    return [
+      { id: 'overview', label: 'نظرة عامة' },
+      { id: 'content', label: 'المحتوى' },
+    ];
+  }
+
   const has = {
     overview: true,
     summary: data.learning_summary?.length > 0,

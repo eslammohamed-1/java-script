@@ -1,0 +1,1273 @@
+{
+  "metadata": {
+    "sourceType": "transcript",
+    "sourceFile": "Transcript - Looping Backwards and Loops in Loops",
+    "convertedAt": "2026-06-07T07:18:35.333544+00:00",
+    "title": "Looping Backwards and Loops in Loops في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Transcript transformed and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل الترانسكريبت إلى هاندبوك JSON منظم ومحسّن علميًا وتعليميًا",
+      "mainImprovements": [
+        "تحويل الشرح العفوي إلى أقسام مرتبة عن looping backwards وnested loops",
+        "توضيح نمط المرور العكسي على array باستخدام i = array.length - 1 و i >= 0 و i--",
+        "إزالة hard-coding لقيمة آخر index واستخدام array.length - 1",
+        "شرح أن آخر index يساوي length - 1 بسبب zero-based indexing",
+        "إضافة trace table للمرور العكسي لفهم قيم counter خطوة بخطوة",
+        "شرح nested loops من خلال مثال التمارين والتكرارات داخل كل تمرين",
+        "توضيح outer loop وinner loop وأن inner loop يعمل بالكامل داخل كل iteration من outer loop",
+        "إضافة ملاحظة scope: متغير outer loop متاح داخل inner loop",
+        "إضافة أمثلة عملية وتمارين وتلخيص وTroubleshooting وCheat Sheet",
+        "إضافة تحذيرات عن infinite loops وoff-by-one errors في العد العكسي والnested loops"
+      ]
+    }
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "Looping Backwards and Loops in Loops في JavaScript",
+    "المرور العكسي على Arrays وإنشاء Loop داخل Loop",
+    "من كورس The Complete JavaScript Course",
+    "القسم: JavaScript Fundamentals -- Part 2"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "الربط بالمفاهيم السابقة وأهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قبل الدرس ده لازم تكون فاهم:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "for loop وأجزاؤها الثلاثة: initialization وcondition وupdate.",
+                "Looping Arrays باستخدام i = 0; i < array.length; i++.",
+                "Zero-based indexing وأن أول index هو 0.",
+                "array.length وأن آخر index هو array.length - 1.",
+                "الفرق بين i++ و i--.",
+                "Scope الخاص بمتغيرات let داخل blocks.",
+                "Template literals لاستخدام counter داخل النصوص."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد الدرس هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تمر على array بالعكس من آخر عنصر إلى أول عنصر.",
+                "تحدد initial value الصحيح للعداد في العد العكسي.",
+                "تستخدم condition صحيحة مثل i >= 0.",
+                "تستخدم i-- لتقليل العداد.",
+                "تفهم nested loops: loop داخل loop.",
+                "تميز بين outer loop وinner loop.",
+                "تتوقع عدد التكرارات الكلي في nested loops.",
+                "تستخدم متغير outer loop داخل inner loop.",
+                "تتجنب infinite loops وoff-by-one errors في العد العكسي والnested loops."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "في الدرس السابق اتعلمنا المرور على array من البداية للنهاية. في هذا الدرس سنتعلم العكس: المرور من آخر عنصر لأول عنصر، ثم سنتعلم كيف نضع loop داخل loop لتمثيل سيناريوهات مثل: 3 تمارين وكل تمرين له 5 تكرارات."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الفكرة الأساسية: for loop ليست مقتصرة على العد للأمام. يمكنك البدء من آخر index وتقليل العداد، ويمكنك أيضًا تشغيل loop كاملة داخل كل iteration من loop أخرى."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "المثال الأساسي: jonasArray",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonasArray = [\n  'Jonas',\n  'Schmedtmann',\n  2037 - 1991,\n  'teacher',\n  ['Michael', 'Peter', 'Steven']\n];"
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "Index",
+              "Value"
+            ],
+            [
+              "0",
+              "Jonas"
+            ],
+            [
+              "1",
+              "Schmedtmann"
+            ],
+            [
+              "2",
+              "46"
+            ],
+            [
+              "3",
+              "teacher"
+            ],
+            [
+              "4",
+              "friends array"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "طول المصفوفة 5، وآخر index هو 4. إذن آخر index = jonasArray.length - 1."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "المراجعة: المرور من البداية للنهاية",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "for (let i = 0; i < jonasArray.length; i++) {\n  console.log(i, jonasArray[i]);\n}"
+        },
+        {
+          "type": "output",
+          "text": "0 Jonas\n1 Schmedtmann\n2 46\n3 teacher\n4 [\"Michael\", \"Peter\", \"Steven\"]"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "هذا هو النمط الطبيعي للمرور للأمام: ابدأ من 0، استمر طالما i < length، وزود i كل مرة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Looping Backwards: المرور على Array بالعكس",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "for (let i = jonasArray.length - 1; i >= 0; i--) {\n  console.log(i, jonasArray[i]);\n}"
+        },
+        {
+          "type": "output",
+          "text": "4 [\"Michael\", \"Peter\", \"Steven\"]\n3 teacher\n2 46\n1 Schmedtmann\n0 Jonas"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "نبدأ من jonasArray.length - 1 لأنه آخر index.",
+                "نستمر طالما i >= 0 لأن index 0 يجب أن يُطبع أيضًا.",
+                "نستخدم i-- لأننا نتحرك للخلف.",
+                "عندما تصبح i = -1 يفشل الشرط ويتوقف loop."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه نستخدم array.length - 1 بدل رقم ثابت؟",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "// غير مرن\nfor (let i = 4; i >= 0; i--) {\n  console.log(jonasArray[i]);\n}\n\n// الأفضل\nfor (let i = jonasArray.length - 1; i >= 0; i--) {\n  console.log(jonasArray[i]);\n}"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لا تكتب 4 يدويًا. لو أضفت عنصرًا جديدًا، آخر index لن يبقى 4. استخدم array.length - 1 دائمًا."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "jonasArray.push(true);\n\nfor (let i = jonasArray.length - 1; i >= 0; i--) {\n  console.log(i, jonasArray[i]);\n}"
+        },
+        {
+          "type": "output",
+          "text": "5 true\n4 [\"Michael\", \"Peter\", \"Steven\"]\n3 teacher\n2 46\n1 Schmedtmann\n0 Jonas"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تتبع العد العكسي خطوة بخطوة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "for (let i = jonasArray.length - 1; i >= 0; i--) {\n  console.log(i, jonasArray[i]);\n}"
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "Iteration",
+              "i قبل الفحص",
+              "condition i >= 0",
+              "العنصر"
+            ],
+            [
+              "1",
+              "4",
+              "true",
+              "jonasArray[4]"
+            ],
+            [
+              "2",
+              "3",
+              "true",
+              "jonasArray[3]"
+            ],
+            [
+              "3",
+              "2",
+              "true",
+              "jonasArray[2]"
+            ],
+            [
+              "4",
+              "1",
+              "true",
+              "jonasArray[1]"
+            ],
+            [
+              "5",
+              "0",
+              "true",
+              "jonasArray[0]"
+            ],
+            [
+              "6",
+              "-1",
+              "false",
+              "stop"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "آخر iteration فعلي هو i = 0. بعده update يجعل i = -1، ثم يفشل الشرط."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الأخطاء الشائعة في العد العكسي",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ",
+              "النتيجة",
+              "الصح"
+            ],
+            [
+              "i = array.length",
+              "أول قراءة تكون undefined",
+              "i = array.length - 1"
+            ],
+            [
+              "i > 0",
+              "لن يطبع index 0",
+              "i >= 0"
+            ],
+            [
+              "i++ بدل i--",
+              "infinite loop غالبًا",
+              "i--"
+            ],
+            [
+              "hard-code آخر index",
+              "يتكسر عند تغيير طول array",
+              "array.length - 1"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في العد العكسي، اسأل نفسك: هل العداد يتحرك نحو جعل الشرط false؟ لو الشرط i >= 0، فالعداد يجب أن يقل باستخدام i--."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Nested Loops: Loop داخل Loop",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "الآن نريد تمثيل 3 تمارين، وكل تمرين له 5 تكرارات. هذا يحتاج loop خارجية للتمارين وloop داخلية للتكرارات."
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "for (let exercise = 1; exercise <= 3; exercise++) {\n  console.log(`-------- Starting exercise ${exercise}`);\n\n  for (let rep = 1; rep <= 5; rep++) {\n    console.log(`Exercise ${exercise}: Lifting weights repetition ${rep}`);\n  }\n}"
+        },
+        {
+          "type": "output",
+          "text": "-------- Starting exercise 1\nExercise 1: Lifting weights repetition 1\n...\nExercise 1: Lifting weights repetition 5\n-------- Starting exercise 2\nExercise 2: Lifting weights repetition 1\n...\n-------- Starting exercise 3\nExercise 3: Lifting weights repetition 5"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Outer Loop و Inner Loop",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الجزء",
+              "المسؤولية",
+              "عدد مرات التنفيذ"
+            ],
+            [
+              "Outer loop",
+              "يمثل التمارين exercise 1 إلى 3",
+              "3 مرات"
+            ],
+            [
+              "Inner loop",
+              "يمثل التكرارات rep 1 إلى 5 داخل كل تمرين",
+              "5 مرات لكل exercise"
+            ],
+            [
+              "الإجمالي",
+              "3 exercises × 5 reps",
+              "15 repetition logs"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "داخل كل iteration من outer loop، يتم تشغيل inner loop بالكامل من البداية للنهاية."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تتبع Nested Loops",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "Outer exercise",
+              "Inner reps التي تعمل"
+            ],
+            [
+              "1",
+              "rep 1, 2, 3, 4, 5"
+            ],
+            [
+              "2",
+              "rep 1, 2, 3, 4, 5"
+            ],
+            [
+              "3",
+              "rep 1, 2, 3, 4, 5"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "exercise = 1: اطبع Starting exercise 1، ثم شغل rep من 1 إلى 5.",
+                "بعد انتهاء inner loop، يرجع outer loop إلى exercise = 2.",
+                "exercise = 2: inner loop يبدأ من rep = 1 مرة أخرى.",
+                "نفس الشيء مع exercise = 3.",
+                "الإجمالي 15 تكرارًا داخليًا."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "استخدام متغير Outer Loop داخل Inner Loop",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "for (let exercise = 1; exercise <= 3; exercise++) {\n  for (let rep = 1; rep <= 5; rep++) {\n    console.log(`Exercise ${exercise}: rep ${rep}`);\n  }\n}"
+        },
+        {
+          "type": "output",
+          "text": "Exercise 1: rep 1\n...\nExercise 2: rep 1\n...\nExercise 3: rep 5"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "متغير exercise معرف في outer loop، ولذلك هو متاح داخل جسمه بالكامل، بما في ذلك inner loop."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Scope في Nested Loops",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "for (let exercise = 1; exercise <= 3; exercise++) {\n  for (let rep = 1; rep <= 5; rep++) {\n    console.log(exercise, rep);\n  }\n\n  // rep غير متاح هنا لأنه معرف داخل inner loop\n}\n\n// exercise غير متاح هنا لأنه معرف داخل outer loop"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "let block-scoped. متغير rep يعيش فقط داخل inner loop، ومتغير exercise يعيش داخل outer loop فقط."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "متى تستخدم Nested Loops؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "عند وجود مستويات متعددة من التكرار: أيام وساعات، صفوف وأعمدة، تمارين وتكرارات.",
+                "عند التعامل مع arrays داخل arrays.",
+                "عند بناء جداول أو grids.",
+                "عند مقارنة كل عنصر مع كل عنصر آخر، مع الانتباه للأداء."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "nested loops تزيد عدد العمليات بسرعة. لو outer = 100 وinner = 100، الإجمالي = 10,000 iteration."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "عد عكسي لأرقام",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "for (let i = 5; i >= 1; i--) {\n  console.log(i);\n}\nconsole.log('GO!');"
+        },
+        {
+          "type": "output",
+          "text": "5\n4\n3\n2\n1\nGO!"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "طباعة Array بالعكس",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const names = ['Ali', 'Sara', 'Omar'];\nfor (let i = names.length - 1; i >= 0; i--) {\n  console.log(names[i]);\n}"
+        },
+        {
+          "type": "output",
+          "text": "Omar\nSara\nAli"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "جدول ضرب 1 إلى 3",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "for (let table = 1; table <= 3; table++) {\n  console.log(`Table ${table}`);\n  for (let i = 1; i <= 5; i++) {\n    console.log(`${table} x ${i} = ${table * i}`);\n  }\n}"
+        },
+        {
+          "type": "output",
+          "text": "Table 1\n1 x 1 = 1\n...\nTable 3\n3 x 5 = 15"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Grid 3x3",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "for (let row = 1; row <= 3; row++) {\n  for (let col = 1; col <= 3; col++) {\n    console.log(`Row ${row}, Col ${col}`);\n  }\n}"
+        },
+        {
+          "type": "output",
+          "text": "Row 1, Col 1\n...\nRow 3, Col 3"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ",
+              "الصح"
+            ],
+            [
+              "بدء العد العكسي من array.length",
+              "ابدأ من array.length - 1"
+            ],
+            [
+              "استخدام i > 0",
+              "استخدم i >= 0 حتى تطبع index 0"
+            ],
+            [
+              "استخدام i++ في عد عكسي",
+              "استخدم i--"
+            ],
+            [
+              "نسيان أن inner loop يبدأ من جديد كل مرة",
+              "هذا طبيعي داخل كل outer iteration"
+            ],
+            [
+              "استخدام نفس اسم العداد في outer وinner",
+              "استخدم أسماء مختلفة مثل exercise وrep"
+            ],
+            [
+              "توقع أن rep متاح خارج inner loop",
+              "rep معرف بـ let داخل inner loop فقط"
+            ],
+            [
+              "nested loop كبير جدًا بدون داعي",
+              "احسب عدد iterations قبل التشغيل"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح"
+            ],
+            [
+              "Looping backwards",
+              "المرور من آخر عنصر لأول عنصر"
+            ],
+            [
+              "آخر index",
+              "array.length - 1"
+            ],
+            [
+              "شرط العد العكسي",
+              "i >= 0"
+            ],
+            [
+              "تحديث العد العكسي",
+              "i--"
+            ],
+            [
+              "Nested loop",
+              "loop داخل loop"
+            ],
+            [
+              "Outer loop",
+              "loop الخارجية"
+            ],
+            [
+              "Inner loop",
+              "loop الداخلية"
+            ],
+            [
+              "الإجمالي",
+              "outer count × inner count"
+            ],
+            [
+              "Scope",
+              "outer variable متاح داخل inner، لكن inner variable غير متاح خارجها"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "// Loop array backwards\nfor (let i = arr.length - 1; i >= 0; i--) {\n  console.log(arr[i]);\n}\n\n// Nested loops\nfor (let outer = 1; outer <= 3; outer++) {\n  console.log(`Outer ${outer}`);\n\n  for (let inner = 1; inner <= 5; inner++) {\n    console.log(`Outer ${outer}, inner ${inner}`);\n  }\n}\n\n// Total iterations = outer iterations * inner iterations\n// 3 * 5 = 15"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق",
+              "المعنى"
+            ],
+            [
+              "Looping Backwards",
+              "لوبينج باكووردز",
+              "المرور بالعكس"
+            ],
+            [
+              "Last Index",
+              "لاست إندكس",
+              "آخر index = length - 1"
+            ],
+            [
+              "Decrement",
+              "ديكريمنت",
+              "تقليل القيمة مثل i--"
+            ],
+            [
+              "Nested Loop",
+              "نيستد لوب",
+              "loop داخل loop"
+            ],
+            [
+              "Outer Loop",
+              "أوتر لوب",
+              "الحلقة الخارجية"
+            ],
+            [
+              "Inner Loop",
+              "إنر لوب",
+              "الحلقة الداخلية"
+            ],
+            [
+              "Total Iterations",
+              "توتال إيتيريشنز",
+              "عدد مرات التنفيذ الكلي"
+            ],
+            [
+              "Scope",
+              "سكوب",
+              "نطاق توفر المتغير"
+            ],
+            [
+              "Grid",
+              "جريد",
+              "شبكة صفوف وأعمدة"
+            ],
+            [
+              "Multiplication Table",
+              "مالتيبليكيشن تيبل",
+              "جدول ضرب"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "أول output undefined في العد العكسي",
+              "بدأت من arr.length",
+              "ابدأ من arr.length - 1"
+            ],
+            [
+              "أول عنصر لا يظهر",
+              "استخدمت i > 0",
+              "استخدم i >= 0"
+            ],
+            [
+              "loop لا يتوقف",
+              "استخدمت i++ مع i >= 0",
+              "استخدم i--"
+            ],
+            [
+              "inner loop يعمل مرات كثيرة",
+              "هذا طبيعي: يعمل كاملًا لكل outer iteration",
+              "احسب outer × inner"
+            ],
+            [
+              "متغير rep غير موجود بعد inner loop",
+              "let block-scoped",
+              "عرّفه خارجًا لو تحتاجه بعد loop"
+            ],
+            [
+              "الأداء بطيء",
+              "nested loops كبيرة",
+              "راجع عدد iterations أو استخدم خوارزمية أفضل"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين عملية متدرجة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تمرين 1: اطبع Array بالعكس",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const arr = ['a', 'b', 'c'];\nfor (let i = arr.length - 1; i >= 0; i--) {\n  console.log(arr[i]);\n}"
+            },
+            {
+              "type": "output",
+              "text": "c\nb\na"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 2: اطبع indexes بالعكس",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const arr = [10, 20, 30];\nfor (let i = arr.length - 1; i >= 0; i--) {\n  console.log(i, arr[i]);\n}"
+            },
+            {
+              "type": "output",
+              "text": "2 30\n1 20\n0 10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 3: جدول تمارين",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "for (let exercise = 1; exercise <= 2; exercise++) {\n  console.log(`Exercise ${exercise}`);\n  for (let rep = 1; rep <= 3; rep++) {\n    console.log(`Rep ${rep}`);\n  }\n}"
+            },
+            {
+              "type": "output",
+              "text": "Exercise 1\nRep 1\nRep 2\nRep 3\nExercise 2\nRep 1\nRep 2\nRep 3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 4: grid 2x2",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "for (let row = 1; row <= 2; row++) {\n  for (let col = 1; col <= 2; col++) {\n    console.log(`R${row}C${col}`);\n  }\n}"
+            },
+            {
+              "type": "output",
+              "text": "R1C1\nR1C2\nR2C1\nR2C2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 5: مجموع كل جدول ضرب",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "for (let table = 1; table <= 3; table++) {\n  let sum = 0;\n  for (let i = 1; i <= 5; i++) {\n    sum += table * i;\n  }\n  console.log(`Table ${table} sum = ${sum}`);\n}"
+            },
+            {
+              "type": "output",
+              "text": "Table 1 sum = 15\nTable 2 sum = 30\nTable 3 sum = 45"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة نظرية",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "لماذا نبدأ العد العكسي من array.length - 1؟",
+              "answer": "لأن array.length هو عدد العناصر، أما آخر index فهو length - 1."
+            },
+            {
+              "question": "لماذا الشرط i >= 0 في العد العكسي؟",
+              "answer": "حتى نطبع index 0 قبل توقف loop."
+            },
+            {
+              "question": "ماذا يحدث لو استخدمت i++ في loop عكسي؟",
+              "answer": "غالبًا infinite loop لأن i يبتعد عن شرط التوقف."
+            },
+            {
+              "question": "ما معنى nested loop؟",
+              "answer": "loop داخل loop، والداخلية تعمل كاملة في كل iteration من الخارجية."
+            },
+            {
+              "question": "لو outer تعمل 3 مرات وinner تعمل 5 مرات، كم إجمالي inner executions؟",
+              "answer": "15 مرة."
+            },
+            {
+              "question": "هل متغير outer loop متاح داخل inner loop؟",
+              "answer": "نعم، لأنه داخل نفس block الخارجي."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الدرس الجاي",
+              "هتتعلم إيه",
+              "العلاقة"
+            ],
+            [
+              "The while Loop",
+              "نوع آخر من loops",
+              "عندما لا تعرف عدد التكرارات مسبقًا"
+            ],
+            [
+              "Arrays Advanced Methods",
+              "map/filter/reduce",
+              "طرق أكثر اختصارًا لمعالجة arrays"
+            ],
+            [
+              "Nested Data Structures",
+              "arrays داخل arrays وobjects",
+              "nested loops تصبح مفيدة جدًا"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "للمرور بالعكس: for (let i = arr.length - 1; i >= 0; i--).",
+                "Nested loop يعني loop داخل loop، والinner loop يعمل كاملًا لكل iteration من outer loop.",
+                "إجمالي التكرارات = عدد تكرارات outer × عدد تكرارات inner."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "العد العكسي مفيد عند الحاجة لقراءة البيانات من النهاية للبداية. والnested loops مفيدة عندما يكون عندك مستويان من التكرار مثل صفوف/أعمدة أو تمارين/تكرارات."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "العد العكسي مثل قراءة كتاب من آخر صفحة لأول صفحة. والnested loop مثل جدول: لكل صف، مر على كل الأعمدة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: البدء من arr.length."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "for (let i = arr.length; i >= 0; i--) {\n  console.log(arr[i]); // first is undefined\n}"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: نسيان أن inner loop يعاد من البداية لكل outer iteration."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "for (let ex = 1; ex <= 3; ex++) {\n  for (let rep = 1; rep <= 5; rep++) {\n    // rep starts at 1 every exercise\n  }\n}"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: استخدام نفس اسم i في nested loops قد يسبب لبسًا."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "// Prefer different names\nfor (let exercise = 1; exercise <= 3; exercise++) {\n  for (let rep = 1; rep <= 5; rep++) {}\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "ما pattern المرور العكسي على array؟",
+                "ما الفرق بين length وlast index؟",
+                "كيف تحسب عدد iterations في nested loop؟",
+                "ما أثر nested loops على الأداء؟",
+                "متى تختار أسماء counters واضحة بدل i وj؟",
+                "هل inner loop variable متاح خارج inner loop؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: عند حذف عناصر من array قد تحتاج المرور من النهاية للبداية لتجنب تغير indexes."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: بناء جدول أسعار لكل منتج في كل مدينة يحتاج nested loop: products × cities."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: loop بطيء جدًا لأن outer 1000 وinner 1000 = مليون iteration؛ راجع الخوارزمية."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تعرف آخر index = length - 1.",
+                "تكتب loop عكسي بدون مساعدة.",
+                "تعرف لماذا الشرط i >= 0.",
+                "تعرف outer وinner loop.",
+                "تحسب total iterations.",
+                "تستخدم متغير outer داخل inner.",
+                "تتجنب أسماء counters المربكة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في الدرس ده اتعلمنا مهارتين مهمتين: المرور على arrays بالعكس، وكتابة nested loops. قد لا تستخدمهما يوميًا في البداية، لكنهما يدرّبانك على التفكير الصحيح في initialization وcondition وupdate، ويفتحان الباب لفهم loops المتقدمة."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 30,
+    "subsections": 9,
+    "subsubsections": 0,
+    "blocks": 127,
+    "codeBlocks": 22,
+    "outputs": 14,
+    "boxes": 38,
+    "tables": 10,
+    "lists": 9
+  }
+}

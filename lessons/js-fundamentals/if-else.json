@@ -1,0 +1,1694 @@
+{
+  "metadata": {
+    "sourceFile": "Taking Decisions if else Statements.tex",
+    "convertedAt": "2026-06-07T06:25:39.661520+00:00",
+    "title": "if / else Statements في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "توضيح أدق لمفهوم Control Flow و Control Structure",
+        "إضافة truthy/falsy بشكل مبكر مع التنبيه أنه سيتوسع في درس لاحق",
+        "توضيح أن condition لا يجب أن تكون Boolean حرفيًا؛ أي expression يتم تحويله إلى Boolean",
+        "إضافة else if كجزء مهم لأن التمارين والمحتوى يستخدمانه",
+        "تحسين شرح block scope مع let/const و var كتنبيه متقدم",
+        "إضافة best practices: تجنب if (x = value)، استخدم ===، لا تضع ; بعد if",
+        "إضافة guard clauses كفكرة متقدمة اختيارية",
+        "تحسين أمثلة input.value والتحويل إلى Number وفحص NaN",
+        "تطوير Troubleshooting و Cheat Sheet والأسئلة والتمارين"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox",
+      "comparebox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "if / else Statements في JavaScript",
+    "اتخاذ القرارات في الكود باستخدام if / else Control Structure",
+    "من كورس The Complete JavaScript Course",
+    "القسم: JavaScript Fundamentals - Part 1",
+    "يتضمن: رسومات توضيحية -- تتبع خطوة بخطوة",
+    "أمثلة إضافية -- تمارين عملية متدرجة"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "قبل البداية وأهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قبل ما تبدأ، لازم تكون فاهم:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "Values and Variables: تعريف المتغيرات بـ let و const.",
+                "Data Types: خصوصًا Boolean و undefined و null.",
+                "Comparison Operators: مثل > و < و >= و <=.",
+                "Template Literals: بناء رسائل ديناميكية.",
+                "console.log(): طباعة النتائج."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد الدرس هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفهم Control Structure و Control Flow.",
+                "تكتب if statement بشرط واضح.",
+                "تستخدم else للحالة البديلة.",
+                "تستخدم else if للشروط المتعددة.",
+                "تفهم أن الشرط يتم تقييمه إلى Boolean أو تحويله ضمنيًا.",
+                "تتعامل مع block scope.",
+                "تتجنب أخطاء مثل if (x = 5) و if (condition);.",
+                "تبني قرارات عملية مثل فحص العمر والدرجات والضرائب."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "البرامج الحقيقية لا تنفذ دائمًا كل سطر بنفس الترتيب. أحيانًا نحتاج قرارًا: لو الشرط صحيح نفذ كودًا، ولو غير صحيح نفذ بديلًا. هنا يأتي دور if / else."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تشبيه السينما: لو العمر 18 أو أكثر يدخل المستخدم، وإلا لا يدخل. هذا قرار مبني على شرط."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه هو الـ Control Structure؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Control Structure هي بنية تتحكم في مسار تنفيذ الكود. بدل التنفيذ الخطي فقط، نستطيع تنفيذ جزء وتخطي جزء بناءً على شرط."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "لو الشرط true: يدخل مسار if.",
+                "لو الشرط false: يدخل مسار else إن وجد.",
+                "بعد انتهاء أحد المسارين، يكمل البرنامج الكود التالي."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "compare",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Linear Execution"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log('Step 1');\nconsole.log('Step 2');\nconsole.log('Step 3');"
+            },
+            {
+              "type": "output",
+              "text": "Step 1\nStep 2\nStep 3"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "compare",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Conditional Execution"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const age = 20;\n\nif (age >= 18) {\n  console.log('You are an adult');\n} else {\n  console.log('You are a minor');\n}"
+            },
+            {
+              "type": "output",
+              "text": "You are an adult"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "جملة if البسيطة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الصيغة العامة:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (condition) {\n  // runs if condition is true\n}"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "condition هو expression يتم تقييمه إلى true أو false.",
+                "الـ code block بين { } ينفذ فقط لو الشرط true.",
+                "لو الشرط false، يتم تخطي البلوك."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const age = 19;\n\nif (age >= 18) {\n  console.log('Sarah can start driving license');\n}"
+        },
+        {
+          "type": "output",
+          "text": "Sarah can start driving license"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو الشرط false، البلوك لا ينفذ، لكن الكود بعده يكمل طبيعيًا."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const age = 15;\n\nif (age >= 18) {\n  console.log('Sarah can start driving license');\n}\n\nconsole.log('This line always runs');"
+            },
+            {
+              "type": "output",
+              "text": "This line always runs"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إضافة else -- الحالة البديلة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الصيغة العامة:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (condition) {\n  // runs if true\n} else {\n  // runs if false\n}"
+            },
+            {
+              "type": "text",
+              "text": "واحد فقط من البلوكين ينفذ: إما if أو else."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const age = 15;\n\nif (age >= 18) {\n  console.log('Sarah can start driving license');\n} else {\n  const yearsLeft = 18 - age;\n  console.log(`Sarah is too young. Wait another ${yearsLeft} years`);\n}"
+        },
+        {
+          "type": "output",
+          "text": "Sarah is too young. Wait another 3 years"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "else اختياري. لو لا تريد فعل شيء عند false، يمكن كتابة if فقط."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "else if -- شروط متعددة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "else if تستخدم عندما يكون عندك أكثر من احتمال، وليس فقط true/false بسيط."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const score = 75;\nlet grade;\n\nif (score >= 90) {\n  grade = 'Excellent';\n} else if (score >= 80) {\n  grade = 'Very Good';\n} else if (score >= 70) {\n  grade = 'Good';\n} else if (score >= 60) {\n  grade = 'Pass';\n} else {\n  grade = 'Fail';\n}\n\nconsole.log(`Score: ${score} - Grade: ${grade}`);"
+        },
+        {
+          "type": "output",
+          "text": "Score: 75 - Grade: Good"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ترتيب else if مهم جدًا. ابدأ بالشروط الأكثر تحديدًا أو الأعلى أولًا في سلاسل الدرجات."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الشرط Condition -- ماذا يوضع داخل if؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أي expression يمكن وضعه داخل if. لو ليس Boolean صريحًا، JavaScript يحوله إلى Boolean ضمنيًا."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "نوع الشرط",
+              "مثال",
+              "ملاحظات"
+            ],
+            [
+              "مقارنة",
+              "age >= 18",
+              "ترجع Boolean"
+            ],
+            [
+              "Boolean variable",
+              "isLoggedIn",
+              "واضح ومباشر"
+            ],
+            [
+              "typeof",
+              "typeof x === \"number\"",
+              "مفيد لفحص النوع"
+            ],
+            [
+              "Truthy/Falsy",
+              "if (userName)",
+              "يعتمد على التحويل الضمني"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "القيم falsy الأساسية: false, 0, \"\", null, undefined, NaN. باقي القيم غالبًا truthy. سيتم شرح هذا بالتفصيل في درس Truthy and Falsy."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "if ('hello') console.log('runs');\nif (0) console.log('will not run');\nif ('') console.log('will not run');"
+        },
+        {
+          "type": "output",
+          "text": "runs"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Code Block و Block Scope",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Code Block هو أي كود بين { }. متغيرات let و const المعرفة داخل البلوك لا تكون متاحة خارجه."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "if (true) {\n  const message = 'Hello from inside!';\n  console.log(message);\n}\n\n// console.log(message); // ReferenceError"
+        },
+        {
+          "type": "output",
+          "text": "Hello from inside!"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو تحتاج استخدام متغير بعد if / else، عرّفه خارج البلوك ثم غيّر قيمته داخله."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let message;\n\nif (true) {\n  message = 'Hello from inside!';\n} else {\n  message = 'Hello from else!';\n}\n\nconsole.log(message);"
+            },
+            {
+              "type": "output",
+              "text": "Hello from inside!"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تنبيه متقدم: var لا يملك block scope مثل let/const، لذلك يفضّل استخدام let/const لتجنب الالتباس."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مثال عملي: تحديد القرن من سنة الميلاد",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const birthYear = 1998;\nlet century;\n\nif (birthYear <= 2000) {\n  century = 20;\n} else {\n  century = 21;\n}\n\nconsole.log(century);"
+        },
+        {
+          "type": "output",
+          "text": "20"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطأ الشائع: تعريف century داخل if و else يجعل كل نسخة محصورة داخل بلوكها، ولن تكون متاحة بعد if."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (birthYear <= 2000) {\n  let century = 20;\n} else {\n  let century = 21;\n}\n\n// console.log(century); // ReferenceError"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "رسم توضيحي -- تدفق if / else",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Flow Chart"
+            },
+            {
+              "type": "text",
+              "text": "Start -> Condition? -> true: if block -> Continue | false: else block -> Continue"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد تنفيذ أي من المسارين، يرجع البرنامج ويكمل الكود الذي بعد if / else."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تتبع تنفيذ الكود خطوة بخطوة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const age = 15;\n\nif (age >= 18) {\n  console.log('Sarah can start driving license');\n} else {\n  const yearsLeft = 18 - age;\n  console.log(`Sarah is too young. Wait another ${yearsLeft} years`);\n}\n\nconsole.log('End of program');"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تعريف age بقيمة 15."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تقييم الشرط 15 >= 18 والنتيجة false."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تخطي بلوك if."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تنفيذ else وحساب yearsLeft = 3."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "طباعة الرسالة باستخدام template literal."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تنفيذ السطر بعد if / else دائمًا."
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "Sarah is too young. Wait another 3 years\nEnd of program"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "المثال الكامل المحسّن",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const age = 15;\n\nif (age >= 18) {\n  console.log('Sarah can start driving license');\n} else {\n  const yearsLeft = 18 - age;\n  console.log(`Sarah is too young. Wait another ${yearsLeft} years`);\n}\n\nconst birthYear = 1998;\nlet century;\n\nif (birthYear <= 2000) {\n  century = 20;\n} else {\n  century = 21;\n}\n\nconsole.log(century);"
+        },
+        {
+          "type": "output",
+          "text": "Sarah is too young. Wait another 3 years\n20"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية متنوعة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "مثال 1: فحص الطقس",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const temperature = 38;\n\nif (temperature > 35) {\n  console.log('Very hot! Stay hydrated');\n  console.log('Wear light clothes');\n} else {\n  console.log('Nice weather!');\n  console.log('Enjoy your day');\n}"
+        },
+        {
+          "type": "output",
+          "text": "Very hot! Stay hydrated\nWear light clothes"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 2: فحص النجاح في الامتحان",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const score = 45;\nconst passingScore = 50;\n\nif (score >= passingScore) {\n  console.log('Congratulations! You passed!');\n  console.log(`Your score: ${score}`);\n} else {\n  const needed = passingScore - score;\n  console.log('Sorry, you failed.');\n  console.log(`You needed ${needed} more marks to pass.`);\n}"
+        },
+        {
+          "type": "output",
+          "text": "Sorry, you failed.\nYou needed 5 more marks to pass."
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 3: تحديد الفترة الزمنية",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const hour = 14;\nlet greeting;\n\nif (hour < 12) {\n  greeting = 'Good morning!';\n} else {\n  greeting = 'Good afternoon!';\n}\n\nconsole.log(greeting);\nconsole.log(`Current hour: ${hour}`);"
+        },
+        {
+          "type": "output",
+          "text": "Good afternoon!\nCurrent hour: 14"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 4: if بدون else",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const balance = 50;\nconsole.log(`Your balance: ${balance} EGP`);\n\nif (balance < 100) {\n  console.log('Warning: Low balance!');\n}\n\nconsole.log('Thank you for banking with us.');"
+        },
+        {
+          "type": "output",
+          "text": "Your balance: 50 EGP\nWarning: Low balance!\nThank you for banking with us."
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 5: حساب خصم بناءً على الكمية",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const quantity = 8;\nconst pricePerItem = 50;\n\nlet discount;\nlet totalPrice;\n\nif (quantity > 5) {\n  discount = 10;\n  totalPrice = quantity * pricePerItem * (100 - discount) / 100;\n  console.log(`Bulk discount applied: ${discount}%`);\n} else {\n  discount = 0;\n  totalPrice = quantity * pricePerItem;\n  console.log('No discount');\n}\n\nconsole.log(`Quantity: ${quantity}`);\nconsole.log(`Total price: ${totalPrice} EGP`);"
+        },
+        {
+          "type": "output",
+          "text": "Bulk discount applied: 10%\nQuantity: 8\nTotal price: 360 EGP"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أخطاء شائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ الشائع",
+              "الحل الصح"
+            ],
+            [
+              "نسيان parentheses حول الشرط",
+              "اكتب if (condition)"
+            ],
+            [
+              "نسيان curly braces",
+              "استخدم { } حتى لو سطر واحد للوضوح"
+            ],
+            [
+              "تعريف let/const داخل البلوك ثم استخدامه خارجه",
+              "عرّف المتغير خارج البلوك"
+            ],
+            [
+              "وضع ; بعد if",
+              "لا تكتب if (condition);"
+            ],
+            [
+              "استخدام = بدل المقارنة",
+              "استخدم === أو comparison مناسب"
+            ],
+            [
+              "else بعيد أو بدون if مطابق",
+              "else يجب أن يأتي بعد بلوك if مباشرة"
+            ],
+            [
+              "شرط دائمًا true/false",
+              "راجع القيم والمنطق"
+            ],
+            [
+              "عدم فهم truthy/falsy",
+              "راجع القيم falsy الأساسية"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح"
+            ],
+            [
+              "if statement",
+              "ينفذ كودًا لو الشرط true"
+            ],
+            [
+              "else statement",
+              "ينفذ بديلًا لو الشرط false"
+            ],
+            [
+              "else if",
+              "شروط متعددة مرتبة"
+            ],
+            [
+              "condition",
+              "expression يتم تقييمه إلى Boolean"
+            ],
+            [
+              "code block",
+              "كود بين { }"
+            ],
+            [
+              "control structure",
+              "تتحكم في مسار التنفيذ"
+            ],
+            [
+              "block scope",
+              "let/const داخل البلوك غير متاحين خارجه"
+            ],
+            [
+              "truthy/falsy",
+              "تحويل غير Boolean إلى Boolean"
+            ],
+            [
+              "الكود بعد if/else",
+              "ينفذ بعد انتهاء المسار المختار"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "if بسيطة"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (condition) {\n  // runs if true\n}"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "if / else"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (condition) {\n  // true branch\n} else {\n  // false branch\n}"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "else if"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (score >= 90) {\n  grade = 'Excellent';\n} else if (score >= 80) {\n  grade = 'Very Good';\n} else {\n  grade = 'Other';\n}"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "متغير مشترك خارج البلوك"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let result;\n\nif (condition) {\n  result = 'value A';\n} else {\n  result = 'value B';\n}\n\nconsole.log(result);"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "نوع الشرط",
+              "مثال"
+            ],
+            [
+              "مقارنة",
+              "age >= 18"
+            ],
+            [
+              "Boolean variable",
+              "isLoggedIn"
+            ],
+            [
+              "typeof",
+              "typeof x === \"number\""
+            ],
+            [
+              "Truthy/Falsy",
+              "if (userName?.trim())"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق بالعربي",
+              "المعنى"
+            ],
+            [
+              "if Statement",
+              "إف ستيتمنت",
+              "جملة شرطية"
+            ],
+            [
+              "else Statement",
+              "إلس ستيتمنت",
+              "الجملة البديلة"
+            ],
+            [
+              "else if",
+              "إلس إف",
+              "فرع شرط إضافي"
+            ],
+            [
+              "Condition",
+              "كونديشن",
+              "شرط يتم تقييمه"
+            ],
+            [
+              "Code Block",
+              "كود بلوك",
+              "مجموعة أسطر بين { }"
+            ],
+            [
+              "Control Structure",
+              "كونترول ستراكتشر",
+              "بنية تتحكم في تدفق الكود"
+            ],
+            [
+              "Control Flow",
+              "كونترول فلو",
+              "مسار تنفيذ الكود"
+            ],
+            [
+              "Block Scoping",
+              "بلوك سكوبنج",
+              "نطاق خاص بالبلوك"
+            ],
+            [
+              "Truthy",
+              "تروثي",
+              "قيمة تتحول إلى true"
+            ],
+            [
+              "Falsy",
+              "فولسي",
+              "قيمة تتحول إلى false"
+            ],
+            [
+              "Evaluate",
+              "إيفاليويت",
+              "تقييم/حساب expression"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "SyntaxError: Unexpected token",
+              "أقواس ناقصة أو syntax غير صحيح",
+              "راجع () و {}"
+            ],
+            [
+              "ReferenceError",
+              "متغير داخل block مستخدم خارجه",
+              "عرّفه خارج block"
+            ],
+            [
+              "if يعمل دائمًا",
+              "الشرط truthy دائمًا أو فيه assignment",
+              "راجع الشرط واستخدم ==="
+            ],
+            [
+              "else يعمل دائمًا",
+              "الشرط false دائمًا",
+              "راجع القيم والأوبريتور"
+            ],
+            [
+              "لا يوجد output",
+              "لا يوجد else والشرط false",
+              "أضف else أو راجع الشرط"
+            ],
+            [
+              "if (x = 5) bug",
+              "= تعيين وليس مقارنة",
+              "استخدم x === 5"
+            ],
+            [
+              "if (condition); bug",
+              "; أنهى if",
+              "احذف ;"
+            ],
+            [
+              "input age لا يعمل صح",
+              "input.value نص",
+              "حوّل بـ Number وافحص NaN"
+            ],
+            [
+              "اسم المستخدم مسافات فقط",
+              "string بمسافات truthy",
+              "استخدم trim()"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين عملية متدرجة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تمرين 1: زوجي ولا فردي",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب كود يطبع هل الرقم even أو odd باستخدام %."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const number = 7;\n\nif (number % 2 === 0) {\n  console.log(`${number} is even`);\n} else {\n  console.log(`${number} is odd`);\n}"
+            },
+            {
+              "type": "output",
+              "text": "7 is odd"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 2: موجب ولا سالب ولا صفر",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم if / else if / else."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const num = -3;\n\nif (num > 0) {\n  console.log(`${num} is positive`);\n} else if (num < 0) {\n  console.log(`${num} is negative`);\n} else {\n  console.log('The number is zero');\n}"
+            },
+            {
+              "type": "output",
+              "text": "-3 is negative"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 3: نظام تقدير الدرجات",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم else if لتحديد grade."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const score = 75;\nlet grade;\n\nif (score >= 90) {\n  grade = 'Excellent';\n} else if (score >= 80) {\n  grade = 'Very Good';\n} else if (score >= 70) {\n  grade = 'Good';\n} else if (score >= 60) {\n  grade = 'Pass';\n} else {\n  grade = 'Fail';\n}\n\nconsole.log(`Score: ${score} - Grade: ${grade}`);"
+            },
+            {
+              "type": "output",
+              "text": "Score: 75 - Grade: Good"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 4: حاسبة تذاكر السينما",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "احسب سعر التذكرة حسب العمر."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const age = 8;\nlet ticketPrice;\nlet ticketType;\n\nif (age < 5) {\n  ticketPrice = 0;\n  ticketType = 'Free';\n} else if (age <= 12) {\n  ticketPrice = 30;\n  ticketType = 'Child';\n} else if (age <= 64) {\n  ticketPrice = 60;\n  ticketType = 'Regular';\n} else {\n  ticketPrice = 35;\n  ticketType = 'Senior';\n}\n\nconsole.log(`Age: ${age} - Type: ${ticketType} - Ticket: ${ticketPrice} EGP`);"
+            },
+            {
+              "type": "output",
+              "text": "Age: 8 - Type: Child - Ticket: 30 EGP"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 5: حاسبة الضرائب التراكمية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "احسب الضريبة التراكمية لدخل 200000."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const income = 200000;\nlet tax;\n\nif (income <= 50000) {\n  tax = 0;\n} else if (income <= 150000) {\n  tax = (income - 50000) * 0.10;\n} else if (income <= 300000) {\n  tax = (100000 * 0.10) + ((income - 150000) * 0.20);\n} else {\n  tax = (100000 * 0.10) + (150000 * 0.20) + ((income - 300000) * 0.30);\n}\n\nconst netIncome = income - tax;\n\nconsole.log(`Gross income: ${income} EGP`);\nconsole.log(`Tax: ${tax} EGP`);\nconsole.log(`Net income: ${netIncome} EGP`);"
+            },
+            {
+              "type": "output",
+              "text": "Gross income: 200000 EGP\nTax: 20000 EGP\nNet income: 180000 EGP"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 6: فحص input age بأمان",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "حوّل input string إلى number وافحص NaN."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const inputValue = '16';\nconst age = Number(inputValue);\n\nif (Number.isNaN(age)) {\n  console.log('Invalid age');\n} else if (age < 18) {\n  console.log('Minor');\n} else {\n  console.log('Adult');\n}"
+            },
+            {
+              "type": "output",
+              "text": "Minor"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة نظرية",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "ما الفرق بين التنفيذ الخطي والتنفيذ المشروط؟",
+              "answer": "الخطي ينفذ كل سطر بالترتيب، والمشروط ينفذ مسارًا حسب شرط."
+            },
+            {
+              "question": "لماذا else اختياري؟",
+              "answer": "لأنك أحيانًا تحتاج فعل شيء فقط في حالة true ولا تحتاج بديلًا."
+            },
+            {
+              "question": "لماذا نعرّف متغيرًا خارج if لو سنستخدمه بعده؟",
+              "answer": "بسبب block scope للمتغيرات let و const داخل { }."
+            },
+            {
+              "question": "ما المقصود بـ Control Structure؟",
+              "answer": "بنية تتحكم في مسار تنفيذ الكود."
+            },
+            {
+              "question": "ماذا يحدث لو وضعت ; بعد if؟",
+              "answer": "ينتهي if فورًا وقد يصبح البلوك التالي منفصلًا وينفذ دائمًا."
+            },
+            {
+              "question": "ما الفرق بين = و ===؟",
+              "answer": "= تعيين، === مقارنة صارمة."
+            },
+            {
+              "question": "لماذا if (0) لا ينفذ؟",
+              "answer": "لأن 0 قيمة falsy تتحول إلى false."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الدرس الجاي",
+              "هتتعلم فيه إيه",
+              "العلاقة"
+            ],
+            [
+              "Type Conversion and Coercion",
+              "تحويل الأنواع وتأثيرها على الشروط",
+              "يفسر truthy/falsy"
+            ],
+            [
+              "Truthy and Falsy Values",
+              "القيم التي تتحول إلى true/false",
+              "أساس شروط if"
+            ],
+            [
+              "Equality Operators",
+              "== و ===",
+              "مقارنات جديدة داخل الشروط"
+            ],
+            [
+              "Logical Operators",
+              "&& و || و !",
+              "دمج أكثر من شرط"
+            ],
+            [
+              "switch Statement",
+              "بديل عند كثرة الفروع",
+              "control structure أخرى"
+            ],
+            [
+              "Ternary Operator",
+              "شرط مختصر في سطر",
+              "if/else بسيط"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "if (condition) ينفذ الكود لو الشرط true.",
+                "else ينفذ لو الشرط false.",
+                "أي قيمة داخل condition تتحول إلى Boolean.",
+                "بلوك واحد فقط ينفذ في if/else العادي."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بدون if/else سينفذ البرنامج كل شيء دائمًا. الشروط تجعل البرنامج يتخذ قرارات حسب البيانات."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الشرط حارس على بوابة: true يدخل مسار if، false يدخل مسار else إن وجد. القيم غير Boolean تمر بعملية truthy/falsy conversion."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: if (x = 5) تعيين وليس مقارنة."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let x = 0;\nif (x = 5) console.log(x); // 5"
+            },
+            {
+              "type": "text",
+              "text": "الحل: استخدم x === 5."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: if (x > 5); ينهي if بسبب ;."
+            },
+            {
+              "type": "text",
+              "text": "الحل: احذف ; بعد الشرط."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: متغير داخل if غير متاح خارجه."
+            },
+            {
+              "type": "text",
+              "text": "الحل: عرّفه خارج if لو تحتاجه بعده."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "ليه if (0) لا ينفذ؟",
+                "ما الفرق بين = و == و ===؟",
+                "متى تستخدم else if بدل عدة if مستقلة؟",
+                "ما معنى block scope؟",
+                "ما قيمة التعبير if (x = 5)؟",
+                "كيف تتعامل مع input.value داخل if؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: عمر المستخدم من form لا يعمل كما هو متوقع."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "input.value نص دائمًا.",
+                "حوّله إلى Number.",
+                "افحص Number.isNaN."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const age = Number(input.value);\nif (!Number.isNaN(age) && age < 18) console.log('Minor');"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: username مسافات فقط وما زال يدخل الشرط."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "المسافات string truthy.",
+                "استخدم trim()."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (userName?.trim()) console.log('Welcome');"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: if (score = 100) ينفذ دائمًا."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "= تعيين.",
+                "100 truthy.",
+                "استخدم ===."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (score === 100) console.log(\"Perfect\");"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ما نتيجة if (\"hello\") console.log(1); else console.log(2);؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الإجابة: 1 لأن النص غير الفاضي truthy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح الـ Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الكود: if (x = 0) console.log(\"صفر\"); لماذا؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "= تعيين. استخدم x === 0. ملاحظة: x = 0 يرجع 0 وهو falsy، لذلك هنا لا ينفذ، لكنه ما زال يعدل x بالخطأ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: حل مشكلة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو age بين 18 و65 اطبع نشط وإلا خارج النطاق."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (age >= 18 && age <= 65) console.log(\"نشط\"); else console.log(\"خارج النطاق\");"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تكتب if/else صحيح.",
+                "تعرف أن الشرط يتم تقييمه إلى Boolean.",
+                "تعرف الفرق بين = و ===.",
+                "تشرح block scope.",
+                "تستخدم else if عند الشروط المتعددة.",
+                "تنتبه إلى truthy/falsy و input.value."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس الجاي Type Conversion and Coercion سيفسر كيف تتحول القيم إلى Boolean داخل if، ولماذا 0 و \"\" و null و undefined و NaN قيم falsy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ملخص الدرس:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "if ينفذ كودًا عند true.",
+                "else اختياري وينفذ عند false.",
+                "else if يستخدم للشروط المتعددة.",
+                "condition قد تكون Boolean أو أي قيمة تتحول إلى Boolean.",
+                "Code Block بين { } له scope خاص مع let/const.",
+                "if/else أول Control Structure مهم لاتخاذ القرارات.",
+                "تجنب if (x = value) و if (condition);."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 30,
+    "subsections": 14,
+    "subsubsections": 0,
+    "blocks": 209,
+    "codeBlocks": 35,
+    "outputs": 23,
+    "boxes": 62,
+    "tables": 7,
+    "lists": 12
+  }
+}

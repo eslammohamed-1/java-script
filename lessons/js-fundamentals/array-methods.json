@@ -1,0 +1,1549 @@
+{
+  "metadata": {
+    "sourceFile": "Basic Array Operations Methods.tex",
+    "convertedAt": "2026-06-07T06:49:08.057172+00:00",
+    "title": "Basic Array Operations (Methods) في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "note": "المصدر المرسل في المحادثة كان مقطوعًا عند بداية معجم المصطلحات، لذلك تم تحويل الجزء المتاح وإكمال الأقسام النهائية بشكل علمي متسق مع محتوى الدرس.",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "توضيح أن Array Methods هي functions مرتبطة بالـ array عبر prototype/object method call",
+        "تمييز methods التي تعمل mutation مثل push/pop/shift/unshift عن methods التي لا تعدّل الأصل مثل indexOf/includes",
+        "تصحيح دقة includes: تستخدم SameValueZero وليس Strict Equality حرفيًا؛ لذلك includes(NaN) true بينما indexOf(NaN) -1",
+        "إضافة الفرق بين === و SameValueZero بطريقة مناسبة للمبتدئين",
+        "إضافة ملاحظة الأداء: push/pop غالبًا أسرع من shift/unshift على arrays كبيرة لأن البداية تحتاج إعادة ترتيب indexes",
+        "توضيح return values لكل method بدقة",
+        "إضافة بدائل non-mutating مثل [...arr, el] و arr.slice(1) و arr.slice(0, -1)",
+        "إضافة أمثلة عملية واقعية وقسم Troubleshooting و Cheat Sheet و Senior Questions",
+        "إكمال معجم المصطلحات بسبب انقطاع النص الأصلي"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox",
+      "comparebox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "Basic Array Operations (Methods) في JavaScript",
+    "العمليات الأساسية على الـ Arrays: إضافة، حذف، بحث",
+    "من كورس The Complete JavaScript Course",
+    "القسم: JavaScript Fundamentals - Part 2"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "الربط بالمفاهيم السابقة وأهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قبل ما تبدأ، لازم تكون فاهم:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "Arrays: تعريف array والوصول للعناصر بالـ index وتعديلها.",
+                "Data Types: خصوصًا String و Number و Boolean.",
+                "Functions: استدعاء function وتمرير arguments وفهم return value.",
+                "if / else: اتخاذ قرارات بناءً على Boolean.",
+                "Strict Equality و Type Coercion: لفهم البحث والمقارنات.",
+                "console.log(): طباعة القيم في Console."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد ما تخلص الدرس هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفهم أن Array Methods هي functions مرتبطة بالـ array.",
+                "تستخدم push لإضافة عنصر في آخر array.",
+                "تستخدم unshift لإضافة عنصر في أول array.",
+                "تستخدم pop لحذف آخر عنصر.",
+                "تستخدم shift لحذف أول عنصر.",
+                "تعرف return value لكل method.",
+                "تستخدم indexOf لمعرفة مكان عنصر.",
+                "تستخدم includes لفحص وجود عنصر.",
+                "تدمج includes مع if لاتخاذ قرارات.",
+                "تفهم mutation والبدائل non-mutating."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "بعد ما عرفنا إزاي ننشئ Arrays ونوصل لعناصرها، محتاجين نعرف العمليات الأساسية اليومية: إضافة، حذف، وبحث. JavaScript توفر methods جاهزة لهذه العمليات."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الـ method هي function مرتبطة بقيمة/كائن معين، ونستدعيها باستخدام النقطة مثل arr.push(\"x\")."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه هي Array Methods؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Array Methods هي functions مدمجة نستدعيها مباشرة على arrays باستخدام dot notation. بعضها يغيّر الـ array الأصلي mutating، وبعضها يقرأ فقط ولا يغيّر الأصل."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "arrayName.methodName(arguments);"
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "الجزء",
+              "المعنى"
+            ],
+            [
+              "arrayName",
+              "اسم الـ array"
+            ],
+            [
+              ".",
+              "النقطة للوصول للـ method"
+            ],
+            [
+              "methodName",
+              "اسم العملية مثل push أو pop"
+            ],
+            [
+              "arguments",
+              "قيم تمرر للـ method إن كانت تحتاج"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "كل method قد يكون له return value مختلف؛ لا تفترض أن كل methods ترجع array نفسها."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Methods الإضافة: push و unshift",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "push: إضافة في الآخر",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تضيف عنصرًا أو أكثر في نهاية array.",
+                "تعمل mutation للـ array الأصلي.",
+                "ترجع الطول الجديد بعد الإضافة."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = ['Michael', 'Steven', 'Peter'];\n\nconst newLength = friends.push('Jay');\nconsole.log(friends);\nconsole.log(newLength);"
+        },
+        {
+          "type": "output",
+          "text": "[\"Michael\", \"Steven\", \"Peter\", \"Jay\"]\n4"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في أغلب الحالات تستخدم push بدون حفظ return value."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "unshift: إضافة في الأول",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تضيف عنصرًا أو أكثر في بداية array.",
+                "تعمل mutation للـ array الأصلي.",
+                "ترجع الطول الجديد بعد الإضافة."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = ['Michael', 'Steven', 'Peter'];\n\nconst newLength = friends.unshift('John');\nconsole.log(friends);\nconsole.log(newLength);"
+        },
+        {
+          "type": "output",
+          "text": "[\"John\", \"Michael\", \"Steven\", \"Peter\"]\n4"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "على arrays كبيرة، unshift قد يكون أبطأ من push لأنه يحتاج إعادة ترتيب indexes للعناصر الموجودة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "إضافة أكثر من عنصر",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const arr = ['A'];\n\nconsole.log(arr.push('B', 'C'));\nconsole.log(arr);\n\nconsole.log(arr.unshift('X', 'Y'));\nconsole.log(arr);"
+        },
+        {
+          "type": "output",
+          "text": "3\n[\"A\", \"B\", \"C\"]\n5\n[\"X\", \"Y\", \"A\", \"B\", \"C\"]"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "push و unshift يقبلان أكثر من argument."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Methods الحذف: pop و shift",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "pop: حذف آخر عنصر",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تحذف آخر عنصر من array.",
+                "لا تحتاج arguments.",
+                "تعمل mutation.",
+                "ترجع العنصر الذي تم حذفه."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = ['Michael', 'Steven', 'Peter', 'Jay'];\n\nconst popped = friends.pop();\nconsole.log(popped);\nconsole.log(friends);"
+        },
+        {
+          "type": "output",
+          "text": "Jay\n[\"Michael\", \"Steven\", \"Peter\"]"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "pop ترجع العنصر المحذوف، وليس الطول الجديد."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "shift: حذف أول عنصر",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تحذف أول عنصر من array.",
+                "لا تحتاج arguments.",
+                "تعمل mutation.",
+                "ترجع العنصر الذي تم حذفه."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = ['John', 'Michael', 'Steven'];\n\nconst removed = friends.shift();\nconsole.log(removed);\nconsole.log(friends);"
+        },
+        {
+          "type": "output",
+          "text": "John\n[\"Michael\", \"Steven\"]"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "على arrays كبيرة، shift قد يكون أبطأ من pop لأنه يحرك العناصر ويعيد ترتيب indexes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "ماذا يحدث مع Array فارغة؟",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const arr = [];\n\nconsole.log(arr.pop());\nconsole.log(arr.shift());\nconsole.log(arr);"
+        },
+        {
+          "type": "output",
+          "text": "undefined\nundefined\n[]"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "pop و shift على array فارغة يرجعان undefined ولا يرميان Error."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص الإضافة والحذف",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "Method",
+              "الفعل",
+              "المكان",
+              "Mutates?",
+              "Return Value"
+            ],
+            [
+              "push(el)",
+              "إضافة",
+              "الآخر",
+              "نعم",
+              "الطول الجديد"
+            ],
+            [
+              "unshift(el)",
+              "إضافة",
+              "الأول",
+              "نعم",
+              "الطول الجديد"
+            ],
+            [
+              "pop()",
+              "حذف",
+              "الآخر",
+              "نعم",
+              "العنصر المحذوف"
+            ],
+            [
+              "shift()",
+              "حذف",
+              "الأول",
+              "نعم",
+              "العنصر المحذوف"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "push/pop يعملان على الآخر.",
+                "unshift/shift يعملان على الأول.",
+                "الإضافة ترجع الطول الجديد.",
+                "الحذف يرجع العنصر المحذوف."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Methods البحث: indexOf و includes",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "indexOf: مكان العنصر",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "ترجع index أول ظهور للعنصر.",
+                "لو العنصر غير موجود ترجع -1.",
+                "لا تغيّر الـ array الأصلي."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = ['Michael', 'Steven'];\n\nconsole.log(friends.indexOf('Steven'));\nconsole.log(friends.indexOf('Bob'));"
+        },
+        {
+          "type": "output",
+          "text": "1\n-1"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم indexOf عندما تحتاج رقم المكان، وليس فقط معرفة هل العنصر موجود."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "includes: هل العنصر موجود؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "ترجع true لو العنصر موجود.",
+                "ترجع false لو غير موجود.",
+                "لا تغيّر الـ array الأصلي.",
+                "مناسبة جدًا مع if."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = ['Michael', 'Steven'];\n\nconsole.log(friends.includes('Steven'));\nconsole.log(friends.includes('Bob'));"
+        },
+        {
+          "type": "output",
+          "text": "true\nfalse"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "دقة المقارنة: includes و indexOf",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const values = ['23', 23, NaN];\n\nconsole.log(values.includes('23'));\nconsole.log(values.includes(23));\nconsole.log(values.indexOf(NaN));\nconsole.log(values.includes(NaN));"
+        },
+        {
+          "type": "output",
+          "text": "true\ntrue\n-1\ntrue"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تصحيح علمي مهم: includes لا تستخدم Strict Equality حرفيًا، بل تستخدم SameValueZero. عمليًا لا تعمل type coercion، لذلك \"23\" ليست 23، لكنها تستطيع إيجاد NaN. أما indexOf يعتمد على مقارنة شبيهة بـ === ولذلك لا يجد NaN لأن NaN لا يساوي نفسه."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "indexOf vs includes",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المقارنة",
+              "indexOf",
+              "includes"
+            ],
+            [
+              "يرجع",
+              "number: index أو -1",
+              "boolean: true/false"
+            ],
+            [
+              "أفضل عندما",
+              "تحتاج مكان العنصر",
+              "تحتاج فحص الوجود فقط"
+            ],
+            [
+              "NaN",
+              "لا يجده",
+              "يجده"
+            ],
+            [
+              "يغيّر الأصل؟",
+              "لا",
+              "لا"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const arr = ['A', 'B', 'C'];\n\nconsole.log(arr.indexOf('B'));\nconsole.log(arr.includes('B'));\nconsole.log(arr.indexOf('Z'));\nconsole.log(arr.includes('Z'));"
+        },
+        {
+          "type": "output",
+          "text": "1\ntrue\n-1\nfalse"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "استخدام includes مع if",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = ['Michael', 'Steven', 'Peter'];\n\nif (friends.includes('Steven')) {\n  console.log('You have a friend called Steven');\n}"
+        },
+        {
+          "type": "output",
+          "text": "You have a friend called Steven"
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = ['Michael', 'Steven', 'Peter'];\n\nif (friends.includes('Bob')) {\n  console.log('You have a friend called Bob');\n} else {\n  console.log('Bob is not in your friends list');\n}"
+        },
+        {
+          "type": "output",
+          "text": "Bob is not in your friends list"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "includes ترجع Boolean، لذلك تدخل مباشرة في شروط if."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Mutation والبدائل غير المعدّلة Non-Mutating",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "push/pop/shift/unshift كلها تغيّر الـ array الأصلي. أحيانًا تريد إنشاء array جديدة بدل تعديل الأصل، خصوصًا في React أو عند تجنب side effects."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "العملية",
+              "Mutating",
+              "Non-Mutating Alternative"
+            ],
+            [
+              "إضافة في الآخر",
+              "arr.push(el)",
+              "const updated = [...arr, el]"
+            ],
+            [
+              "إضافة في الأول",
+              "arr.unshift(el)",
+              "const updated = [el, ...arr]"
+            ],
+            [
+              "حذف من الآخر",
+              "arr.pop()",
+              "const updated = arr.slice(0, -1)"
+            ],
+            [
+              "حذف من الأول",
+              "arr.shift()",
+              "const updated = arr.slice(1)"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const items = ['A', 'B'];\nconst updated = [...items, 'C'];\n\nconsole.log(items);\nconsole.log(updated);"
+        },
+        {
+          "type": "output",
+          "text": "[\"A\", \"B\"]\n[\"A\", \"B\", \"C\"]"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تتبع تنفيذ الكود خطوة بخطوة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = ['Michael', 'Steven', 'Peter'];\n\nfriends.push('Jay');\nfriends.unshift('John');\nfriends.pop();\nfriends.pop();\nfriends.shift();\n\nconsole.log(friends.indexOf('Steven'));\nconsole.log(friends.includes('Steven'));\nconsole.log(friends.includes('Bob'));"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "البداية: [Michael, Steven, Peter].",
+                "push(\"Jay\") تضيف Jay في الآخر: [Michael, Steven, Peter, Jay].",
+                "unshift(\"John\") تضيف John في الأول: [John, Michael, Steven, Peter, Jay].",
+                "pop() تحذف Jay.",
+                "pop() تحذف Peter.",
+                "shift() تحذف John، فيتبقى [Michael, Steven].",
+                "indexOf(\"Steven\") يرجع 1.",
+                "includes(\"Steven\") يرجع true.",
+                "includes(\"Bob\") يرجع false."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "1\ntrue\nfalse"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "المثال الكامل من الفيديو",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = ['Michael', 'Steven', 'Peter'];\n\nconst newLength = friends.push('Jay');\nconsole.log(friends);\nconsole.log(newLength);\n\nfriends.unshift('John');\nconsole.log(friends);\n\nfriends.pop();\nconst popped = friends.pop();\nconsole.log(popped);\nconsole.log(friends);\n\nfriends.shift();\nconsole.log(friends);\n\nconsole.log(friends.indexOf('Steven'));\nconsole.log(friends.indexOf('Bob'));\n\nconsole.log(friends.includes('Steven'));\nconsole.log(friends.includes('Bob'));\n\nfriends.push(23);\nconsole.log(friends.includes('23'));\nconsole.log(friends.includes(23));\n\nif (friends.includes('Steven')) {\n  console.log('You have a friend called Steven');\n}"
+        },
+        {
+          "type": "output",
+          "text": "[\"Michael\", \"Steven\", \"Peter\", \"Jay\"]\n4\n[\"John\", \"Michael\", \"Steven\", \"Peter\", \"Jay\"]\nPeter\n[\"John\", \"Michael\", \"Steven\"]\n[\"Michael\", \"Steven\"]\n1\n-1\ntrue\nfalse\nfalse\ntrue\nYou have a friend called Steven"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية متنوعة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "قائمة مهام To-Do List",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const todos = ['Buy groceries', 'Clean house'];\n\ntodos.push('Study JavaScript');\ntodos.push('Go to gym');\n\nconst completed = todos.pop();\ntodos.unshift('URGENT: Pay bills');\n\nconsole.log(completed);\nconsole.log(todos);\nconsole.log(todos.includes('Study JavaScript'));"
+        },
+        {
+          "type": "output",
+          "text": "Go to gym\n[\"URGENT: Pay bills\", \"Buy groceries\", \"Clean house\", \"Study JavaScript\"]\ntrue"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "نظام صلاحيات بسيط",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const allowedRoles = ['admin', 'editor', 'moderator'];\n\nconst userRole = 'editor';\nconst hackerRole = 'hacker';\n\nconsole.log(allowedRoles.includes(userRole));\nconsole.log(allowedRoles.includes(hackerRole));"
+        },
+        {
+          "type": "output",
+          "text": "true\nfalse"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "إزالة من الأول والآخر",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const numbers = [10, 20, 30, 40, 50];\n\nconst first = numbers.shift();\nconst last = numbers.pop();\n\nconsole.log(first);\nconsole.log(last);\nconsole.log(numbers);"
+        },
+        {
+          "type": "output",
+          "text": "10\n50\n[20, 30, 40]"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تتبع الطول بعد الإضافة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const cart = [];\n\nlet len = cart.push('Laptop');\nconsole.log(len);\n\nlen = cart.push('Mouse');\nconsole.log(len);\n\nconsole.log(cart);"
+        },
+        {
+          "type": "output",
+          "text": "1\n2\n[\"Laptop\", \"Mouse\"]"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "indexOf لمعرفة الترتيب البشري",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const winners = ['Ali', 'Sara', 'Omar', 'Mona'];\nconst playerName = 'Omar';\nconst position = winners.indexOf(playerName);\n\nif (position !== -1) {\n  console.log(`${playerName} finished in position ${position + 1}`);\n} else {\n  console.log(`${playerName} did not participate`);\n}"
+        },
+        {
+          "type": "output",
+          "text": "Omar finished in position 3"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ الشائع",
+              "الحل الصح"
+            ],
+            [
+              "الخلط بين push و unshift",
+              "push = الآخر، unshift = الأول"
+            ],
+            [
+              "الخلط بين pop و shift",
+              "pop = الآخر، shift = الأول"
+            ],
+            [
+              "توقع أن pop يرجع الطول",
+              "pop يرجع العنصر المحذوف"
+            ],
+            [
+              "توقع أن push يرجع array",
+              "push يرجع الطول الجديد"
+            ],
+            [
+              "استخدام includes(\"23\") للبحث عن الرقم 23",
+              "لا يوجد type coercion؛ استخدم 23 كرقم"
+            ],
+            [
+              "نسيان أن indexOf يرجع -1 عند عدم الوجود",
+              "افحص index !== -1"
+            ],
+            [
+              "تمرير argument لـ pop أو shift",
+              "لا يحتاجان arguments"
+            ],
+            [
+              "نسيان mutation",
+              "استخدم spread/slice لو تريد نسخة جديدة"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح"
+            ],
+            [
+              "Array Methods",
+              "functions مدمجة نستدعيها على array بالنقطة"
+            ],
+            [
+              "push(element)",
+              "إضافة في الآخر وترجع الطول الجديد"
+            ],
+            [
+              "unshift(element)",
+              "إضافة في الأول وترجع الطول الجديد"
+            ],
+            [
+              "pop()",
+              "حذف من الآخر وترجع العنصر المحذوف"
+            ],
+            [
+              "shift()",
+              "حذف من الأول وترجع العنصر المحذوف"
+            ],
+            [
+              "indexOf(element)",
+              "ترجع index أو -1"
+            ],
+            [
+              "includes(element)",
+              "ترجع true/false"
+            ],
+            [
+              "Mutation",
+              "تغيير الـ array الأصلي"
+            ],
+            [
+              "Non-mutating alternatives",
+              "spread و slice"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مرجع سريع لـ Array Methods الأساسية:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "// إضافة\nconst len1 = arr.push(element);      // آخر - يرجع الطول الجديد\nconst len2 = arr.unshift(element);   // أول - يرجع الطول الجديد\n\n// حذف\nconst last = arr.pop();              // آخر - يرجع العنصر المحذوف\nconst first = arr.shift();           // أول - يرجع العنصر المحذوف\n\n// بحث\nconst idx = arr.indexOf(element);    // index أو -1\nconst has = arr.includes(element);   // true أو false\n\n// Non-mutating alternatives\nconst addEnd = [...arr, element];\nconst addStart = [element, ...arr];\nconst removeEnd = arr.slice(0, -1);\nconst removeStart = arr.slice(1);"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "Method",
+              "Mutates?",
+              "Return Value"
+            ],
+            [
+              "push",
+              "نعم",
+              "الطول الجديد"
+            ],
+            [
+              "unshift",
+              "نعم",
+              "الطول الجديد"
+            ],
+            [
+              "pop",
+              "نعم",
+              "العنصر المحذوف"
+            ],
+            [
+              "shift",
+              "نعم",
+              "العنصر المحذوف"
+            ],
+            [
+              "indexOf",
+              "لا",
+              "index أو -1"
+            ],
+            [
+              "includes",
+              "لا",
+              "boolean"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق بالعربي",
+              "المعنى"
+            ],
+            [
+              "Method",
+              "ميثود",
+              "Function مربوطة بـ object أو array"
+            ],
+            [
+              "push",
+              "بوش",
+              "إضافة عنصر في نهاية array"
+            ],
+            [
+              "unshift",
+              "أنشفت",
+              "إضافة عنصر في بداية array"
+            ],
+            [
+              "pop",
+              "بوب",
+              "حذف آخر عنصر"
+            ],
+            [
+              "shift",
+              "شفت",
+              "حذف أول عنصر"
+            ],
+            [
+              "indexOf",
+              "إندكس أوف",
+              "إرجاع index عنصر أو -1"
+            ],
+            [
+              "includes",
+              "إنكلودز",
+              "فحص وجود عنصر وإرجاع boolean"
+            ],
+            [
+              "Mutation",
+              "ميوتيشن",
+              "تعديل القيمة الأصلية"
+            ],
+            [
+              "Return Value",
+              "ريتيرن فاليو",
+              "القيمة التي ترجعها method"
+            ],
+            [
+              "SameValueZero",
+              "سيم فاليو زيرو",
+              "خوارزمية مقارنة تستخدمها includes وتجد NaN"
+            ],
+            [
+              "Non-mutating",
+              "نون ميوتيتنج",
+              "لا يعدّل الأصل بل ينتج قيمة/array جديدة"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "x = arr.push(el) والـ x رقم",
+              "push يرجع الطول",
+              "استخدم arr أو [...arr, el] لو تريد array جديدة"
+            ],
+            [
+              "pop رجع undefined",
+              "array فارغة",
+              "تحقق من arr.length قبل الحذف"
+            ],
+            [
+              "includes(\"23\") false رغم وجود 23",
+              "النوع مختلف ولا يوجد coercion",
+              "استخدم نفس النوع أو حوّل القيمة"
+            ],
+            [
+              "indexOf يرجع -1",
+              "العنصر غير موجود أو هو NaN",
+              "استخدم includes أو findIndex مع NaN"
+            ],
+            [
+              "الأصل اتغير بعد push",
+              "push يعمل mutation",
+              "استخدم spread لإنشاء نسخة"
+            ],
+            [
+              "shift/unshift بطيئة على Array كبير",
+              "تحتاج تحريك indexes",
+              "فضّل push/pop أو structure أنسب عند الحاجة"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة لاختبار فهمك",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "ما الفرق بين push و unshift؟",
+              "answer": "push تضيف في الآخر، unshift تضيف في الأول، وكلاهما يرجع الطول الجديد."
+            },
+            {
+              "question": "ما الفرق بين pop و shift؟",
+              "answer": "pop يحذف من الآخر، shift يحذف من الأول، وكلاهما يرجع العنصر المحذوف."
+            },
+            {
+              "question": "ماذا ترجع indexOf لو العنصر غير موجود؟",
+              "answer": "-1."
+            },
+            {
+              "question": "ماذا ترجع includes؟",
+              "answer": "Boolean: true أو false."
+            },
+            {
+              "question": "لماذا [1,2,3].includes(\"1\") false؟",
+              "answer": "لأن includes لا تعمل type coercion؛ string \"1\" ليست number 1."
+            },
+            {
+              "question": "كيف تضيف عنصرًا بدون mutation؟",
+              "answer": "const updated = [...arr, element]."
+            },
+            {
+              "question": "لماذا [NaN].includes(NaN) true بينما [NaN].indexOf(NaN) -1؟",
+              "answer": "includes تستخدم SameValueZero، أما indexOf لا يجد NaN بسبب سلوك NaN في المقارنة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "إضافة: push آخر، unshift أول.",
+                "حذف: pop آخر، shift أول.",
+                "بحث: indexOf يرجع رقم أو -1، includes يرجع true/false.",
+                "push/unshift يرجعان الطول الجديد، pop/shift يرجعان العنصر المحذوف.",
+                "الأربعة الأولى تعمل mutation."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "هذه methods تغطي العمليات اليومية على القوائم: إضافة، حذف، وبحث. بدونها ستضطر لإعادة كتابة منطق معقد يدويًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تخيل array كطابور: push/pop على نهاية الطابور، unshift/shift على بدايته. indexOf يسأل: فين؟ includes يسأل: موجود؟"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: includes لا تعمل type coercion."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log([1,2,3].includes('1')); // false"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: indexOf مع NaN."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log([NaN].indexOf(NaN)); // -1\nconsole.log([NaN].includes(NaN)); // true"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: push يعمل mutation ويرجع length."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const arr = [1,2];\nconst x = arr.push(3);\nconsole.log(x);   // 3\nconsole.log(arr); // [1,2,3]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "لماذا indexOf يرجع -1 وليس undefined؟",
+                "ما الفرق بين indexOf و includes؟",
+                "ما معنى mutation في push؟",
+                "كيف تضيف عنصرًا بدون mutation؟",
+                "لماذا includes يجد NaN و indexOf لا؟",
+                "لماذا shift/unshift أقل كفاءة على arrays كبيرة؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: items.push(newItem) عدّلت الأصل ومش عايز كده."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "push يعمل mutation.",
+                "استخدم spread لإنشاء array جديدة."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const updated = [...items, newItem];"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: شروط كثيرة تستخدم indexOf(x) >= 0."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "لو المطلوب فقط وجود العنصر، includes أوضح.",
+                "استخدم arr.includes(x)."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (arr.includes(x)) {\n  // found\n}"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: indexOf(NaN) يرجع -1."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "NaN لا يساوي نفسه في المقارنة المستخدمة.",
+                "استخدم includes أو findIndex مع Number.isNaN."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const i = arr.findIndex(x => Number.isNaN(x));"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ما نتيجة [1,2,3].push(4)؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الإجابة: 4، لأنه الطول الجديد."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "const arr = [1,2]; const x = arr.push(3); المبرمج توقع x هي array الجديدة."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "push يرجع length. لو تريد array جديدة استخدم const x = [...arr, 3] قبل mutation أو حسب المطلوب."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: فحص وجود عنصر",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب تعبير يرجع true لو arr فيها el."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "arr.includes(el)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 4: إضافة بدون mutation",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب تعبيرًا يضيف el في آخر arr بدون تعديل arr."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const updated = [...arr, el];"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تعرف push, pop, shift, unshift.",
+                "تعرف return value لكل method.",
+                "تعرف الفرق بين indexOf و includes.",
+                "تعرف أن push/unshift/pop/shift تعمل mutation.",
+                "تستطيع إضافة/حذف عناصر بدون mutation.",
+                "تعرف فخ includes مع النوع وفخ indexOf مع NaN."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد هذه الأساسيات، ستتعلم لاحقًا methods أقوى مثل map و filter و reduce و find، وهي تعتمد بقوة على فهم callbacks و return values."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Array Methods الأساسية هي أدواتك اليومية للتعامل مع القوائم: إضافة، حذف، وبحث. احفظ مكان عمل كل method وما الذي ترجعه وهل تعدل الأصل أم لا."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 27,
+    "subsections": 19,
+    "subsubsections": 0,
+    "blocks": 161,
+    "codeBlocks": 30,
+    "outputs": 20,
+    "boxes": 45,
+    "tables": 9,
+    "lists": 17
+  }
+}

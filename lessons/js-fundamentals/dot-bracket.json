@@ -1,0 +1,1713 @@
+{
+  "metadata": {
+    "sourceFile": "Dot vs Bracket Notation.tex",
+    "convertedAt": "2026-06-07T06:16:45.198645+00:00",
+    "title": "Dot vs. Bracket Notation في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم دمج كل التحسينات العلمية المطلوبة",
+      "mainImprovements": [
+        "استبدال الاعتماد على if (obj[key]) بشرح Object.hasOwn و in",
+        "توضيح أن undefined لا تعني دائمًا أن الـ Property غير موجودة",
+        "تصحيح ملاحظة ترتيب خصائص الـ Object في الـ Console",
+        "إضافة أسماء Properties غير الصالحة مع Dot Notation",
+        "إضافة Best Practice لاستخدام Dot وBracket",
+        "إضافة ملاحظة أن prompt تعمل في المتصفح وليست متاحة مباشرة في Node.js",
+        "تطوير تمرين نظام المعلومات الديناميكي باستخدام Object.hasOwn",
+        "تبسيط مفهوم const والـ reference"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox",
+      "comparebox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "Dot vs. Bracket Notation في JavaScript",
+    "الوصول لبيانات الـ Objects وتعديلها باستخدام النقطة والأقواس",
+    "من كورس The Complete JavaScript Course",
+    "القسم: JavaScript Fundamentals - Part 2",
+    "يتضمن: رسومات توضيحية -- تتبع خطوة بخطوة",
+    "أمثلة إضافية -- تمارين عملية متدرجة"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "قبل البداية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الربط بالمفاهيم السابقة"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "Objects: تعريف Object والـ Properties والـ Key-Value Pairs.",
+                "Arrays: الوصول للعناصر باستخدام Index واستخدام .length.",
+                "Data Types: معنى undefined.",
+                "Truthy/Falsy Values: فهم أن undefined و0 وfalse و'' قيم Falsy.",
+                "Template Literals: بناء Strings ديناميكية.",
+                "if/else Statements: اتخاذ القرارات في الكود."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أهداف التعلم"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "قراءة قيم Object باستخدام Dot Notation.",
+                "قراءة قيم Object باستخدام Bracket Notation.",
+                "فهم الفرق الجوهري بين الطريقتين.",
+                "استخدام Expressions محسوبة داخل الأقواس.",
+                "إضافة وتعديل Properties.",
+                "التحقق الصحيح من وجود Property باستخدام Object.hasOwn و in.",
+                "التفرقة بين Property غير موجودة وProperty قيمتها undefined.",
+                "فهم سلاسل مثل jonas.friends.length وبناء جمل ديناميكية."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "في JavaScript عندنا طريقتين أساسيتين للوصول لبيانات الـ Object: Dot Notation و Bracket Notation. الطريقتان قد تعطيان نفس النتيجة، لكن الفرق الجوهري أن Bracket Notation تسمح باستخدام Expression ديناميكي."
+        },
+        {
+          "type": "ordered_list",
+          "items": [
+            "Dot Notation: jonas.firstName",
+            "Bracket Notation: jonas['firstName']"
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تشبيه دولاب الملفات: الـ Object دولاب، وكل Property درج باسم. Dot Notation تفتح الدرج بالاسم مباشرة، أما Bracket Notation فتفتح الدرج حسب الاسم المكتوب في ورقة/متغير/نتيجة عملية."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الـ Object اللي هنشتغل بيه",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  lastName: 'Schmedtmann',\n  age: 2037 - 1991,\n  job: 'teacher',\n  friends: ['Michael', 'Peter', 'Steven']\n};\n\nconsole.log(jonas);"
+        },
+        {
+          "type": "output",
+          "text": "{firstName: 'Jonas', lastName: 'Schmedtmann', age: 46, job: 'teacher', friends: Array(3)}"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تصحيح علمي مهم: طريقة عرض الـ Object في الـ Console ممكن تختلف حسب المتصفح أو البيئة. لا تعتمد على شكل ترتيب الخصائص في الـ Console كقاعدة ثابتة، خصوصًا عند وجود مفاتيح رقمية أو عند توسيع الـ Object داخل DevTools."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const obj = {\n  name: 'Ali',\n  2: 'two',\n  1: 'one'\n};\n\nconsole.log(Object.keys(obj)); // غالبًا: ['1', '2', 'name']"
+            },
+            {
+              "type": "text",
+              "text": "الخلاصة: نصل للـ Properties بالاسم وليس بالترتيب."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الـ Dot Notation -- الوصول بالنقطة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "الطريقة الأساسية",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(jonas.lastName);"
+        },
+        {
+          "type": "output",
+          "text": "Schmedtmann"
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(jonas.firstName);\nconsole.log(jonas.age);\nconsole.log(jonas.job);\nconsole.log(jonas.friends);"
+        },
+        {
+          "type": "output",
+          "text": "Jonas\n46\nteacher\n['Michael', 'Peter', 'Steven']"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "إزاي بتشتغل؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "jonas.lastName تتكون من اسم الـ Object ثم Dot Operator ثم اسم الـ Property."
+            },
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "الجزء",
+                  "معناه"
+                ],
+                [
+                  "jonas",
+                  "اسم الـ Object"
+                ],
+                [
+                  ".",
+                  "عامل الوصول"
+                ],
+                [
+                  "lastName",
+                  "اسم الـ Property"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "JavaScript حساسة لحالة الحروف."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const user = { firstName: 'Ali' };\n\nconsole.log(user.firstName); // Ali\nconsole.log(user.firstname); // undefined\nconsole.log(user.FirstName); // undefined"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الـ Bracket Notation -- الوصول بالأقواس",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "الطريقة الأساسية",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(jonas['lastName']);"
+        },
+        {
+          "type": "output",
+          "text": "Schmedtmann"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "الجزء",
+                  "معناه"
+                ],
+                [
+                  "jonas",
+                  "اسم الـ Object"
+                ],
+                [
+                  "[...]",
+                  "Bracket Notation"
+                ],
+                [
+                  "'lastName'",
+                  "String باسم الـ Property"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مقارنة سريعة بين الاتنين",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "compare",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Dot Notation"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(jonas.lastName);"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "compare",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Bracket Notation"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(jonas['lastName']);"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "النتيجة في الحالتين: Schmedtmann."
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Best Practice: إمتى أستخدم Dot وإمتى Brackets؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم Dot Notation كاختيار افتراضي لأنها أوضح وأسهل في القراءة."
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "استخدم Dot عندما يكون اسم الـ Property معروفًا وثابتًا وصالحًا كاسم JavaScript identifier.",
+                "استخدم Bracket عندما يكون الاسم ديناميكيًا أو قادمًا من متغير أو Expression.",
+                "استخدم Bracket عندما يحتوي اسم الـ Property على مسافة أو شرطة أو يبدأ برقم."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفرق الجوهري ومتى نستخدم كل واحدة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "القاعدة الذهبية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Dot Notation: لازم تكتب اسم الـ Property النهائي بعد النقطة مباشرة.",
+                "Bracket Notation: تقدر تحط أي Expression جوه الأقواس مثل متغير أو عملية ربط Strings أو دالة."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "لو اسم الـ Property معروف وثابت: استخدم Dot Notation.",
+                "لو الاسم محسوب أو جاي من متغير: استخدم Bracket Notation."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "حالة مهمة: أسماء Properties غير صالحة مع Dot Notation",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Dot Notation لا تعمل إلا إذا كان اسم الـ Property صالحًا كاسم مباشر بعد النقطة. لو الاسم فيه مسافة، أو شرطة، أو بدأ برقم، لازم تستخدم Bracket Notation."
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const person = {\n  'first name': 'Ali',\n  'birth-year': 1995,\n  '3dModel': true\n};\n\nconsole.log(person['first name']); // Ali\nconsole.log(person['birth-year']); // 1995\nconsole.log(person['3dModel']);    // true"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الأشكال التالية غير صحيحة أو ستُفهم بطريقة مختلفة:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(person.first name); // SyntaxError\nconsole.log(person.birth-year); // تُفهم كعملية طرح\nconsole.log(person.3dModel);    // SyntaxError"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال: استخدام Computed Property Names",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const nameKey = 'Name';\nconsole.log(jonas['first' + nameKey]);\nconsole.log(jonas['last' + nameKey]);"
+        },
+        {
+          "type": "output",
+          "text": "Jonas\nSchmedtmann"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "'first' + nameKey تتحول إلى 'firstName'.",
+                "JavaScript تبحث عن jonas['firstName'].",
+                "ترجع Jonas.",
+                "'last' + nameKey تتحول إلى 'lastName' وترجع Schmedtmann."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "معلومة أدق: التعبير داخل الأقواس يتم حسابه أولًا، ثم يُستخدم الناتج كمفتاح Property. في معظم الحالات المفتاح يكون String، وفي الحالات المتقدمة ممكن يكون Symbol."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const obj = {\n  2024: 'year value',\n  true: 'boolean key'\n};\n\nconsole.log(obj[2024]); // 'year value'\nconsole.log(obj[true]); // 'boolean key'"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "ليه الـ Dot Notation مش هتنفع هنا؟",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(jonas.'first' + nameKey);\n// SyntaxError: Unexpected string"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Dot Notation لا تقبل String أو Expression بعد النقطة. jonas.nameKey تبحث حرفيًا عن Property اسمها nameKey، وليس قيمة المتغير."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مثال عملي: prompt() مع Bracket Notation",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تشبيه من الحياة -- المكتبة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المستخدم يكتب اسم المعلومة المطلوبة في prompt، وBracket Notation تستخدم النص الناتج للوصول للـ Property."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "الكود",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const interestedIn = prompt(\n  'What do you want to know about Jonas? Choose between firstName, lastName, age, job, and friends'\n);\n\nconsole.log(interestedIn);"
+        },
+        {
+          "type": "text",
+          "text": "لو المستخدم كتب job، المتغير interestedIn يحتوي على String قيمته 'job'."
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ملاحظة بيئية: prompt() متاحة غالبًا في المتصفح Browser، لكنها غير متاحة مباشرة في Node.js. لو بتجرب الكود في VS Code باستخدام Node.js، ستحتاج طريقة إدخال مختلفة أو مكتبة مناسبة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "ليه Dot Notation مش هتنفع؟",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(jonas.interestedIn);"
+        },
+        {
+          "type": "output",
+          "text": "undefined"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "jonas.interestedIn تبحث حرفيًا عن Property اسمها interestedIn وليس قيمة المتغير."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "خد بالك: رجوع undefined لا يعني دائمًا أن الـ Property غير موجودة. ممكن تكون الـ Property موجودة لكن قيمتها نفسها undefined."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const obj = {\n  name: undefined\n};\n\nconsole.log(obj.name); // undefined: موجودة لكن قيمتها undefined\nconsole.log(obj.age);  // undefined: غير موجودة أصلًا\n\nconsole.log('name' in obj); // true\nconsole.log('age' in obj);  // false"
+            },
+            {
+              "type": "text",
+              "text": "لو هدفك التأكد من وجود الـ Property، استخدم in أو Object.hasOwn بدل الاعتماد على القيمة الراجعة فقط."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "الحل: Bracket Notation",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(jonas[interestedIn]);"
+        },
+        {
+          "type": "output",
+          "text": "teacher"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "JavaScript تحسب قيمة interestedIn أولًا.",
+                "القيمة تصبح 'job'.",
+                "الكود يصبح jonas['job'].",
+                "ترجع teacher."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "التعامل مع الـ Property المش موجود",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "في المثال الأصلي ممكن نستخدم if (jonas[interestedIn])، لكنه علميًا لا يتحقق من وجود الـ Property نفسها، بل يتحقق من أن قيمتها Truthy."
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "if (jonas[interestedIn]) {\n  console.log(jonas[interestedIn]);\n} else {\n  console.log('Wrong request!');\n}"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المشكلة: لو الـ Property موجودة لكن قيمتها 0 أو false أو نص فاضي، الشرط سيفشل رغم أن الـ Property موجودة."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const user = {\n  age: 0,\n  isAdmin: false,\n  bio: ''\n};\n\nconsole.log(Boolean(user.age));     // false\nconsole.log(Boolean(user.isAdmin)); // false\nconsole.log(Boolean(user.bio));     // false"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الطريقة الأدق هي Object.hasOwn:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (Object.hasOwn(jonas, interestedIn)) {\n  console.log(jonas[interestedIn]);\n} else {\n  console.log('Wrong request! Choose between firstName, lastName, age, job, and friends');\n}"
+            },
+            {
+              "type": "text",
+              "text": "Object.hasOwn(jonas, interestedIn) تسأل: هل الـ object jonas نفسه يحتوي على Property بهذا الاسم؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بديل آخر هو in:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (interestedIn in jonas) {\n  console.log(jonas[interestedIn]);\n} else {\n  console.log('Wrong request!');\n}"
+            },
+            {
+              "type": "text",
+              "text": "الفرق المختصر: in تبحث في الـ object وأيضًا في prototype chain، بينما Object.hasOwn تبحث في الـ object نفسه فقط."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "الطريقة الأدق للتحقق من وجود Property",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "لو هدفك هو معرفة هل الـ Property موجودة فعلًا، لا تعتمد على Truthy/Falsy. استخدم Object.hasOwn أو in."
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const user = {\n  age: 0,\n  isAdmin: false,\n  bio: ''\n};\n\nconsole.log(Object.hasOwn(user, 'age'));     // true\nconsole.log(Object.hasOwn(user, 'isAdmin')); // true\nconsole.log(Object.hasOwn(user, 'bio'));     // true\nconsole.log(Object.hasOwn(user, 'email'));   // false"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "الطريقة",
+                  "تتحقق من",
+                  "ملاحظات"
+                ],
+                [
+                  "if (obj[key])",
+                  "هل القيمة Truthy؟",
+                  "قد تفشل مع 0 و false و النص الفاضي"
+                ],
+                [
+                  "key in obj",
+                  "هل المفتاح موجود في object أو prototype chain؟",
+                  "مفيدة لكن تشمل الوراثة"
+                ],
+                [
+                  "Object.hasOwn(obj, key)",
+                  "هل المفتاح موجود في object نفسه؟",
+                  "الأدق في أغلب أمثلة التحقق من المدخلات"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إضافة وتعديل Properties في الـ Object",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "رغم أن jonas معرف بـ const، نقدر نضيف ونعدل Properties لأن const يمنع إعادة تعيين المتغير نفسه، وليس تعديل محتوى الـ Object."
+            },
+            {
+              "type": "text",
+              "text": "تشبيه بسيط: const يثبت عنوان الصندوق، لكنه لا يمنعك من تغيير الأشياء الموجودة داخل الصندوق. تقنيًا: const يحمي الـ reference وليس محتوى الـ object."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "إضافة Property بالـ Dot Notation",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "jonas.location = 'Portugal';\nconsole.log(jonas.location);"
+        },
+        {
+          "type": "output",
+          "text": "Portugal"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "إضافة Property بالـ Bracket Notation",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "jonas['twitter'] = '@jonasschmedtman';\nconsole.log(jonas['twitter']);"
+        },
+        {
+          "type": "output",
+          "text": "@jonasschmedtman"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "عرض الـ Object بعد الإضافة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(jonas);"
+        },
+        {
+          "type": "output",
+          "text": "{firstName: 'Jonas', lastName: 'Schmedtmann', age: 46, job: 'teacher', friends: Array(3), location: 'Portugal', twitter: '@jonasschmedtman'}"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو الـ Property غير موجود، JavaScript تضيفه. لو موجود، تغير قيمته."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تعديل Property موجود",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "jonas.job = 'programmer';\nconsole.log(jonas.job);"
+        },
+        {
+          "type": "output",
+          "text": "programmer"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تسلسل العمليات: Operator Precedence",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "النقطة والأقواس كـ Operators",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "النقطة والأقواس المربعة Member Access Operators بأولوية عالية وتتبع اتجاه التنفيذ من الشمال لليمين."
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "Operator",
+              "الاسم الرسمي",
+              "الاتجاه"
+            ],
+            [
+              ".",
+              "Member Access",
+              "Left to Right"
+            ],
+            [
+              "[...]",
+              "Computed Member Access",
+              "Left to Right"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "سلاسل النقاط",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(jonas.friends.length);"
+        },
+        {
+          "type": "output",
+          "text": "3"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "jonas.friends ترجع Array.",
+                ".length تطبق على الـ Array وترجع 3."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "خلط النقاط مع الأقواس",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(jonas.friends[0]);"
+        },
+        {
+          "type": "output",
+          "text": "Michael"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "jonas.friends ترجع Array.",
+                "[0] ترجع أول عنصر: Michael."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تتبع تنفيذ الكود خطوة بخطوة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "المطلوب بناء الجملة: Jonas has 3 friends, and his best friend is called Michael"
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  lastName: 'Schmedtmann',\n  age: 2037 - 1991,\n  job: 'teacher',\n  friends: ['Michael', 'Peter', 'Steven']\n};\n\nconsole.log(\n  jonas.firstName + ' has ' + jonas.friends.length\n  + ' friends, and his best friend is called '\n  + jonas.friends[0]\n);"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 1: إنشاء الـ Object وحساب age = 46."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 2: الدخول إلى console.log وحساب التعبير."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 3: jonas.firstName => Jonas."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 4: ربط Jonas مع has."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 5: jonas.friends.length => 3."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 6: ربط الجزء النصي التالي."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 7: jonas.friends[0] => Michael."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 8: طباعة الجملة النهائية."
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "Jonas has 3 friends, and his best friend is called Michael"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "المثال الكامل المحسّن",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  lastName: 'Schmedtmann',\n  age: 2037 - 1991,\n  job: 'teacher',\n  friends: ['Michael', 'Peter', 'Steven']\n};\n\nconsole.log(jonas.lastName);\nconsole.log(jonas['lastName']);\n\nconst nameKey = 'Name';\nconsole.log(jonas['first' + nameKey]);\nconsole.log(jonas['last' + nameKey]);\n\nconst interestedIn = prompt(\n  'What do you want to know about Jonas? Choose between firstName, lastName, age, job, and friends'\n);\n\nif (Object.hasOwn(jonas, interestedIn)) {\n  console.log(jonas[interestedIn]);\n} else {\n  console.log('Wrong request! Choose between firstName, lastName, age, job, and friends');\n}\n\njonas.location = 'Portugal';\njonas['twitter'] = '@jonasschmedtman';\nconsole.log(jonas);\n\nconsole.log(\n  jonas.firstName + ' has ' + jonas.friends.length\n  + ' friends, and his best friend is called '\n  + jonas.friends[0]\n);"
+        },
+        {
+          "type": "output",
+          "text": "Schmedtmann\nSchmedtmann\nJonas\nSchmedtmann\nteacher أو Wrong request\n{...}\nJonas has 3 friends, and his best friend is called Michael"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية متنوعة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "مثال 1: Object بتاع سيارة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const car = {\n  brand: 'Toyota',\n  model: 'Corolla',\n  year: 2023,\n  colors: ['White', 'Black', 'Silver']\n};\nconsole.log(car.brand);\nconsole.log(car.year);\nconsole.log(car['model']);\nconsole.log(car.colors[1]);\nconsole.log(car.colors.length);"
+        },
+        {
+          "type": "output",
+          "text": "Toyota\n2023\nCorolla\nBlack\n3"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 2: Bracket Notation مع متغير ديناميكي",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const student = {\n  mathGrade: 95,\n  scienceGrade: 88,\n  englishGrade: 76\n};\nconst subject = 'science';\nconst key = 'Grade';\nconsole.log(student[subject + key]);"
+        },
+        {
+          "type": "output",
+          "text": "88"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 3: إضافة عدة Properties مرة واحدة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const restaurant = { name: 'Pizza Palace', location: 'Cairo' };\nrestaurant.phone = '01012345678';\nrestaurant['rating'] = 4.5;\nrestaurant.isOpen = true;\nconsole.log(restaurant.name);\nconsole.log(restaurant.phone);\nconsole.log(restaurant['rating']);\nconsole.log(restaurant.isOpen);"
+        },
+        {
+          "type": "output",
+          "text": "Pizza Palace\n01012345678\n4.5\ntrue"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 4: بناء جملة ديناميكية من Object معقد",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const movie = {\n  title: 'The Matrix',\n  year: 1999,\n  director: 'Wachowskis',\n  actors: ['Keanu Reeves', 'Laurence Fishburne', 'Carrie-Anne Moss'],\n  rating: 8.7\n};\nconsole.log(\n  movie.title + ' (' + movie.year + ') directed by '\n  + movie.director + ', starring ' + movie.actors[0]\n  + ' and ' + (movie.actors.length - 1) + ' others. Rating: '\n  + movie.rating + '/10'\n);"
+        },
+        {
+          "type": "output",
+          "text": "The Matrix (1999) directed by Wachowskis, starring Keanu Reeves and 2 others. Rating: 8.7/10"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 5: التعامل مع Property مش موجود",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const book = {\n  title: 'Clean Code',\n  author: 'Robert C. Martin',\n  pages: 464\n};\nconsole.log(book.publisher);\nconsole.log(book['isbn']);\nconsole.log(Object.hasOwn(book, 'publisher'));"
+        },
+        {
+          "type": "output",
+          "text": "undefined\nundefined\nfalse"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ",
+              "الصح"
+            ],
+            [
+              "jonas.myVar مع متغير",
+              "jonas[myVar]"
+            ],
+            [
+              "jonas[lastName] بدون قصد",
+              "jonas['lastName'] لو الاسم ثابت"
+            ],
+            [
+              "jonas.firstname",
+              "jonas.firstName"
+            ],
+            [
+              "توقع Error عند Property غير موجود",
+              "يرجع undefined"
+            ],
+            [
+              "jonas.('first' + key)",
+              "jonas['first' + key]"
+            ],
+            [
+              "jonas.friends.0",
+              "jonas.friends[0]"
+            ],
+            [
+              "if (obj[key]) للتحقق من الوجود",
+              "Object.hasOwn(obj, key)"
+            ],
+            [
+              "Property باسم first name",
+              "obj['first name']"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح"
+            ],
+            [
+              "Dot Notation",
+              "object.property"
+            ],
+            [
+              "Bracket Notation",
+              "object['property'] أو object[expression]"
+            ],
+            [
+              "Computed Property Name",
+              "object['pre' + variable]"
+            ],
+            [
+              "Property غير موجود",
+              "قد ترجع undefined"
+            ],
+            [
+              "undefined",
+              "قد تعني Property غير موجودة أو Property موجودة بقيمة undefined"
+            ],
+            [
+              "التحقق من الوجود",
+              "Object.hasOwn(obj, key) هو الأدق غالبًا"
+            ],
+            [
+              "أسماء Properties خاصة",
+              "لو فيها مسافة/شرطة/تبدأ برقم استخدم Bracket"
+            ],
+            [
+              "prompt",
+              "تعمل في المتصفح غالبًا وليست متاحة مباشرة في Node.js"
+            ],
+            [
+              "متى Dot؟",
+              "اسم ثابت ومعروف وصالح"
+            ],
+            [
+              "متى Brackets؟",
+              "اسم ديناميكي أو غير صالح مع النقطة"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "العملية",
+                  "Dot Notation",
+                  "Bracket Notation"
+                ],
+                [
+                  "قراءة",
+                  "obj.key",
+                  "obj['key']"
+                ],
+                [
+                  "إضافة/تعديل",
+                  "obj.key = val",
+                  "obj['key'] = val"
+                ],
+                [
+                  "مع متغير",
+                  "لا يمكن",
+                  "obj[variable]"
+                ],
+                [
+                  "مع Expression",
+                  "لا يمكن",
+                  "obj['pre' + var]"
+                ],
+                [
+                  "اسم فيه مسافة/شرطة",
+                  "لا يمكن",
+                  "obj['first name']"
+                ],
+                [
+                  "Array جوه Object",
+                  "obj.arr[0]",
+                  "obj['arr'][0]"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const value = objectName.propertyName;\nconst value2 = objectName['propertyName'];\nconst key = 'propertyName';\nconst value3 = objectName[key];\n\nif (Object.hasOwn(objectName, key)) {\n  console.log(objectName[key]);\n}\n\nconst element = objectName.arrayProperty[index];\nconst count = objectName.arrayProperty.length;"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق",
+              "المعنى"
+            ],
+            [
+              "Dot Notation",
+              "دوت نوتيشن",
+              "طريقة الوصول بالنقطة"
+            ],
+            [
+              "Bracket Notation",
+              "براكيت نوتيشن",
+              "طريقة الوصول بالأقواس"
+            ],
+            [
+              "Member Access",
+              "ميمبر أكسس",
+              "الاسم الرسمي للنقطة"
+            ],
+            [
+              "Computed Member Access",
+              "كومبيوتد ميمبر أكسس",
+              "الاسم الرسمي للأقواس"
+            ],
+            [
+              "Property",
+              "بروبرتي",
+              "خاصية داخل Object"
+            ],
+            [
+              "Key",
+              "كي",
+              "اسم الـ Property"
+            ],
+            [
+              "Value",
+              "فاليو",
+              "قيمة الـ Property"
+            ],
+            [
+              "undefined",
+              "أنديفايند",
+              "مش معرف أو قيمة غير محددة"
+            ],
+            [
+              "Expression",
+              "إكسبريشن",
+              "كود ينتج قيمة"
+            ],
+            [
+              "Object.hasOwn",
+              "أوبجكت هاز أون",
+              "يفحص وجود Property في object نفسه"
+            ],
+            [
+              "in operator",
+              "إن أوبريتور",
+              "يفحص وجود Property في object أو prototype chain"
+            ],
+            [
+              "Case Sensitive",
+              "كيس سينسيتيف",
+              "حساس لحالة الحروف"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "حل المشاكل -- Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب المحتمل",
+              "الحل"
+            ],
+            [
+              "undefined",
+              "اسم Property غلط أو غير موجود",
+              "راجع الاسم وحالة الحروف"
+            ],
+            [
+              "undefined رغم أن المفتاح موجود",
+              "قيمة الـ Property نفسها undefined",
+              "استخدم in أو Object.hasOwn للتفرقة"
+            ],
+            [
+              "Property موجودة لكن if دخل else",
+              "القيمة Falsy مثل 0 أو false أو نص فاضي",
+              "استخدم Object.hasOwn(obj, key)"
+            ],
+            [
+              "SyntaxError: Unexpected string",
+              "String أو Expression بعد النقطة",
+              "استخدم Bracket Notation"
+            ],
+            [
+              "prompt لا يعمل في Node.js",
+              "prompt خاصة غالبًا بالمتصفح",
+              "استخدم Browser أو طريقة إدخال مناسبة"
+            ],
+            [
+              "Dot لا تعمل مع first name أو birth-year",
+              "اسم Property غير صالح بعد النقطة",
+              "استخدم Bracket Notation"
+            ],
+            [
+              "Array داخل Object لا تعرض صح",
+              "استخدام .0",
+              "استخدم [0]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين عملية متدرجة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تمرين 1: سهل -- قراءة بيانات من Object",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اعرض name و age و city باستخدام Dot وBracket."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const person = { name: 'Ahmed', age: 25, city: 'Cairo' };\nconsole.log(person.name);\nconsole.log(person.age);\nconsole.log(person.city);\nconsole.log(person['name']);\nconsole.log(person['age']);\nconsole.log(person['city']);"
+            },
+            {
+              "type": "output",
+              "text": "Ahmed\n25\nCairo\nAhmed\n25\nCairo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 2: سهل -- إضافة Properties جديدة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أضف email و phone ثم اعرض الـ Object."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const person = { name: 'Ahmed', age: 25, city: 'Cairo' };\nperson.email = 'ahmed@email.com';\nperson['phone'] = '01012345678';\nconsole.log(person);"
+            },
+            {
+              "type": "output",
+              "text": "{name: 'Ahmed', age: 25, city: 'Cairo', email: 'ahmed@email.com', phone: '01012345678'}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 3: متوسط -- Computed Property Names",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم prefix لعرض roundOne/roundTwo/roundThree."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const scores = { roundOne: 85, roundTwo: 92, roundThree: 78 };\nconst prefix = 'round';\nconsole.log(scores[prefix + 'One']);\nconsole.log(scores[prefix + 'Two']);\nconsole.log(scores[prefix + 'Three']);"
+            },
+            {
+              "type": "output",
+              "text": "85\n92\n78"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 4: متوسط -- بناء جملة ديناميكية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اطبع جملة Product ديناميكية."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const product = {\n  name: 'iPhone 15',\n  price: 999,\n  colors: ['Black', 'Blue', 'White', 'Pink'],\n  brand: 'Apple'\n};\nconsole.log(\n  'The ' + product.name + ' by ' + product.brand\n  + ' costs $' + product.price\n  + ' and comes in ' + product.colors.length\n  + ' colors. The first color is '\n  + product.colors[0] + '.'\n);"
+            },
+            {
+              "type": "output",
+              "text": "The iPhone 15 by Apple costs $999 and comes in 4 colors. The first color is Black."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 5: صعب -- نظام معلومات ديناميكي",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم Object.hasOwn بدل if (employee[field]) عشان الحل يكون أدق علميًا."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const employee = {\n  fullName: 'Sara Ali',\n  department: 'Engineering',\n  salary: 15000,\n  skills: ['JavaScript', 'Python', 'React'],\n  yearsOfExperience: 5\n};\n\nconst field = prompt(\n  'What do you want to know? Choose: fullName, department, salary, skills, yearsOfExperience'\n);\n\nif (Object.hasOwn(employee, field)) {\n  console.log(employee.fullName + \"'s \" + field + ' is ' + employee[field]);\n} else {\n  console.log('Invalid field! Available fields: fullName, department, salary, skills, yearsOfExperience');\n}\n\nconsole.log(employee.fullName + ' has ' + employee.skills.length + ' skills. The top skill is ' + employee.skills[0] + '.');"
+            },
+            {
+              "type": "output",
+              "text": "Sara Ali's department is Engineering\nSara Ali has 3 skills. The top skill is JavaScript."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة نظرية",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "إيه الفرق الجوهري بين Dot وBracket؟",
+              "answer": "Dot تحتاج اسم Property ثابت، بينما Bracket تسمح بـ Expression ديناميكي."
+            },
+            {
+              "question": "هل if (obj[key]) كافي للتحقق من وجود Property؟",
+              "answer": "لا، لأنه يتحقق من Truthiness للقيمة وليس من وجود المفتاح."
+            },
+            {
+              "question": "ما الفرق بين in و Object.hasOwn؟",
+              "answer": "in يبحث في object والـ prototype chain، أما Object.hasOwn فيبحث في object نفسه فقط."
+            },
+            {
+              "question": "هل undefined يعني دائمًا أن الـ Property غير موجودة؟",
+              "answer": "لا، قد تكون موجودة وقيمتها undefined."
+            },
+            {
+              "question": "هل يمكن تعديل Properties داخل Object معرف بـ const؟",
+              "answer": "نعم، const يمنع إعادة تعيين المرجع وليس تعديل محتوى الـ object."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الدرس الجاي",
+              "علاقته بالدرس ده",
+              "هتتعلم إيه"
+            ],
+            [
+              "Object Methods",
+              "استدعاء Methods بـ Dot",
+              "Functions داخل Object"
+            ],
+            [
+              "Iteration: The for Loop",
+              "Bracket مع Loop",
+              "التكرار التلقائي"
+            ],
+            [
+              "Looping Arrays",
+              "Arrays داخل Objects",
+              "التحكم في Loop"
+            ],
+            [
+              "Destructuring Objects",
+              "استخراج بيانات أسهل",
+              "فك تغليف Object"
+            ],
+            [
+              "Optional Chaining",
+              "تعامل أفضل مع Properties غير موجودة",
+              "استخدام ?."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ملخص الدرس بعد التحسين العلمي"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "Dot Notation سهلة ونظيفة عندما تعرف اسم الـ Property مسبقًا.",
+                "Bracket Notation أقوى لأنها تسمح بـ Expressions ديناميكية وتدعم أسماء Properties الخاصة.",
+                "undefined قد تظهر عند Property غير موجودة أو Property موجودة بقيمة undefined.",
+                "للتحقق من وجود Property استخدم Object.hasOwn غالبًا.",
+                "prompt تعمل في المتصفح غالبًا وليست متاحة مباشرة في Node.js.",
+                "const يحمي المرجع وليس محتوى الـ object."
+              ]
+            },
+            {
+              "type": "text",
+              "text": "الدرس الجاي: Object Methods."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 20,
+    "subsections": 32,
+    "subsubsections": 0,
+    "blocks": 196,
+    "codeBlocks": 41,
+    "outputs": 25,
+    "boxes": 49,
+    "tables": 10,
+    "lists": 12
+  }
+}

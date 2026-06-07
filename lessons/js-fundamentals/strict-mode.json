@@ -1,0 +1,1236 @@
+{
+  "metadata": {
+    "sourceFile": "Strict Mode.tex",
+    "convertedAt": "2026-06-07T06:41:06.604533+00:00",
+    "title": "Strict Mode في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "توضيح أن 'use strict' عبارة عن Directive Prologue وليس مجرد string عادي عندما تأتي في بداية scope",
+        "تصحيح ملاحظة أن الأسطر الفارغة والتعليقات قبل 'use strict' لا تمنع التفعيل، لكن أي statement فعلي قبله يمنعها",
+        "توضيح أن JavaScript modules و classes تعمل strict mode تلقائيًا",
+        "إضافة الفرق بين script عادي و module في strict mode",
+        "تحسين أمثلة silent failure مثل إنشاء global variables بالخطأ",
+        "توضيح سلوك this داخل function عادية في strict mode",
+        "إضافة أمثلة على delete و duplicate parameters والكلمات المحجوزة",
+        "إضافة Best Practices حول استخدام const/let و ESLint و modules",
+        "تطوير Troubleshooting و Cheat Sheet والأسئلة والتمارين"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "Strict Mode في JavaScript",
+    "كتابة كود آمن وتجنب الأخطاء الصامتة",
+    "من كورس The Complete JavaScript Course",
+    "القسم التاني: JavaScript Fundamentals -- Part 2"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "أهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد ما تخلص الهاندبوك ده، هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفهم إيه هو Strict Mode وليه محتاجينه.",
+                "تفعّل Strict Mode بطريقة صحيحة في ملف JavaScript عادي.",
+                "تعرف الفرق بين الكود مع وبدون Strict Mode.",
+                "تفهم كيف يحوّل Strict Mode بعض الأخطاء الصامتة إلى أخطاء واضحة.",
+                "تعرف الكلمات المحجوزة في Strict Mode.",
+                "تفهم أن modules و classes تعمل strict mode تلقائيًا.",
+                "تتجنب أخطاء شائعة مثل typo في اسم متغير أو وضع use strict في مكان غلط."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Strict Mode هو وضع خاص يجعل JavaScript أكثر صرامة، فيكشف أخطاء كانت قد تمر بصمت في الوضع العادي. الهدف ليس جعل اللغة أصعب، بل جعل الأخطاء تظهر مبكرًا بدل أن تتحول إلى bugs صعبة."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في الملفات العادية scripts، اكتب \"use strict\" في بداية الملف. أما JavaScript modules و class bodies فهي strict تلقائيًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه هو Strict Mode؟",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "التعريف",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Strict Mode هو وضع تنفيذي في JavaScript يغير بعض السلوكيات القديمة، ويمنع ممارسات خطرة، ويحول بعض silent failures إلى أخطاء واضحة مثل ReferenceError أو TypeError أو SyntaxError."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "النموذج الذهني: Strict Mode مثل لمبات تحذير في السيارة. بدل ما المشكلة تعدي بصمت، تظهر لك فورًا في Console."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "ليه محتاجينه؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Strict Mode يساعد بطريقتين أساسيتين:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "يمنع سلوكيات قديمة أو خطرة قد تسبب bugs.",
+                "يظهر أخطاء واضحة بدل الفشل الصامت silent failure."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Strict Mode لا يجعل كودك آمنًا من كل شيء، لكنه يقلل فئة مهمة من الأخطاء، خصوصًا typos والمتغيرات العالمية غير المقصودة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إزاي نفعّل Strict Mode؟",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "الطريقة الأساسية",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "\"use strict\";\n\n// باقي الكود هنا\nlet x = 10;"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الجملة \"use strict\" هنا تسمى Directive. تعمل فقط عندما تكون ضمن Directive Prologue، يعني في بداية script أو function قبل أي statement فعلي."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "القواعد المهمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "التعليقات قبل \"use strict\" مسموحة.",
+                "الأسطر الفارغة قبلها مسموحة.",
+                "أي statement فعلي قبلها يجعلها string عادي ولا يفعّل strict mode للملف.",
+                "يجب كتابتها كـ string literal: \"use strict\" أو 'use strict'."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "// تعليق مسموح قبل directive\n\"use strict\";\n\nlet x = 10;"
+        },
+        {
+          "type": "output",
+          "text": "Strict Mode مفعّل"
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let x = 10;\n\n\"use strict\"; // لن يفعّل strict mode للملف لأنه جاء بعد statement"
+        },
+        {
+          "type": "output",
+          "text": "Strict Mode غير مفعّل لهذا الملف"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تفعيل Strict Mode داخل function",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function demo() {\n  \"use strict\";\n  // strict mode داخل هذه الدالة فقط\n}"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ممكن، لكن في التعلم والمشاريع الحديثة الأفضل تفعيله للملف كله أو استخدام modules حيث يكون strict تلقائيًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Modules و Classes",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في JavaScript الحديثة، ES modules تعمل في strict mode تلقائيًا، وكذلك الكود داخل class bodies. لذلك لا تحتاج \"use strict\" داخل module، لكنها لا تضر غالبًا إذا كتبتها."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "// file: app.mjs أو <script type=\"module\">\n// Strict Mode تلقائيًا هنا\n\nundeclaredVariable = 10; // ReferenceError"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مثال عملي: اكتشاف typos في أسماء المتغيرات",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "بدون Strict Mode",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let hasDriversLicense = false;\nconst passTest = true;\n\nif (passTest) {\n  hasDriverLicense = true; // typo: ناقص s\n}\n\nif (hasDriversLicense) {\n  console.log('I can drive');\n}"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "المتغير الأصلي hasDriversLicense.",
+                "كتبنا hasDriverLicense بالخطأ.",
+                "في non-strict mode قد يتم إنشاء global variable جديد بصمت.",
+                "المتغير الأصلي يظل false.",
+                "لا يظهر output، والbug صعب الملاحظة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مع Strict Mode",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "\"use strict\";\n\nlet hasDriversLicense = false;\nconst passTest = true;\n\nif (passTest) {\n  hasDriverLicense = true; // ReferenceError\n}\n\nif (hasDriversLicense) {\n  console.log('I can drive');\n}"
+        },
+        {
+          "type": "output",
+          "text": "Uncaught ReferenceError: hasDriverLicense is not defined"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Strict Mode يوقف التنفيذ عند الخطأ ويخبرك باسم المتغير غير المعرّف، فتكتشف الـ typo بسرعة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "الكود بعد التصحيح",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "\"use strict\";\n\nlet hasDriversLicense = false;\nconst passTest = true;\n\nif (passTest) {\n  hasDriversLicense = true;\n}\n\nif (hasDriversLicense) {\n  console.log('I can drive');\n}"
+        },
+        {
+          "type": "output",
+          "text": "I can drive"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الكلمات المحجوزة Reserved Words",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Strict Mode يمنع استخدام كلمات معينة كأسماء identifiers لأنها محجوزة للغة أو لمميزات حالية/مستقبلية."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "\"use strict\";\n\nconst interface = 'Audio'; // SyntaxError\nconst private = 534;       // SyntaxError"
+        },
+        {
+          "type": "output",
+          "text": "SyntaxError: Unexpected strict mode reserved word"
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الكلمة",
+              "ملاحظة"
+            ],
+            [
+              "interface",
+              "محجوزة في strict mode"
+            ],
+            [
+              "private",
+              "مرتبطة بمفاهيم private في classes"
+            ],
+            [
+              "protected",
+              "محجوزة"
+            ],
+            [
+              "public",
+              "محجوزة"
+            ],
+            [
+              "static",
+              "مستخدمة في classes"
+            ],
+            [
+              "implements",
+              "محجوزة"
+            ],
+            [
+              "package",
+              "محجوزة"
+            ],
+            [
+              "let",
+              "محجوزة/مقيدة"
+            ],
+            [
+              "yield",
+              "محجوزة في سياقات معينة"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم أسماء وصفية مثل userInterface أو privateValue بدل الكلمات المحجوزة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "سلوكيات يغيرها Strict Mode",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الحالة",
+              "بدون Strict Mode",
+              "مع Strict Mode"
+            ],
+            [
+              "تعيين متغير غير معلن",
+              "قد ينشئ global variable بصمت",
+              "ReferenceError"
+            ],
+            [
+              "استخدام كلمة محجوزة",
+              "قد يختلف حسب الكلمة والسياق",
+              "SyntaxError"
+            ],
+            [
+              "delete على variable",
+              "يفشل أو يعطي false في بعض الحالات",
+              "SyntaxError"
+            ],
+            [
+              "تكرار parameter names",
+              "قد يعمل في non-strict functions القديمة",
+              "SyntaxError"
+            ],
+            [
+              "this داخل function عادية",
+              "يشير إلى global object عند الاستدعاء البسيط",
+              "undefined"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعض التفاصيل مثل this و delete ستتضح أكثر في دروس متقدمة. المهم الآن أن Strict Mode يزيل سلوكيات قديمة مربكة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية مهمة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "منع إنشاء global variable بالخطأ",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "\"use strict\";\n\nuserName = 'Ali'; // ReferenceError لأن userName غير معلن"
+        },
+        {
+          "type": "output",
+          "text": "ReferenceError: userName is not defined"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل: استخدم let أو const."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const userName = 'Ali';"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "delete على متغير",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "\"use strict\";\n\nlet x = 1;\n// delete x; // SyntaxError"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "delete مصمم لحذف properties من objects، وليس variables. لا تستخدمه مع let/const/var."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Duplicate parameters",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "\"use strict\";\n\n// SyntaxError في strict mode\nfunction sum(a, a) {\n  return a + a;\n}"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم أسماء parameters فريدة وواضحة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "this داخل function عادية",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "\"use strict\";\n\nfunction showThis() {\n  console.log(this);\n}\n\nshowThis(); // undefined في strict mode"
+        },
+        {
+          "type": "output",
+          "text": "undefined"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في non-strict mode، this في استدعاء function عادية قد يشير إلى global object مثل window في المتصفح. Strict Mode يجعله undefined لتجنب أخطاء غير مقصودة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "القاعدة الذهبية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في ملفات script العادية: اكتب \"use strict\" كأول statement. في المشاريع الحديثة التي تستخدم modules، strict mode تلقائي، لكن فهمه لا يزال مهمًا."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "\"use strict\";\n\n// ابدأ كودك هنا"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "استخدم const و let دائمًا بدل إنشاء متغير بدون تصريح.",
+                "استخدم ESLint أو TypeScript لاحقًا لالتقاط أخطاء أكثر.",
+                "اعتمد على modules في المشاريع الحديثة عندما تصل لها."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "قسم خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ",
+              "الصح"
+            ],
+            [
+              "كتابة \"use strict\" بعد كود",
+              "اكتبها كأول statement"
+            ],
+            [
+              "الاعتقاد أن التعليقات تمنع strict",
+              "التعليقات والأسطر الفارغة لا تمنعها"
+            ],
+            [
+              "نسيان \"use strict\" في script عادي",
+              "أضفها أو استخدم modules"
+            ],
+            [
+              "تسمية متغير بكلمة محجوزة",
+              "استخدم اسمًا وصفيًا آخر"
+            ],
+            [
+              "اعتبار single quotes خطأ",
+              "\"use strict\" و 'use strict' كلاهما صحيح"
+            ],
+            [
+              "الاعتماد على JS لاكتشاف كل شيء",
+              "استخدم Strict Mode و linters"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "العملية",
+                  "المعلومة"
+                ],
+                [
+                  "تفعيل في script",
+                  "\"use strict\"; في أول statement"
+                ],
+                [
+                  "التعليقات قبله",
+                  "مسموحة"
+                ],
+                [
+                  "الأسطر الفارغة قبله",
+                  "مسموحة"
+                ],
+                [
+                  "statement قبله",
+                  "يمنع تفعيله للملف"
+                ],
+                [
+                  "داخل function",
+                  "ممكن لكنه أقل تفضيلًا"
+                ],
+                [
+                  "في module",
+                  "تلقائيًا strict"
+                ],
+                [
+                  "أهم فائدة",
+                  "منع silent failures"
+                ],
+                [
+                  "أمثلة كلمات محجوزة",
+                  "interface, private, protected"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "\"use strict\";\n\nconst value = 10;\nlet count = 0;\n\n// لا تفعل:\n// accidentalGlobal = 5;"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات Glossary",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق",
+              "المعنى"
+            ],
+            [
+              "Strict Mode",
+              "ستريكت مود",
+              "وضع صارم يقلل الأخطاء الصامتة"
+            ],
+            [
+              "Silent Failure",
+              "سايلنت فيليور",
+              "فشل يحدث دون رسالة واضحة"
+            ],
+            [
+              "Reserved Word",
+              "ريزيرفد وورد",
+              "كلمة محجوزة لا تصلح كاسم"
+            ],
+            [
+              "ReferenceError",
+              "ريفيرنس إيرور",
+              "اسم غير معرف"
+            ],
+            [
+              "SyntaxError",
+              "سينتاكس إيرور",
+              "خطأ في بنية الكود"
+            ],
+            [
+              "Directive Prologue",
+              "دايركتف برولوج",
+              "مجموعة string literals في بداية scope مثل use strict"
+            ],
+            [
+              "Global Variable",
+              "جلوبال فاريابل",
+              "متغير عام متاح على نطاق واسع"
+            ],
+            [
+              "ES Module",
+              "إي إس موديول",
+              "ملف module يعمل strict تلقائيًا"
+            ],
+            [
+              "Debug",
+              "ديباج",
+              "تحديد الأخطاء وإصلاحها"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "Strict Mode مش شغال",
+              "في statement قبل \"use strict\"",
+              "انقلها لأول statement"
+            ],
+            [
+              "ReferenceError: x is not defined",
+              "اسم متغير خطأ أو غير معلن",
+              "راجع الاسم واستخدم let/const"
+            ],
+            [
+              "Unexpected strict mode reserved word",
+              "استخدمت كلمة محجوزة",
+              "غيّر الاسم"
+            ],
+            [
+              "الكود يعمل بنتيجة غريبة",
+              "ربما strict غير مفعّل أو typo",
+              "فعّل strict واستخدم linter"
+            ],
+            [
+              "Unexpected token if",
+              "استخدمت keyword كاسم",
+              "لا تستخدم كلمات اللغة كأسماء"
+            ],
+            [
+              "this يساوي undefined",
+              "function عادية في strict mode",
+              "افهم سياق this أو استخدم method/arrow حسب الحالة"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة لاختبار فهمك",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "ما أول سطر تكتبه في script عادي؟",
+              "answer": "\"use strict\"; كأول statement."
+            },
+            {
+              "question": "ماذا يحدث لو كتبت myname = \"John\" بدون تعريف في strict mode؟",
+              "answer": "ReferenceError لأن strict mode يمنع إنشاء global variable بالخطأ."
+            },
+            {
+              "question": "لماذا interface كلمة ممنوعة في strict mode؟",
+              "answer": "لأنها reserved word مرتبطة بمميزات اللغة أو مستقبلها."
+            },
+            {
+              "question": "هل يمكن تفعيل strict mode داخل function فقط؟",
+              "answer": "نعم، لكن الأفضل غالبًا تفعيله للملف أو استخدام modules."
+            },
+            {
+              "question": "ما الفرق بين silent failure و visible error؟",
+              "answer": "silent failure يمر دون رسالة، visible error يظهر في Console ويحدد المشكلة."
+            },
+            {
+              "question": "هل modules تحتاج \"use strict\"؟",
+              "answer": "لا، ES modules تعمل strict mode تلقائيًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Strict Mode يحول أخطاء صامتة إلى errors واضحة.",
+                "في scripts العادية اكتب \"use strict\" أول الملف.",
+                "ES modules و classes strict تلقائيًا.",
+                "يحميك من accidental globals و reserved words وسلوكيات قديمة مربكة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بدون Strict Mode، typo في اسم متغير قد ينشئ متغيرًا عامًا جديدًا بصمت. هذا يجعل bugs تختفي لفترة طويلة. Strict Mode يوقف ذلك فورًا بـ ReferenceError."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "JavaScript القديمة كانت متسامحة جدًا. Strict Mode يقلل التسامح الخطر ويجعل الأخطاء تظهر بدل أن تتغطى."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: وضع statement قبل \"use strict\"."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let x = 5;\n\"use strict\"; // غير مفعّل للملف"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: استخدام reserved word."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "\"use strict\";\n// const interface = 'Audio'; // SyntaxError"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: delete على variable."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "\"use strict\";\nlet x = 1;\n// delete x; // SyntaxError"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "لماذا Strict Mode ليس الافتراضي في scripts القديمة؟",
+                "ماذا يحدث لو وضعت \"use strict\" في منتصف الملف؟",
+                "لماذا accidental globals خطيرة؟",
+                "ما الفرق بين script و module في strict mode؟",
+                "كيف يؤثر strict mode على this؟",
+                "هل Strict Mode يغني عن linter؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: typo في userName عمل متغيرًا آخر."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "اكتشف أن الاسم مكتوب بشكل مختلف.",
+                "Strict Mode سيعطي ReferenceError عند التعيين لاسم غير معلن.",
+                "صحح الاسم واستخدم ESLint."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "\"use strict\";\nlet userName = 'Ali';\n// userNmae = 'Ali'; // ReferenceError"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: data = fetch(...) بدون const/let في legacy file."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "هذا قد ينشئ global variable.",
+                "Strict Mode يمنعه.",
+                "استخدم const أو let."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const data = await fetch(url);"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: counter عام بالخطأ بين ملفات build."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "بدون تصريح يصبح global في non-strict.",
+                "قد يتضارب مع ملفات أخرى.",
+                "استخدم strict وصرّح بالمتغير."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let counter = 0;"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في Strict Mode: لو كتبت myname = \"John\" بدون تعريف، ماذا يحدث؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الإجابة: ReferenceError: myname is not defined."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح الـ Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لماذا strict mode غير مفعّل هنا؟"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let x = 5;\n\"use strict\";\nconsole.log(x);"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لأن \"use strict\" جاءت بعد statement. انقلها لأول الملف."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: حل مشكلة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب أول سطرين في ملف جديد مع تعليق يوضح الغرض."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "\"use strict\";\n// تفعيل الوضع الصارم لتجنب الأخطاء الصامتة"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تعرف أين تضع \"use strict\".",
+                "تعرف أن comments لا تمنع تفعيله.",
+                "تعرف الفرق بين silent failure و visible error.",
+                "تعرف أن modules strict تلقائيًا.",
+                "تعرف أمثلة مثل interface و private.",
+                "تعرف لماذا accidental globals خطيرة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس القادم Functions سيبني على Strict Mode. من الآن فصاعدًا اعتبر أن الكود يعمل في strict mode أو داخل modules في المشاريع الحديثة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Strict Mode خطوة بسيطة لكنها مهمة: في scripts العادية اكتب \"use strict\" في أول الملف، واستخدم let/const، وتجنب الكلمات المحجوزة. ومع modules الحديثة، اعرف أن strict mode مفعّل تلقائيًا."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 23,
+    "subsections": 16,
+    "subsubsections": 0,
+    "blocks": 130,
+    "codeBlocks": 24,
+    "outputs": 7,
+    "boxes": 41,
+    "tables": 6,
+    "lists": 12
+  }
+}

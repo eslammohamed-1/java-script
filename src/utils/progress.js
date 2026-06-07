@@ -32,6 +32,12 @@ export function markCompleted(moduleId, itemId) {
 }
 
 export function calcDayProgress(module, progress) {
+  if (module.type === 'improved-course') {
+    const sections = ['overview', 'content'];
+    const done = progress.visited.filter((v) => sections.includes(v)).length;
+    return Math.min(100, Math.round((done / sections.length) * 100));
+  }
+
   const isExam =
     !module.lessons?.length &&
     !module.schedule?.length &&

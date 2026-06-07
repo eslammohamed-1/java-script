@@ -1,0 +1,1306 @@
+{
+  "metadata": {
+    "sourceType": "transcript",
+    "sourceFile": "while_loop transcript",
+    "convertedAt": "2026-06-07T07:20:23.285343+00:00",
+    "title": "The while Loop في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Transcript transformed and scientifically improved JSON by M365 Copilot",
+    "requestedFileName": "while_loop",
+    "scientificReview": {
+      "status": "تم تحويل الترانسكريبت إلى هاندبوك JSON منظم ومحسّن علميًا وتعليميًا",
+      "mainImprovements": [
+        "تحويل الشرح العفوي إلى أقسام تعليمية منظمة عن while loop",
+        "توضيح الفرق بين for loop وwhile loop من حيث وجود initialization/update داخل/خارج statement",
+        "شرح أن while loop تحتاج condition فقط وتعمل طالما الشرط true",
+        "إضافة مثال مكافئ بين for loop وwhile loop لنفس تمرين رفع الأوزان",
+        "شرح use case مهم للwhile loop عندما لا نعرف عدد التكرارات مسبقًا",
+        "توضيح مثال رمي النرد حتى ظهور رقم 6 باستخدام Math.random وMath.trunc",
+        "إضافة تحذير من infinite loop عند عدم تحديث قيمة الشرط داخل while loop",
+        "شرح أن while loop قد لا تعمل ولا مرة إذا كان الشرط false من البداية",
+        "إضافة trace tables وflow explanation وCheat Sheet وTroubleshooting وتمارين",
+        "توضيح متى نختار for ومتى نختار while بشكل عملي"
+      ]
+    }
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "The while Loop في JavaScript",
+    "استخدام while loop عندما لا نعرف عدد التكرارات مسبقًا",
+    "من كورس The Complete JavaScript Course",
+    "القسم: JavaScript Fundamentals -- Part 2"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "الربط بالمفاهيم السابقة وأهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قبل الدرس ده لازم تكون فاهم:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "for loop وأجزاؤها: initialization وcondition وupdate.",
+                "Counter variables مثل rep و i.",
+                "Comparison operators مثل <= و !==.",
+                "Reassignment باستخدام let.",
+                "Template literals لطباعة قيم ديناميكية.",
+                "Math.random وMath.trunc بشكل تمهيدي.",
+                "Infinite loops وخطورتها."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد الدرس هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفهم شكل while loop الأساسي.",
+                "تحول for loop بسيطة إلى while loop.",
+                "تعرف أن while loop تعتمد فقط على condition داخل الأقواس.",
+                "تضع initialization قبل while loop إذا احتجت counter.",
+                "تضع update داخل جسم while loop لتجنب infinite loop.",
+                "تستخدم while loop عندما لا تعرف عدد التكرارات مسبقًا.",
+                "تنفذ مثال رمي النرد حتى ظهور 6.",
+                "تختار بين for loop وwhile loop حسب طبيعة المشكلة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "بعد ما تعلمنا for loop وحتى nested loops، يوجد نوع آخر مهم من loops في JavaScript وهو while loop. الفرق الأساسي أن while loop لا تحتوي إلا على شرط داخل الأقواس، وتستمر في العمل طالما هذا الشرط true."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "while loop مناسبة جدًا عندما لا تعرف مسبقًا عدد مرات التكرار، لكنك تعرف الشرط الذي يجب أن يستمر طالما هو true."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مراجعة: for loop لتمرين رفع الأوزان",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "for (let rep = 1; rep <= 10; rep++) {\n  console.log(`Lifting weights repetition ${rep}`);\n}"
+        },
+        {
+          "type": "output",
+          "text": "Lifting weights repetition 1\nLifting weights repetition 2\n...\nLifting weights repetition 10"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في for loop، الثلاث أجزاء موجودة في نفس السطر: البداية rep = 1، الشرط rep <= 10، والتحديث rep++."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "شكل while Loop الأساسي",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "while (condition) {\n  // code to repeat while condition is true\n}"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "while loop تسمى while لأنها تعمل “طالما” الشرط true."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الـ while statement نفسه لا يحتوي على initialization أو update. لو احتجتهم، تكتبهم يدويًا خارج وداخل loop."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تحويل for loop إلى while loop",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let rep = 1;\nwhile (rep <= 10) {\n  console.log(`WHILE: Lifting weights repetition ${rep}`);\n  rep++;\n}"
+        },
+        {
+          "type": "output",
+          "text": "WHILE: Lifting weights repetition 1\nWHILE: Lifting weights repetition 2\n...\nWHILE: Lifting weights repetition 10"
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "جزء for loop",
+              "مكانه في while loop"
+            ],
+            [
+              "let rep = 1",
+              "قبل while loop"
+            ],
+            [
+              "rep <= 10",
+              "داخل أقواس while"
+            ],
+            [
+              "rep++",
+              "داخل body غالبًا في آخر iteration"
+            ],
+            [
+              "console.log(...)",
+              "داخل body مثل for loop"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "نفس المكونات موجودة، لكنها موزعة بشكل مختلف في while loop."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ترتيب تنفيذ while Loop",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "نفذ أي initialization قبل while loop إن وجدت.",
+                "افحص condition قبل كل iteration.",
+                "لو condition = true، نفذ body.",
+                "داخل body غالبًا يتم تحديث متغير يؤثر على الشرط.",
+                "ارجع لفحص condition مرة أخرى.",
+                "لو condition = false، اخرج من loop."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let rep = 1;\nwhile (rep <= 3) {\n  console.log(`Rep ${rep}`);\n  rep++;\n}"
+        },
+        {
+          "type": "output",
+          "text": "Rep 1\nRep 2\nRep 3"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "while loop أكثر مرونة من for loop",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "while loop لا تحتاج بالضرورة إلى counter. كل ما تحتاجه هو condition. لذلك هي مناسبة للمشاكل التي لا نعرف فيها عدد التكرارات مسبقًا."
+        },
+        {
+          "type": "box",
+          "style": "compare",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم for loop عندما تعرف عدد التكرارات أو تمر على array بطول معروف."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "compare",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم while loop عندما تريد التكرار حتى يحدث شيء غير معروف زمن حدوثه، مثل رمي نرد حتى يظهر رقم 6."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مثال النرد: Roll Dice Until 6",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "سنرمي نردًا عشوائيًا من 1 إلى 6، ونستمر في الرمي طالما الرقم ليس 6. عندما يظهر 6، يتوقف loop."
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let dice = Math.trunc(Math.random() * 6) + 1;\n\nwhile (dice !== 6) {\n  console.log(`You rolled a ${dice}`);\n  dice = Math.trunc(Math.random() * 6) + 1;\n}\n\nconsole.log('Loop ended because dice is 6');"
+        },
+        {
+          "type": "output",
+          "text": "You rolled a 2\nYou rolled a 1\nYou rolled a 5\nLoop ended because dice is 6"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "النتيجة تختلف في كل تشغيل لأن الأرقام عشوائية."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "شرح توليد رقم عشوائي من 1 إلى 6",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const dice = Math.trunc(Math.random() * 6) + 1;"
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الجزء",
+              "المعنى"
+            ],
+            [
+              "Math.random()",
+              "ينتج رقمًا عشريًا من 0 إلى أقل من 1"
+            ],
+            [
+              "* 6",
+              "يوسع النطاق إلى 0 إلى أقل من 6"
+            ],
+            [
+              "Math.trunc(...)",
+              "يحذف الجزء العشري، فينتج 0 إلى 5"
+            ],
+            [
+              "+ 1",
+              "يحوله إلى 1 إلى 6"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لا تحتاج إتقان random الآن، المهم أن هذا التعبير يعطي رقمًا صحيحًا بين 1 و6."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "لماذا نعيد توليد dice داخل while؟",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let dice = Math.trunc(Math.random() * 6) + 1;\n\nwhile (dice !== 6) {\n  console.log(`You rolled a ${dice}`);\n  dice = Math.trunc(Math.random() * 6) + 1; // مهم جدًا\n}"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو لم نغير قيمة dice داخل while، والرقم الأول لم يكن 6، سيظل الشرط true للأبد وهذا يؤدي إلى infinite loop."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إضافة رسالة قبل انتهاء loop",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let dice = Math.trunc(Math.random() * 6) + 1;\n\nwhile (dice !== 6) {\n  console.log(`You rolled a ${dice}`);\n  dice = Math.trunc(Math.random() * 6) + 1;\n\n  if (dice === 6) {\n    console.log('Loop is about to end...');\n  }\n}"
+        },
+        {
+          "type": "output",
+          "text": "You rolled a 1\nYou rolled a 5\nLoop is about to end..."
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "عندما يتم توليد 6 في نهاية iteration، تظهر رسالة أن loop ستنتهي، ثم في فحص الشرط التالي dice !== 6 تكون false فيتوقف loop."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ماذا لو كان أول Dice هو 6؟",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let dice = 6;\n\nwhile (dice !== 6) {\n  console.log(`You rolled a ${dice}`);\n}\n\nconsole.log('No iterations happened');"
+        },
+        {
+          "type": "output",
+          "text": "No iterations happened"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "while loop يفحص الشرط قبل أول iteration. لو الشرط false من البداية، لا يعمل body ولا مرة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Trace Table لمثال Dice",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "Step",
+              "dice",
+              "condition dice !== 6",
+              "action"
+            ],
+            [
+              "start",
+              "2",
+              "true",
+              "print 2, roll again"
+            ],
+            [
+              "next",
+              "1",
+              "true",
+              "print 1, roll again"
+            ],
+            [
+              "next",
+              "5",
+              "true",
+              "print 5, roll again"
+            ],
+            [
+              "next",
+              "6",
+              "false",
+              "stop"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "عدد iterations غير معروف مسبقًا؛ قد يظهر 6 من أول مرة، أو بعد مرات كثيرة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "for vs while",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المقارنة",
+              "for loop",
+              "while loop"
+            ],
+            [
+              "عدد التكرارات معروف",
+              "ممتازة",
+              "تعمل لكن أقل تنظيمًا"
+            ],
+            [
+              "عداد واضح",
+              "كل الأجزاء في header",
+              "تحتاج كتابة العداد يدويًا"
+            ],
+            [
+              "عدد التكرارات غير معروف",
+              "أقل مناسبة",
+              "ممتازة"
+            ],
+            [
+              "الشرط غير مرتبط بعداد",
+              "أقل طبيعية",
+              "مناسبة جدًا"
+            ],
+            [
+              "Looping arrays",
+              "غالبًا الأفضل",
+              "ممكن لكن أقل شيوعًا"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو تعرف “كم مرة” غالبًا استخدم for. لو تعرف “إلى أن يحدث شرط معين” غالبًا استخدم while."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Infinite Loop في while",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "while loops خطيرة إذا لم تُحدّث القيمة التي يعتمد عليها الشرط."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "// خطر: لا تشغله\n// let dice = 3;\n// while (dice !== 6) {\n//   console.log(`You rolled a ${dice}`);\n//   // dice لا تتغير، لذلك loop لا ينتهي\n// }"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "حدد الشرط الذي يوقف loop.",
+                "تأكد أن body يحتوي على تغيير قد يجعل الشرط false.",
+                "ضع console.log للتتبع أثناء التطوير.",
+                "اختبر بعدد بسيط أو شرط آمن لو أمكن."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Counter بسيط باستخدام while",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let i = 1;\nwhile (i <= 5) {\n  console.log(i);\n  i++;\n}"
+        },
+        {
+          "type": "output",
+          "text": "1\n2\n3\n4\n5"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "العد التنازلي باستخدام while",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let count = 5;\nwhile (count >= 1) {\n  console.log(count);\n  count--;\n}\nconsole.log('GO!');"
+        },
+        {
+          "type": "output",
+          "text": "5\n4\n3\n2\n1\nGO!"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "جمع أرقام حتى حد معين",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let total = 0;\nlet num = 1;\nwhile (total < 10) {\n  total += num;\n  console.log(`Added ${num}, total = ${total}`);\n  num++;\n}"
+        },
+        {
+          "type": "output",
+          "text": "Added 1, total = 1\nAdded 2, total = 3\nAdded 3, total = 6\nAdded 4, total = 10"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "محاكاة انتظار حدث",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let tries = 0;\nlet success = false;\n\nwhile (!success && tries < 5) {\n  tries++;\n  success = Math.random() > 0.7;\n  console.log(`Try ${tries}: ${success ? 'success' : 'failed'}`);\n}"
+        },
+        {
+          "type": "output",
+          "text": "Output varies because of Math.random()"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ",
+              "الصح"
+            ],
+            [
+              "نسيان تحديث متغير الشرط داخل while",
+              "حدّث القيمة داخل body"
+            ],
+            [
+              "استخدام while عندما تعرف عدد التكرارات بوضوح",
+              "for غالبًا أوضح"
+            ],
+            [
+              "وضع update قبل العمل المطلوب خطأً",
+              "راجع ترتيب التنفيذ"
+            ],
+            [
+              "نسيان initialization قبل while",
+              "عرّف المتغير قبل while"
+            ],
+            [
+              "توقع أن while تعمل مرة على الأقل",
+              "while قد تعمل صفر مرات إذا الشرط false من البداية"
+            ],
+            [
+              "شرط دائم true بدون break آمن",
+              "قد يسبب infinite loop"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح"
+            ],
+            [
+              "while loop",
+              "Loop تعمل طالما condition true"
+            ],
+            [
+              "شكلها",
+              "while (condition) { body }"
+            ],
+            [
+              "initialization",
+              "تكتب قبل while إذا احتجتها"
+            ],
+            [
+              "update",
+              "تكتب داخل body إذا احتجتها"
+            ],
+            [
+              "أفضل استخدام",
+              "عندما لا تعرف عدد التكرارات مسبقًا"
+            ],
+            [
+              "مثال dice",
+              "استمر طالما dice !== 6"
+            ],
+            [
+              "خطر رئيسي",
+              "infinite loop عند عدم تغيير الشرط"
+            ],
+            [
+              "مقارنة مع for",
+              "for أفضل غالبًا عند وجود counter وعدد معروف"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "// Basic while loop\nwhile (condition) {\n  // repeated code\n}\n\n// Counter with while\nlet i = 1;\nwhile (i <= 10) {\n  console.log(i);\n  i++;\n}\n\n// Unknown number of iterations\nlet dice = Math.trunc(Math.random() * 6) + 1;\nwhile (dice !== 6) {\n  console.log(`You rolled a ${dice}`);\n  dice = Math.trunc(Math.random() * 6) + 1;\n}\n\n// Rule of thumb:\n// for    -> when you know how many times\n// while  -> until a condition changes"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق",
+              "المعنى"
+            ],
+            [
+              "while Loop",
+              "وايل لوب",
+              "حلقة تعمل طالما الشرط true"
+            ],
+            [
+              "Condition",
+              "كونديشن",
+              "الشرط الذي يتحكم في استمرار loop"
+            ],
+            [
+              "Unknown Iterations",
+              "أننون إيتيريشنز",
+              "عدد تكرارات غير معروف مسبقًا"
+            ],
+            [
+              "Counter",
+              "كاونتر",
+              "عداد اختياري في while"
+            ],
+            [
+              "Reassignment",
+              "ري أساينمنت",
+              "إعادة تعيين قيمة متغير"
+            ],
+            [
+              "Math.random",
+              "ماث راندوم",
+              "ينتج رقمًا عشوائيًا عشريًا"
+            ],
+            [
+              "Math.trunc",
+              "ماث ترانك",
+              "يحذف الجزء العشري"
+            ],
+            [
+              "Infinite Loop",
+              "إنفينيت لوب",
+              "حلقة لا تنتهي"
+            ],
+            [
+              "Dice Roll",
+              "دايس رول",
+              "رمية نرد"
+            ],
+            [
+              "Loop Body",
+              "لوب بودي",
+              "الكود داخل loop"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "while لا تعمل نهائيًا",
+              "condition false من البداية",
+              "راجع initial value والشرط"
+            ],
+            [
+              "المتصفح علق",
+              "infinite loop",
+              "أوقف التشغيل وراجع update"
+            ],
+            [
+              "نفس القيمة تتكرر للأبد",
+              "لم تُعد تعيين المتغير داخل body",
+              "أعد توليد/تحديث القيمة"
+            ],
+            [
+              "نتائج dice مختلفة عن الفيديو",
+              "Math.random عشوائي",
+              "هذا طبيعي"
+            ],
+            [
+              "loop يعمل أكثر من المتوقع",
+              "الشرط لا يصبح false بسرعة",
+              "راجع منطق الشرط"
+            ],
+            [
+              "كان الأفضل استخدام for",
+              "عدد التكرارات معروف ومبني على counter",
+              "استخدم for للوضوح"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين عملية متدرجة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تمرين 1: اطبع 1 إلى 5 باستخدام while",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let i = 1;\nwhile (i <= 5) {\n  console.log(i);\n  i++;\n}"
+            },
+            {
+              "type": "output",
+              "text": "1\n2\n3\n4\n5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 2: عد تنازلي",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let count = 3;\nwhile (count >= 1) {\n  console.log(count);\n  count--;\n}\nconsole.log('Done');"
+            },
+            {
+              "type": "output",
+              "text": "3\n2\n1\nDone"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 3: جمع حتى يتجاوز 20",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let sum = 0;\nlet n = 1;\nwhile (sum <= 20) {\n  sum += n;\n  n++;\n}\nconsole.log(sum);"
+            },
+            {
+              "type": "output",
+              "text": "21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 4: رمي نرد حتى 6",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let dice = Math.trunc(Math.random() * 6) + 1;\nwhile (dice !== 6) {\n  console.log(`You rolled ${dice}`);\n  dice = Math.trunc(Math.random() * 6) + 1;\n}\nconsole.log('Six rolled!');"
+            },
+            {
+              "type": "output",
+              "text": "Output varies, ends with Six rolled!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 5: محاولات محدودة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let attempts = 0;\nlet success = false;\nwhile (!success && attempts < 3) {\n  attempts++;\n  success = Math.random() > 0.5;\n  console.log(`Attempt ${attempts}`);\n}\nconsole.log(success ? 'Succeeded' : 'Failed');"
+            },
+            {
+              "type": "output",
+              "text": "Output varies"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة نظرية",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "ما الفرق الأساسي بين for وwhile؟",
+              "answer": "for تجمع initialization وcondition وupdate في header، بينما while تكتب condition فقط وتضع الباقي يدويًا."
+            },
+            {
+              "question": "متى تكون while أفضل؟",
+              "answer": "عندما لا تعرف عدد التكرارات مسبقًا وتريد الاستمرار حتى يتغير شرط معين."
+            },
+            {
+              "question": "لماذا مثال النرد مناسب للwhile؟",
+              "answer": "لأننا لا نعرف كم مرة سنرمي قبل ظهور 6."
+            },
+            {
+              "question": "ما الذي يسبب infinite loop في while؟",
+              "answer": "عدم تغيير القيمة التي يعتمد عليها الشرط بحيث يبقى true للأبد."
+            },
+            {
+              "question": "هل while loop قد لا تعمل ولا مرة؟",
+              "answer": "نعم، إذا كان الشرط false من البداية."
+            },
+            {
+              "question": "لماذا for أفضل غالبًا للarrays؟",
+              "answer": "لأن عدد التكرارات معروف من array.length وهناك counter واضح."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطوة القادمة",
+              "هتعمل إيه",
+              "العلاقة"
+            ],
+            [
+              "Final Coding Challenge",
+              "تطبيق شامل على fundamentals",
+              "تجميع كل مفاهيم القسم"
+            ],
+            [
+              "DOM لاحقًا",
+              "التفاعل مع صفحات الويب",
+              "قد تستخدم loops لمعالجة عناصر كثيرة"
+            ],
+            [
+              "Array methods advanced",
+              "map/filter/reduce",
+              "بدائل أكثر declarative للloops في بعض الحالات"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "while loop تعمل طالما condition true.",
+                "استخدم while عندما لا تعرف عدد التكرارات مسبقًا.",
+                "لو استخدمت counter مع while، عرّفه قبلها وحدّثه داخلها.",
+                "احذر جدًا من infinite loops."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ليست كل المشاكل مبنية على عدد معروف من التكرارات. أحيانًا تريد الاستمرار حتى يحدث شيء: ظهور رقم 6، نجاح محاولة، انتهاء إدخال المستخدم. هنا while loop هي الأداة المناسبة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "while loop مثل قولك: “استمر في فعل هذا طالما الشرط صحيح”. مثل: استمر في رمي النرد طالما لم يظهر 6."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: نسيان update."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let i = 1;\nwhile (i <= 10) {\n  console.log(i);\n  // i++ missing -> infinite loop\n}"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: توليد dice مرة واحدة فقط."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let dice = Math.trunc(Math.random() * 6) + 1;\nwhile (dice !== 6) {\n  console.log(dice);\n  // dice must be regenerated here\n}"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: استخدام while بدل for عند loop على array بدون سبب."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "// for is usually clearer\nfor (let i = 0; i < arr.length; i++) console.log(arr[i]);"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "متى تختار while بدل for؟",
+                "ما معنى أن while loop condition-based؟",
+                "كيف تمنع infinite loop؟",
+                "لماذا while قد تعمل صفر مرات؟",
+                "كيف تجعل random dice loop يتوقف؟",
+                "ما الفرق بين while وdo...while؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: polling أو إعادة محاولة عملية حتى تنجح."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "while (!success && attempts < maxAttempts) {\n  attempts++;\n  // try again\n}"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: قراءة input حتى يكون صالحًا."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "while (!isValid(input)) {\n  // ask again\n}"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: loop لا يتوقف."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "حدد المتغيرات التي تظهر في condition.",
+                "تأكد أنها تتغير داخل body.",
+                "أضف حدًا أقصى للمحاولات إذا كان الشرط عشوائيًا أو خارجيًا."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تعرف شكل while loop.",
+                "تحول for counter loop إلى while.",
+                "تعرف أن while تحتاج condition فقط.",
+                "تعرف متى تختار while.",
+                "تكتب dice loop بدون infinite loop.",
+                "تفهم أن while قد تعمل صفر مرات.",
+                "تفرق بين for للعداد وwhile للشرط المفتوح."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "while loop تكمل فهمك للloops. استخدم for عندما تعرف عدد التكرارات، واستخدم while عندما تريد التكرار حتى يتغير شرط لا تعرف متى سيتغير. وبكده تكون أنهيت جزءًا مهمًا جدًا من JavaScript Fundamentals."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 31,
+    "subsections": 9,
+    "subsubsections": 0,
+    "blocks": 140,
+    "codeBlocks": 25,
+    "outputs": 15,
+    "boxes": 42,
+    "tables": 9,
+    "lists": 9
+  }
+}

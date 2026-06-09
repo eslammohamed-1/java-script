@@ -1,41 +1,68 @@
 {
   "id": "dom-events-basics",
-  "title": "JavaScript DOM & Events",
-  "description": "منهج تفاعلي بالعربية يغطي أساسيات DOM والأحداث، ثم اختبار شامل، ثم ورشة مشاريع عملية بأسلوب Jonas",
-  "badge": "الدرس الأول",
-  "level": "مبتدئ → بداية متوسط",
-  "estimatedDuration": "حوالي 3 أسابيع",
+  "title": "Guess My Number (Project)",
+  "description": "مشروع عملي لبناء لعبة Guess My Number بخطوات مفصلة",
+  "badge": "الدرس العملي",
+  "level": "مبتدئ",
+  "estimatedDuration": "حوالي 3 ساعات",
   "learningPath": [
-    { "num": 1, "title": "اليوم الأول", "desc": "DOM — اختيار العناصر، تعديل المحتوى، classList" },
-    { "num": 2, "title": "اليوم الثاني", "desc": "Events — addEventListener، forms، delegation" },
-    { "num": 3, "title": "الاختبار النهائي", "desc": "مراجعة شاملة قبل الورشة" },
-    { "num": 4, "title": "ورشة المشاريع", "desc": "Guess My Number، Modal، Pig Game" }
+    { "num": 1, "title": "مقدمة", "desc": "التعرف على المشروع" },
+    { "num": 2, "title": "الـ DOM", "desc": "ما هو وكيف يعمل؟" },
+    { "num": 3, "title": "تحديد العناصر", "desc": "اختيار العناصر وتعديلها" },
+    { "num": 4, "title": "الأحداث", "desc": "استخدام Click Events" },
+    { "num": 5, "title": "منطق اللعبة", "desc": "بناء قواعد الفوز والخسارة" },
+    { "num": 6, "title": "الستايل", "desc": "تغيير CSS بالـ DOM" },
+    { "num": 7, "title": "أعلى نتيجة", "desc": "تخزين الـ Highscore" },
+    { "num": 8, "title": "تنظيف الكود", "desc": "الـ Refactoring و DRY" }
   ],
   "modules": [
     {
-      "id": "day-1",
+      "id": "74-guess-my-number",
       "type": "day-course",
-      "label": "اليوم الأول",
-      "source": "day-1-dom-basics.json"
+      "label": "الدرس 74",
+      "source": "74-guess-my-number.json"
     },
     {
-      "id": "day-2",
+      "id": "75-what-is-dom",
       "type": "day-course",
-      "label": "اليوم الثاني",
-      "source": "day-2-events.json"
+      "label": "الدرس 75",
+      "source": "75-what-is-dom.json"
     },
     {
-      "id": "final-exam",
+      "id": "76-selecting-elements",
       "type": "day-course",
-      "label": "الاختبار النهائي",
-      "source": "final-exam.json",
-      "isExam": true
+      "label": "الدرس 76",
+      "source": "76-selecting-elements.json"
     },
     {
-      "id": "workshop",
-      "type": "projects-workshop",
-      "label": "ورشة المشاريع",
-      "source": "jonas-style-dom-events-projects-interactive.json"
+      "id": "77-click-events",
+      "type": "day-course",
+      "label": "الدرس 77",
+      "source": "77-click-events.json"
+    },
+    {
+      "id": "78-game-logic",
+      "type": "day-course",
+      "label": "الدرس 78",
+      "source": "78-game-logic.json"
+    },
+    {
+      "id": "79-css-styles",
+      "type": "day-course",
+      "label": "الدرس 79",
+      "source": "79-css-styles.json"
+    },
+    {
+      "id": "81-highscores",
+      "type": "day-course",
+      "label": "الدرس 81",
+      "source": "81-highscores.json"
+    },
+    {
+      "id": "82-refactoring",
+      "type": "day-course",
+      "label": "الدرس 82",
+      "source": "82-refactoring.json"
     }
   ]
 }

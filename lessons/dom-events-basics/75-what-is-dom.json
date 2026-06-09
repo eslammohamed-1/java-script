@@ -1,0 +1,81 @@
+{
+  "title": "75. ما هو الـ DOM؟",
+  "goal": "فهم عميق للـ Document Object Model بناءً على شرح الخبراء.",
+  "duration": "20 دقيقة",
+  "schedule": [
+    {
+      "time": "20 دقيقة",
+      "topic": "DOM و Web APIs"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "مفهوم الـ DOM",
+      "objectives": [
+        "فهم هيكل الشجرة",
+        "التمييز بين JS و Web APIs"
+      ],
+      "details": "الـ DOM هو نقطة الاتصال بين كود JavaScript وملف HTML.",
+      "key_tools": [
+        "document"
+      ],
+      "practice": "تصفح شجرة الـ DOM في المتصفح."
+    }
+  ],
+  "lessons": [
+    {
+      "name": "دليل شامل: ما هو الـ DOM؟",
+      "explanation": "### 🎯 الهدف الأساسي\nالتعرف على كيف يقرأ المتصفح صفحة الويب، وكيف تتمكن JavaScript من التفاعل معها وتعديلها.\n\n### 📖 الشرح المبسط\nDOM هو اختصار لـ \\textbf{Document Object Model}. يمكنك تخيله كترجمة حرفية لملف الـ HTML إلى كائنات يمكن لـ JavaScript فهمها.\n• بمجرد تحميل الصفحة، يبني المتصفح \\textbf{شجرة عائلة} تبدأ بالجذر وهو \\code{document}.\n• من خلال \\code{document}، يمكننا الوصول لأي عنصر مثل الأبناء \\code{<html>} و \\code{<body>}.\n\n### 💻 الكود والتطبيق\nلا يوجد كود معقد هنا، فقط دعنا نكتشف نقطة الدخول الخاصة بنا:\n\n// نقطة الدخول لكل الـ DOM\nconsole.log(document);\n\n// الوصول للابن المباشر (الجسم)\nconsole.log(document.body);\n\\end{verbatim}\n\n### 🧠 رؤى الخبراء\n\n[معلومة]\n\\textbf{مهندس الواجهات (Senior Architect):}\nالمعلومة التي تصدم الكثيرين هي أن \\textbf{الـ DOM ليس جزءاً من لغة JavaScript نفسها!} لغة JS مصممة لتعمل في أي مكان، حتى خارج المتصفح (مثل Node.js). المتصفح يوفر لنا مكاتب جاهزة تسمى \\textbf{Web APIs} (مثل الـ DOM، و Timers). المتصفح يسمح للغة JS بالتواصل مع هذه الـ APIs خلف الكواليس لتعديل الصفحة.\n\n[نصيحة]\n\\textbf{خبير الكود النظيف (Clean Code):}\nعند التعامل مع الـ DOM، يجب أن تتخيل أنك تتعامل مع هيكل معقد وثقيل. التعديل المستمر المباشر في الـ DOM مكلف جداً من حيث الأداء. لذلك نتعلم التحديد الدقيق للعناصر، وتقليل العمليات غير الضرورية.\n\n[تحذير]\n\\textbf{أخطاء شائعة:}\nاستخدام \\code{document} في Node.js: المبرمجون المبتدئون قد يحاولون تشغيل سكريبت يحتوي على \\code{document.querySelector} خارج المتصفح عبر طرفية Node.js، وهذا سيعطي خطأ مباشر لأن كائن \\code{document} يتواجد في المتصفح فقط!",
+      "example": {
+        "html": "<!-- الـ DOM يحول هذا الكود إلى شجرة كائنات -->\n<html>\n  <head></head>\n  <body>\n    <p class=\"message\">Start guessing...</p>\n  </body>\n</html>",
+        "javascript": "// نقطة الدخول هي document، وهي جزء من Web APIs وليست من أساسيات JS\ndocument.querySelector('.message');"
+      },
+      "senior_hints": [
+        {
+          "title": "كل شيء في الـ HTML هو Node",
+          "explanation": "في شجرة الـ DOM، ليس فقط العناصر (Tags) هي التي يتم تحويلها، بل حتى النصوص (Text)، والمسافات الفارغة، والتعليقات (Comments) تتحول إلى عُقد (Nodes) يمكن برمجتها.",
+          "practice": "ابحث في جوجل عن مصطلح 'DOM Text Node' لفهم كيف يتعامل المتصفح مع النصوص المستقلة."
+        }
+      ]
+    }
+  ],
+  "mcq": [
+    {
+      "question": "هل يعتبر الـ DOM جزءاً من مواصفات لغة JavaScript الأساسية (ECMAScript)؟",
+      "choices": [
+        "نعم، هو جزء أساسي من لغة JavaScript",
+        "لا، هو جزء من الـ Web APIs التي يوفرها المتصفح",
+        "نعم، ولكنه متوفر فقط في نسخة ES6",
+        "لا، هو جزء من لغة HTML"
+      ],
+      "answer": "لا، هو جزء من الـ Web APIs التي يوفرها المتصفح"
+    },
+    {
+      "question": "ما هي نقطة الدخول الأساسية (Entry Point) للوصول إلى أي عنصر في صفحة الويب؟",
+      "choices": [
+        "window",
+        "html",
+        "document",
+        "body"
+      ],
+      "answer": "document"
+    },
+    {
+      "question": "ما الذي يحدث عند محاولة استخدام document.querySelector في بيئة Node.js؟",
+      "choices": [
+        "يعمل بشكل طبيعي",
+        "يقوم بإنشاء صفحة ويب جديدة",
+        "يظهر خطأ لأن الـ document متوفر في المتصفح فقط",
+        "يقرأ الملفات من جهاز الكمبيوتر"
+      ],
+      "answer": "يظهر خطأ لأن الـ document متوفر في المتصفح فقط"
+    }
+  ],
+  "code_writing_tests": [],
+  "complete_code_tests": [
+    {
+      "question": "console.log(________.body);",
+      "answer": "document"
+    }
+  ]
+}

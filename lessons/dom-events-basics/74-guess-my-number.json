@@ -1,0 +1,88 @@
+{
+  "title": "74. مشروع 1: Guess My Number",
+  "goal": "التعرف على فكرة المشروع الأول وتجهيز بيئة العمل.",
+  "duration": "15 دقيقة",
+  "schedule": [
+    {
+      "time": "15 دقيقة",
+      "topic": "نظرة عامة على المشروع وتجهيز الملفات"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "نظرة عامة",
+      "objectives": [
+        "فهم متطلبات اللعبة",
+        "استخدام live-server"
+      ],
+      "details": "سنبني لعبة 'توقع الرقم' بتصميم ريترو لتعلم أساسيات DOM.",
+      "key_tools": [
+        "live-server",
+        "querySelector"
+      ],
+      "practice": "قم بفتح المشروع باستخدام live-server وتجربة اختيار العناصر في الكونسول."
+    }
+  ],
+  "lessons": [
+    {
+      "name": "دليل شامل: بدء مشروع Guess My Number",
+      "explanation": "### 🎯 الهدف الأساسي\nسنقوم ببناء مشروع عملي متكامل عبارة عن لعبة (توقع الرقم السري). الهدف ليس مجرد بناء لعبة، بل تعلم كيفية ربط واجهة المستخدم بمنطق البرمجة.\n\n### 📖 الشرح المبسط\n\\textbf{كيف تعمل اللعبة؟}\nالكمبيوتر يختار رقماً عشوائياً بين 1 و 20. دورك كلاعب هو كتابة رقم والضغط على \\code{Check}.\n• إذا كان رقمك كبيراً المتصفح يخبرك: \\code{Too high!}\n• إذا كان صغيراً المتصفح يخبرك: \\code{Too low!}\n• في كل محاولة خاطئة رصيدك يقل.\n• إذا خمنت الرقم الصحيح تفوز! ويتم حفظ أعلى نتيجة.\n\n### 💻 الكود والتطبيق\nأول خطوة هي تجهيز بيئة العمل وتحديد العنصر الأول.\n\n// استخدام querySelector لاختيار عنصر وقراءة ما بداخله\nconst message = document.querySelector('.message').textContent;\nconsole.log(message);\n\\end{verbatim}\n\n### 🧠 رؤى الخبراء\n\n[معلومة]\n\\textbf{مهندس الواجهات (Senior Architect):}\nعندما نستخدم \\code{querySelector}، فإن المتصفح يقوم بعملية بحث شاملة داخل الـ DOM Tree ليجد العنصر الذي يتطابق مع الـ CSS Selector الذي مررناه. هذه العملية سريعة جداً، ولكن من الأفضل دائماً تقليل عمليات البحث في المشاريع الضخمة عن طريق حفظ العنصر في متغير (Caching).\n\n[نصيحة]\n\\textbf{خبير الكود النظيف (Clean Code):}\nقبل كتابة أي سطر كود، يجب أن نفهم متطلبات العمل (Business Logic) بشكل كامل. لقد بدأنا بلعب اللعبة وهي جاهزة لكي نستوعب (الحالات) المختلفة: حالة الفوز، الخسارة، وحالة الخطأ. فهم المتطلبات يوفر عليك ساعات من التعديلات لاحقاً.\n\n[تحذير]\n\\textbf{أخطاء شائعة:}\nنسيان النقطة `.`: من أشهر الأخطاء كتابة \\code{querySelector('message')} بدلاً من \\code{querySelector('.message')}. يجب أن تعاملها كأنك تكتب ملف CSS بالضبط!",
+      "example": {
+        "html": "<p class=\"message\">Start guessing...</p>",
+        "javascript": "// تحديد العنصر وقراءة النص الموجود بداخله\nconsole.log(document.querySelector('.message').textContent);"
+      },
+      "senior_hints": [
+        {
+          "title": "استخدام Live Server",
+          "explanation": "استخدام Live Server ليس مجرد رفاهية، بل هو معيار صناعي (Industry Standard) لأنه يولد سيرفر محلي (Localhost) بدلاً من فتح الملف بنظام (file://)، وهذا ضروري لاحقاً للتعامل مع الـ APIs.",
+          "practice": "قم بتشغيل المشروع وتأكد من أن الرابط في المتصفح يبدأ بـ 127.0.0.1 أو localhost."
+        }
+      ]
+    }
+  ],
+  "mcq": [
+    {
+      "question": "ما هو الهدف الرئيسي من مشروع Guess My Number؟",
+      "choices": [
+        "بناء تطبيق React",
+        "التعرف على أساسيات الـ DOM والأحداث عبر لعبة",
+        "تعلم Node.js",
+        "تعديل قاعدة البيانات"
+      ],
+      "answer": "التعرف على أساسيات الـ DOM والأحداث عبر لعبة"
+    },
+    {
+      "question": "لماذا يعتبر استخدام إضافة Live Server ضرورياً (Industry Standard) بدلاً من فتح الملف كـ file:// ؟",
+      "choices": [
+        "لأنه يسرع المتصفح",
+        "لأنه يولد سيرفر محلي (Localhost) مما يتيح لك التعامل مع الـ APIs وتحديث الصفحة تلقائياً",
+        "لأنه يقوم بكتابة الكود عنك",
+        "لأنه يربط المشروع بقاعدة بيانات"
+      ],
+      "answer": "لأنه يولد سيرفر محلي (Localhost) مما يتيح لك التعامل مع الـ APIs وتحديث الصفحة تلقائياً"
+    },
+    {
+      "question": "كيف نقوم باختيار عنصر يمتلك كلاس باسم 'message' في JavaScript؟",
+      "choices": [
+        "document.querySelector('#message')",
+        "document.querySelector('.message')",
+        "document.querySelector('message')",
+        "document.getClass('message')"
+      ],
+      "answer": "document.querySelector('.message')"
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "اختر العنصر الذي يحمل الكلاس 'number' وقم بقراءة النص الموجود بداخله",
+      "html": "<div class='number'>15</div>",
+      "solution": "document.querySelector('.number').textContent;"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "const text = document.________('.message').textContent;",
+      "answer": "querySelector"
+    }
+  ]
+}

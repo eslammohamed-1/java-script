@@ -1,0 +1,88 @@
+{
+  "title": "81. ميزة الـ Highscore وزر الإعادة",
+  "goal": "حفظ أفضل نتيجة حققها اللاعب وإعادة ضبط اللعبة دون عمل Refresh للصفحة.",
+  "duration": "30 دقيقة",
+  "schedule": [
+    {
+      "time": "30 دقيقة",
+      "topic": "تحديثات الواجهة وحفظ الـ Highscore"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "الـ Highscore",
+      "objectives": [
+        "استمرار البيانات",
+        "إعادة ضبط (Reset)"
+      ],
+      "details": "اللعبة تحتاج إلى حفظ أعلى نتيجة حتى بعد بدء جولة جديدة لتشجيع اللاعب.",
+      "key_tools": [
+        "variables",
+        "reset logic"
+      ],
+      "practice": "أضف حدث لزر Again يقوم بإرجاع اللعبة لحالتها الافتراضية مع الحفاظ على أفضل نتيجة."
+    }
+  ],
+  "lessons": [
+    {
+      "name": "دليل شامل: ميزة الـ Highscore وتهيئة اللعبة",
+      "explanation": "### 🎯 الهدف الأساسي\nجعل اللعبة قابلة للعب أكثر من مرة دون الحاجة لتحديث الصفحة من المتصفح، مع الاحتفاظ بأعلى نتيجة وصل إليها اللاعب.\n\n### 📖 الشرح المبسط\n\\textbf{1. حفظ الـ Highscore:}\nنحتاج لمتغير عالمي يبدأ بـ 0. وعندما يفوز اللاعب، نسأل أنفسنا: هل النتيجة الحالية أكبر من المحفوظة؟ إذا نعم، نحدث الرقم.\n\n\\textbf{2. زر Again!:}\nعند النقر عليه، سنعيد متغيرات الحالة لأرقام جديدة كما لو أننا فتحنا التطبيق للتو، ونعيد نصوص الـ HTML للوضع الافتراضي ونمسح الحقل.\n\n### 💻 الكود والتطبيق\n\n// 1. ميزة الـ Highscore داخل شرط الفوز\nlet highscore = 0; // في بداية الملف\n\nif (score > highscore) {\n  highscore = score;\n  document.querySelector('.highscore').textContent = highscore;\n}\n\n// 2. زر Again (إعادة ضبط القيم)\ndocument.querySelector('.again').addEventListener('click', function () {\n  score = 20;\n  secretNumber = Math.trunc(Math.random() * 20) + 1;\n\n  document.querySelector('.message').textContent = 'Start guessing...';\n  document.querySelector('.score').textContent = score;\n  document.querySelector('.number').textContent = '?';\n  document.querySelector('.guess').value = '';\n\n  document.querySelector('body').style.backgroundColor = '#222';\n  document.querySelector('.number').style.width = '15rem';\n});\n\\end{verbatim}\n\n### 🧠 رؤى الخبراء\n\n[معلومة]\n\\textbf{مهندس الواجهات (Senior Architect):}\nالمبرمجون المبتدئون قد يلجأون لحيلة بسيطة في زر \\code{Again} وهي استخدام \\code{location.reload()} لعمل تحديث كامل للصفحة! هذه حركة سيئة جداً لأنها تدمر تجربة المستخدم، والأهم أنها ستمسح المتغيرات من الذاكرة فتضيع قيمة الـ Highscore! التحكم الدقيق في المتغيرات (State) هو الطريقة السليمة لبرمجة تطبيقات الويب.\n\n[نصيحة]\n\\textbf{خبير الكود النظيف (Clean Code):}\nكود زر الـ \\code{Again} أصبح مزدحماً، وأجزاء كبيرة منه موجودة أيضاً خارج الأحداث عند بداية التحميل (توليد الرقم وتهيئة النتيجة). من الأفضل في المشاريع الحقيقية جمع أوامر التهيئة في دالة مخصصة تُسمى \\code{init()} ويتم استدعاؤها في البداية وعند الضغط على زر الإعادة.\n\n[تحذير]\n\\textbf{أخطاء شائعة:}\nعدم تفريغ الـ Input: نسيان تصفير قيمة \\code{value} يجعل اللعبة تبدو غير احترافية لأن اللاعب سيضطر لمسح محاولته السابقة بيده.",
+      "example": {
+        "html": "<button class=\"again\">Again!</button>\n<p class=\"highscore\">0</p>",
+        "javascript": "// انظر كود التطبيق في الشرح"
+      },
+      "senior_hints": [
+        {
+          "title": "لماذا تركنا highscore بدون تصفير؟",
+          "explanation": "زر again يقوم بإرجاع score و secretNumber فقط، ولم يقم بلمس متغير highscore. هذا يضمن أن الرقم القياسي يعيش طالما المستخدم لم يغلق التبويب.",
+          "practice": "جرب عمل reload للصفحة من المتصفح ولاحظ أن الـ highscore سيختفي. في كورسات متقدمة ستتعلم كيفية حفظه في الـ LocalStorage ليظل موجوداً للأبد!"
+        }
+      ]
+    }
+  ],
+  "mcq": [
+    {
+      "question": "لماذا نعتبر استخدام location.reload() في زر Again حركة سيئة في تطبيقات الويب؟",
+      "choices": [
+        "لأنها تدمر تجربة المستخدم وتؤدي إلى مسح المتغيرات من الذاكرة (مثل الـ Highscore)",
+        "لأنها تستهلك انترنت أكثر",
+        "لأنها تغير ألوان الصفحة",
+        "لأنها ممنوعة في جافاسكريبت"
+      ],
+      "answer": "لأنها تدمر تجربة المستخدم وتؤدي إلى مسح المتغيرات من الذاكرة (مثل الـ Highscore)"
+    },
+    {
+      "question": "متى يجب أن نقوم بتحديث قيمة الـ Highscore المحفوظة؟",
+      "choices": [
+        "في كل مرة يضغط فيها المستخدم",
+        "عندما يخسر اللاعب",
+        "عند الضغط على زر Again",
+        "فقط عندما يفوز اللاعب وتكون نتيجته (score) أعلى من الـ highscore الحالي"
+      ],
+      "answer": "فقط عندما يفوز اللاعب وتكون نتيجته (score) أعلى من الـ highscore الحالي"
+    },
+    {
+      "question": "لماذا نفضل جمع أكواد تهيئة اللعبة (تصفير الأرقام وإعادة الواجهة) في دالة init() بدلاً من تكرارها؟",
+      "choices": [
+        "لتسريع اللعبة",
+        "لتعزيز مبدأ الـ DRY (Don't Repeat Yourself) وتسهيل الصيانة",
+        "لجعل الكود معقداً لمنع السرقة",
+        "لكي يتمكن المتصفح من قراءتها"
+      ],
+      "answer": "لتعزيز مبدأ الـ DRY (Don't Repeat Yourself) وتسهيل الصيانة"
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "أعد قيمة المتغير score إلى 20، ثم حدّث محتوى العنصر ذو الكلاس score ليعرض هذه القيمة",
+      "html": "<p class='score'>12</p>",
+      "solution": "score = 20;\ndocument.querySelector('.score').textContent = score;"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "if (score ________ highscore) { highscore = score; }",
+      "answer": ">"
+    }
+  ]
+}

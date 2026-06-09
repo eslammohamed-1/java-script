@@ -1,0 +1,92 @@
+{
+  "title": "79. تعديل الستايل باستخدام DOM",
+  "goal": "تغيير مظهر الصفحة (CSS) باستخدام كود JavaScript ليتناسب مع مجريات اللعبة.",
+  "duration": "30 دقيقة",
+  "schedule": [
+    {
+      "time": "30 دقيقة",
+      "topic": "تغيير الـ Inline Styles"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "تعديل الستايل",
+      "objectives": [
+        "استخدام خاصية style",
+        "التعامل مع الـ camelCase"
+      ],
+      "details": "تغيير لون الشاشة وحجم الخط عند فوز اللاعب لإعطاء تأثير بصري قوي.",
+      "key_tools": [
+        "element.style",
+        "camelCase"
+      ],
+      "practice": "غيّر عرض الرقم السري (العنصر .number) ليصبح أكبر عند الفوز."
+    }
+  ],
+  "lessons": [
+    {
+      "name": "دليل شامل: تعديل تنسيقات CSS برمجياً",
+      "explanation": "### 🎯 الهدف الأساسي\nجعل التطبيق حيوياً وتفاعلياً! عندما يربح اللاعب، يجب أن يشعر بذلك بصرياً من خلال تغيير لون الخلفية وتكبير المربع الخاص بالرقم.\n\n### 📖 الشرح المبسط\nلتعديل الـ CSS الخاص بأي عنصر نستخدم خاصية \\code{.style} ثم اسم خاصية الـ CSS. هناك قاعدتان هامتان جداً:\n• \\textbf{قاعدة الـ camelCase:} الخصائص التي تحتوي على شرطة (مثل \\code{background-color}) تُكتب بصيغة سنام الجمل بحذف الشرطة وتكبير الحرف (فتصبح \\code{backgroundColor}).\n• \\textbf{القيم كـ النصوص (Strings):} أي قيمة نمررها يجب أن توضع بين علامتي تنصيص.\n\n### 💻 الكود والتطبيق\n\n// داخل شرط الفوز (guess === secretNumber)\n\n// تغيير لون خلفية الجسم (body) بالكامل للأخضر\ndocument.querySelector('body').style.backgroundColor = '#60b347';\n\n// زيادة عرض المربع الخاص بالرقم السري\ndocument.querySelector('.number').style.width = '30rem';\n\\end{verbatim}\n\n### 🧠 رؤى الخبراء\n\n[معلومة]\n\\textbf{مهندس الواجهات (Senior Architect):}\nعندما تقوم بتعديل الـ CSS من خلال JavaScript، المتصفح يقوم بإنشاء ما يسمى بـ \\textbf{Inline Styles}. أي أنه يضع الخصائص مباشرة بداخل عنصر HTML الخاص بك. هذه الستايلات لها أولوية قصوى (Highest Specificity) وتتغلب على أي كود موجود في ملف CSS الخارجي.\n\n[نصيحة]\n\\textbf{خبير الكود النظيف (Clean Code):}\nللمشاريع الصغيرة مثل هذه اللعبة، استخدام \\code{.style} يعتبر مقبولاً. ولكن في التطبيقات الضخمة نحن نكره التعديل المباشر على الخصائص لأننا نفصل بين الـ Logic والـ Design تماماً. الحل الأمثل في الواقع هو إنشاء \\code{class} جديد في ملف الـ CSS (مثلاً \\code{.winner}) ويتم إضافته للعنصر برمجياً عبر \\code{element.classList.add('winner')}.\n\n[تحذير]\n\\textbf{أخطاء شائعة:}\nنسيان الوحدة القياسية: كتابة \\code{style.width = 30;} لن تعمل! يجب كتابتها كنص يتضمن وحدة القياس: \\code{style.width = '30rem';} أو \\code{px}.",
+      "example": {
+        "html": "<body>\n  <div class=\"number\">?</div>\n</body>",
+        "javascript": "// عندما يفوز اللاعب:\ndocument.querySelector('body').style.backgroundColor = '#60b347';\ndocument.querySelector('.number').style.width = '30rem';"
+      },
+      "senior_hints": [
+        {
+          "title": "لماذا نستخدم querySelector('body') وليس document.body؟",
+          "explanation": "في الواقع، يمكنك استخدام document.body مباشرة كطريقة أسرع ومختصرة لجلب عنصر الـ body بدلاً من استدعاء querySelector.",
+          "practice": "جرب تغيير الكود في مشروعك لاستخدام document.body.style"
+        }
+      ]
+    }
+  ],
+  "mcq": [
+    {
+      "question": "كيف يتم كتابة خاصية CSS (background-color) عند التعديل عليها باستخدام الـ DOM؟",
+      "choices": [
+        "background-color",
+        "background_color",
+        "backgroundColor",
+        "BackgroundColor"
+      ],
+      "answer": "backgroundColor"
+    },
+    {
+      "question": "ما الذي يحدث خلف الكواليس عندما نقوم بتغيير الستايل عبر JavaScript؟",
+      "choices": [
+        "يتم إنشاء ملف CSS جديد",
+        "يتم تعديل ملف style.css الخارجي",
+        "يتم إضافة الخصائص كـ Inline Styles بداخل العنصر مباشرة في الـ HTML",
+        "يتم إضافة كلاس جديد للعنصر"
+      ],
+      "answer": "يتم إضافة الخصائص كـ Inline Styles بداخل العنصر مباشرة في الـ HTML"
+    },
+    {
+      "question": "ما هو الخطأ البرمجي في السطر التالي: element.style.width = 30; ؟",
+      "choices": [
+        "لا يمكن تغيير العرض بـ JS",
+        "استخدام كلمة style خاطئ",
+        "القيم الممرة يجب أن تكون كنص (String) وتحتوي على وحدة قياس مثل '30rem'",
+        "يجب استخدام width-style"
+      ],
+      "answer": "القيم الممرة يجب أن تكون كنص (String) وتحتوي على وحدة قياس مثل '30rem'"
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "غيّر لون خلفية الجسم (body) إلى اللون الأحمر '#ff0000' برمجياً",
+      "html": "<body></body>",
+      "solution": "document.querySelector('body').style.backgroundColor = '#ff0000';"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "document.body.________.backgroundColor = '#222';",
+      "answer": "style"
+    },
+    {
+      "question": "document.querySelector('.number').style.width = ________;",
+      "answer": "'30rem'"
+    }
+  ]
+}

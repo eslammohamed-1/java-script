@@ -1,0 +1,88 @@
+{
+  "title": "78. بناء منطق اللعبة (Game Logic)",
+  "goal": "كتابة الشروط التي تتحكم في فوز أو خسارة اللاعب.",
+  "duration": "45 دقيقة",
+  "schedule": [
+    {
+      "time": "45 دقيقة",
+      "topic": "تطبيق الشروط والمتغيرات"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "المنطق البرمجي (Logic)",
+      "objectives": [
+        "استخدام if/else",
+        "حفظ بيانات اللعبة (State)"
+      ],
+      "details": "في هذه الخطوة نبني عقل اللعبة: المقارنة بين التخمين والرقم السري.",
+      "key_tools": [
+        "if/else",
+        "variables"
+      ],
+      "practice": "قم بتحديث السكور الخاص باللاعب عند كل محاولة خاطئة."
+    }
+  ],
+  "lessons": [
+    {
+      "name": "دليل شامل: منطق اللعبة والـ State Management",
+      "explanation": "### 🎯 الهدف الأساسي\nبناء (عقل) اللعبة عبر المقارنة بين رقم اللاعب والرقم السري، وإعطاء ردود فعل بناءً على ذلك وتقليل نقاط اللاعب (Score).\n\n### 📖 الشرح المبسط\nنحتاج لقواعد اللعبة الأساسية (if/else):\n• هل التخمين يطابق الرقم السري؟ فوز.\n• هل هو أعلى أو أقل؟ ننقص الـ \\code{score} بمقدار 1 ونخبر اللاعب.\n• يتم توليد الرقم السري هكذا: \\code{Math.trunc(Math.random() * 20) + 1}\n\n### 💻 الكود والتطبيق\n\n// حالة اللعبة الأساسية\nlet secretNumber = Math.trunc(Math.random() * 20) + 1;\nlet score = 20;\n\ndocument.querySelector('.check').addEventListener('click', function() {\n  const guess = Number(document.querySelector('.guess').value);\n\n  // عندما يخمن اللاعب بشكل صحيح\n  if (guess === secretNumber) {\n    document.querySelector('.message').textContent = 'Correct Number!';\n  }\n  // عندما يكون التخمين أعلى من الرقم السري\n  else if (guess > secretNumber) {\n    if (score > 1) {\n      document.querySelector('.message').textContent = 'Too high!';\n      score--; \n      document.querySelector('.score').textContent = score;\n    } else {\n      document.querySelector('.message').textContent = 'You lost!';\n      document.querySelector('.score').textContent = 0;\n    }\n  }\n});\n\\end{verbatim}\n\n### 🧠 رؤى الخبراء\n\n[معلومة]\n\\textbf{مهندس الواجهات (Senior Architect):}\nلماذا كتبنا المتغيرات \\code{score} و \\code{secretNumber} خارج دالة الـ click؟ لأننا لو وضعناها بالداخل، سيتم (تصفيرها) وإنشاء رقم سري جديد وإرجاع السكور لـ 20 مع كل ضغطة زر! المتغيرات الخارجية تعيش طالما الصفحة مفتوحة (Global Scope)، وتحافظ على البيانات بين الضغطات المتكررة.\n\n[نصيحة]\n\\textbf{خبير الكود النظيف (Clean Code):}\nقاعدة ذهبية: \\textbf{الـ DOM ليس مكاناً لتخزين البيانات}. بعض المبتدئين يقومون بقراءة الـ Score من العنصر باستخدام \\code{textContent}، ثم ينقصونه، ثم يعيدونه للعنصر! هذا سيء جداً. دائماً احتفظ ببياناتك كـ \\textbf{State Variables}، واجعل الـ DOM مجرد أداة لإظهار هذا الـ State.\n\n[تحذير]\n\\textbf{أخطاء شائعة:}\nاستخدام \\code{==} بدلاً من \\code{===}: لقد قمنا مسبقاً بتحويل الإدخال إلى رقم بـ \\code{Number()}. لذلك نستخدم التساوي الصارم لمقارنة القيم والأنواع معاً بأمان.",
+      "example": {
+        "html": "<p class='score'>20</p>\n<p class='message'>Start guessing...</p>",
+        "javascript": "let score = 20;\nlet secretNumber = Math.trunc(Math.random() * 20) + 1;\n// منطق اللعبة بالداخل..."
+      },
+      "senior_hints": [
+        {
+          "title": "معالجة الخسارة",
+          "explanation": "منطقيًا، اللعبة تنتهي عندما يصل السكور إلى 0. ولكن بما أننا ننقص السكور بداخل الشرط، يجب أن نتحقق (هل السكور أكبر من 1؟) لنتمكن من إنقاصه وجعله 0 وعرض الخسارة.",
+          "practice": "حاول كتابة شرط يمنع المستخدم من ضغط الزر مرة أخرى (تعطيل الزر) إذا وصلت النقاط إلى 0."
+        }
+      ]
+    }
+  ],
+  "mcq": [
+    {
+      "question": "أين يجب أن نحفظ قيمة الـ Score الخاصة باللعبة؟",
+      "choices": [
+        "يجب أن تُقرأ دائماً من الـ DOM باستخدام textContent ثم تُنقص",
+        "في متغير State خاص بها في كود JavaScript (خارج الأحداث)",
+        "بداخل دالة الـ click مباشرة",
+        "في قاعدة بيانات خارجية حصراً"
+      ],
+      "answer": "في متغير State خاص بها في كود JavaScript (خارج الأحداث)"
+    },
+    {
+      "question": "لماذا نستخدم المعامل === بدلاً من == عند مقارنة التخمين بالرقم السري؟",
+      "choices": [
+        "لأنه أسرع",
+        "لمقارنة القيم والأنواع (Types) معاً بأمان وتجنب التحويل الضمني (Type Coercion)",
+        "لأنه يدعم الأرقام العشرية",
+        "لا يوجد فرق"
+      ],
+      "answer": "لمقارنة القيم والأنواع (Types) معاً بأمان وتجنب التحويل الضمني (Type Coercion)"
+    },
+    {
+      "question": "ماذا يحدث لمتغيرات الـ State إذا قمنا بتعريفها (let score = 20) بداخل دالة حدث النقر (click)؟",
+      "choices": [
+        "ستعمل بشكل مثالي",
+        "لن يقرأها المتصفح",
+        "ستتم إعادة تهيئتها إلى 20 مع كل نقرة يقوم بها اللاعب",
+        "ستسبب خطأ Syntax Error"
+      ],
+      "answer": "ستتم إعادة تهيئتها إلى 20 مع كل نقرة يقوم بها اللاعب"
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "اكتب جملة if تقوم بإنقاص المتغير score بمقدار 1 فقط إذا كان المتغير guess أكبر من secretNumber",
+      "html": "",
+      "solution": "if (guess > secretNumber) {\n  score--;\n}"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "if (guess ________ secretNumber) { console.log('Win!'); }",
+      "answer": "==="
+    }
+  ]
+}

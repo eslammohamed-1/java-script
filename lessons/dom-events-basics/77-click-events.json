@@ -1,0 +1,88 @@
+{
+  "title": "77. التفاعل والأحداث (Click Events)",
+  "goal": "جعل التطبيق يتفاعل مع نقرات المستخدم من خلال الأحداث.",
+  "duration": "40 دقيقة",
+  "schedule": [
+    {
+      "time": "40 دقيقة",
+      "topic": "الاستماع للأحداث وتنفيذ الدوال"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "التعامل مع Events",
+      "objectives": [
+        "استخدام addEventListener",
+        "الاستجابة لضغطات الزر"
+      ],
+      "details": "لكي تستجيب الصفحة للمستخدم، يجب الاستماع للأحداث مثل النقر (click).",
+      "key_tools": [
+        "addEventListener",
+        "Number()"
+      ],
+      "practice": "أضف حدث click للزر بحيث يقرأ الرقم المدخل ويطبعه في الكونسول."
+    }
+  ],
+  "lessons": [
+    {
+      "name": "دليل شامل: التعامل مع الأحداث (Events)",
+      "explanation": "### 🎯 الهدف الأساسي\nالصفحة الجامدة غير مفيدة. يجب أن نجعل الأزرار (تستمع) للمستخدم وتُنفذ أكواداً برمجية بمجرد الضغط عليها.\n\n### 📖 الشرح المبسط\nنستخدم دالة \\code{addEventListener} لربط زر بـ (حدث). هذه الدالة تأخذ مُعطَيَين:\n• \\textbf{اسم الحدث:} مثل \\code{'click'}.\n• \\textbf{ردة الفعل (Function):} دالة تحتوي على الكود الذي يجب أن يتنفذ وقت الحدث.\n\n### 💻 الكود والتطبيق\n\ndocument.querySelector('.check').addEventListener('click', function() {\n  // استخراج القيمة المدخلة وقت الضغط وتحويلها لرقم\n  const guess = Number(document.querySelector('.guess').value);\n  console.log(guess, typeof guess);\n  \n  if (!guess) {\n    document.querySelector('.message').textContent = 'No number! ⛔️';\n  }\n});\n\\end{verbatim}\n\n### 🧠 رؤى الخبراء\n\n[معلومة]\n\\textbf{مهندس الواجهات (Senior Architect):}\nعندما نمرر الدالة للـ \\code{addEventListener}، نحن \\textbf{لا نقوم باستدعائها} بأنفسنا (لا نضع أقواساً \\code{()}). لأننا لو استدعيناها، سيتم تنفيذها فوراً عند تحميل الصفحة! نحن نمررها كـ \\textbf{Callback Function} لنقول للمتصفح: احتفظ بهذه الدالة عندك، ونفذها فقط عندما يتم الحدث. المحرك الداخلي (Event Loop) هو المسؤول عن وضع هذه الدالة في طابور التنفيذ.\n\n[نصيحة]\n\\textbf{خبير الكود النظيف (Clean Code):}\nأي قيمة نقرؤها من واجهة المستخدم (الـ UI) تكون نصية (String)، حتى لو كان نوع الإدخال \\code{number}. لا تعتمد أبداً على جافاسكريبت لعمل تحويل ضمني (Type Coercion). استخدم \\code{Number()} بشكل صريح وفوري بمجرد قراءة القيمة. هذا يمنع مئات الثغرات والأخطاء أثناء المقارنات.\n\n[تحذير]\n\\textbf{أخطاء شائعة:}\nاستخدام الأقواس مع الـ Callback: كتابة \\code{addEventListener('click', myFunction())} هي خطأ شائع جداً. الصحيح هو \\code{addEventListener('click', myFunction)}. فقط اسم الدالة!",
+      "example": {
+        "html": "<input type='number' class='guess'>\n<button class='check'>Check</button>",
+        "javascript": "document.querySelector('.check').addEventListener('click', function() {\n  const guess = Number(document.querySelector('.guess').value);\n  if (!guess) {\n    document.querySelector('.message').textContent = 'No number! ⛔️';\n  }\n});"
+      },
+      "senior_hints": [
+        {
+          "title": "الـ Truthy والـ Falsy",
+          "explanation": "في الكود كتبنا `if (!guess)`. إذا كان حقل الإدخال فارغاً، فإن Number('') يعطينا القيمة 0. الصفر يعتبر Falsy value. وبإضافة علامة التعجب `!` نجعله True لينفذ كود الخطأ (No Number). هذه طريقة محترفة لتبسيط الشروط.",
+          "practice": "راجع درس الـ Truthy and Falsy values لتتأكد من فهمك لهذه الخدعة البرمجية."
+        }
+      ]
+    }
+  ],
+  "mcq": [
+    {
+      "question": "لماذا نستخدم دالة Number() عند استخراج القيمة من الـ input؟",
+      "choices": [
+        "لأن الـ HTML يرسل البيانات دائماً كنص (String)",
+        "لإجبار المستخدم على إدخال أرقام فقط",
+        "لمنع الأخطاء الأمنية",
+        "لتسريع عملية معالجة الكود"
+      ],
+      "answer": "لأن الـ HTML يرسل البيانات دائماً كنص (String)"
+    },
+    {
+      "question": "ما هو الخطأ في كتابة الكود التالي: addEventListener('click', myFunction()) ؟",
+      "choices": [
+        "الخطأ في علامات التنصيص",
+        "لا يوجد خطأ",
+        "الأقواس تستدعي الدالة فوراً عند تحميل الصفحة بدلاً من الانتظار لوقت النقر",
+        "الدالة يجب أن تكون بأحرف كبيرة"
+      ],
+      "answer": "الأقواس تستدعي الدالة فوراً عند تحميل الصفحة بدلاً من الانتظار لوقت النقر"
+    },
+    {
+      "question": "ما هي قيمة التعبير (!guess) إذا كان المستخدم قد ترك الحقل فارغاً (أي أن guess يساوي 0)؟",
+      "choices": [
+        "false",
+        "true",
+        "undefined",
+        "null"
+      ],
+      "answer": "true"
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "أضف حدث click للزر الذي يحمل الكلاس check ليقوم بطباعة 'Clicked' في الكونسول",
+      "html": "<button class='check'>Check</button>",
+      "solution": "document.querySelector('.check').addEventListener('click', function() {\n  console.log('Clicked');\n});"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "document.querySelector('.btn').________('click', function() { });",
+      "answer": "addEventListener"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "title": "82. تحسين الكود: Refactoring & DRY",
+  "goal": "تنظيف الكود ليكون أسهل في القراءة والصيانة وتجنب التكرار برؤية هندسية.",
+  "duration": "30 دقيقة",
+  "schedule": [
+    {
+      "time": "30 دقيقة",
+      "topic": "تطبيق مبدأ DRY باستخدام الدوال"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "مبدأ DRY",
+      "objectives": [
+        "تقليل التكرار",
+        "استخدام الدوال والمعامل الثلاثي"
+      ],
+      "details": "Refactoring تعني إعادة هيكلة الكود دون تغيير وظيفته لتحسين جودته.",
+      "key_tools": [
+        "functions",
+        "refactoring",
+        "ternary operator"
+      ],
+      "practice": "استخدم دالة displayMessage لتغيير نص الرسالة بدلاً من تكرار الأسطر البرمجية."
+    }
+  ],
+  "lessons": [
+    {
+      "name": "دليل شامل: هندسة وتطوير الكود (Refactoring)",
+      "explanation": "### 🎯 الهدف الأساسي\nجعل الكود أكثر احترافية وسهولة في القراءة وتقليل التكرار. الكود الجيد ليس الذي يعمل فقط، بل الذي يمكن قراءته وصيانته بسهولة.\n\n### 📖 الشرح المبسط\nلاحظنا أننا نكتب السطر المخصص لتغيير الرسالة في كل الحالات (فوز، خسارة، خطأ). بدلاً من تكرار السطر 5 مرات، ننشئ \\textbf{دالة (Function)} تستقبل الرسالة الجديدة وتقوم بالمهمة. \nثانياً، دمجنا شرط الـ Too high مع الـ Too low في شرط واحد واستخدمنا \\textbf{المعامل الثلاثي} لاختيار الرسالة.\n\n### 💻 الكود والتطبيق\n\n// الدالة المساعدة لعرض الرسالة\nconst displayMessage = function (message) {\n  document.querySelector('.message').textContent = message;\n};\n\n// داخل دالة النقر (Click Event) نستخدم الدالة بدلاً من الاستدعاء الطويل\nif (guess === secretNumber) {\n  displayMessage('Correct Number!');\n}\n\n// دمج شرطي الخطأ (أكبر أو أصغر)\nelse if (guess !== secretNumber) {\n  if (score > 1) {\n    // المعامل الثلاثي يغنينا عن if/else إضافية\n    displayMessage(guess > secretNumber ? 'Too high!' : 'Too low!');\n    score--;\n    document.querySelector('.score').textContent = score;\n  } else {\n    displayMessage('You lost the game!');\n    document.querySelector('.score').textContent = 0;\n  }\n}\n\\end{verbatim}\n\n### 🧠 رؤى الخبراء\n\n[معلومة]\n\\textbf{مهندس الواجهات (Senior Architect):}\nعندما نقوم بتكرار استدعاء \\code{document.querySelector} خمس مرات في الكود الخاص بنا، فهذا يعني أن المتصفح سيضطر للبحث في الـ DOM Tree بأكملها خمس مرات. من منظور هندسي (Performance Optimization)، القيام بعملية Refactor ليس فقط لجمال الكود، بل لتقليل الضغط العبثي على محرك المتصفح.\n\n[نصيحة]\n\\textbf{خبير الكود النظيف (Clean Code):}\nهذا الدرس هو جوهر البرمجة الاحترافية. مبدأ \\textbf{DRY (Don't Repeat Yourself)} هو قانون مقدس في هندسة البرمجيات. المبرمج المبتدئ هدفه أن يجعل الكود يعمل، أما المحترف فهدفه: Make it Work, Make it Clean, Make it Fast. لا تخجل من كتابة كود مكرر في البداية لتوضيح الفكرة، ثم قم بعمل Refactoring في النهاية.\n\n[تحذير]\n\\textbf{أخطاء شائعة:}\nاستخدام الـ Ternary Operator في أمور معقدة: المعامل الثلاثي ممتاز ومختصر، لكن إذا زاد طول الجملة أو احتجت لتنفيذ عدة سطور بناءً على الشرط، ارجع فوراً لـ if/else العادية لكي لا يتحول الكود إلى طلاسم غير مقروءة.",
+      "example": {
+        "html": "<p class=\"message\">Start guessing...</p>",
+        "javascript": "const displayMessage = function (message) {\n  document.querySelector('.message').textContent = message;\n};\n\n// استخدام\ndisplayMessage('Correct Number!');"
+      },
+      "senior_hints": [
+        {
+          "title": "Refactoring لخصائص أخرى",
+          "explanation": "تماما كما فعلنا للرسالة، يمكنك التفكير في عمل دالة مخصصة تقوم بتحديث قيمة الـ score المعروضة.",
+          "practice": "قم بعمل دالة updateScore(newScore) ومرر لها المتغير score لتقوم بتحديث الشاشة لتتخلص من تكرار السطر الخاص بالاسكور."
+        }
+      ]
+    }
+  ],
+  "mcq": [
+    {
+      "question": "ما هو الهدف الرئيسي من عملية الـ Refactoring؟",
+      "choices": [
+        "إضافة مميزات (Features) جديدة للمشروع",
+        "تغيير تصميم الـ HTML والـ CSS",
+        "تحسين هيكل وسهولة قراءة الكود دون تغيير طريقة عمله من الخارج لتقليل التكرار",
+        "إصلاح الأخطاء (Bugs) في الكود"
+      ],
+      "answer": "تحسين هيكل وسهولة قراءة الكود دون تغيير طريقة عمله من الخارج لتقليل التكرار"
+    },
+    {
+      "question": "ما المقصود بمبدأ DRY في هندسة البرمجيات؟",
+      "choices": [
+        "Data Returns Yearly",
+        "Do Read Yourself",
+        "Don't Repeat Yourself (لا تكرر نفسك في الكود)",
+        "Delete Removed Yarns"
+      ],
+      "answer": "Don't Repeat Yourself (لا تكرر نفسك في الكود)"
+    },
+    {
+      "question": "في أي الحالات يُفضل استخدام المعامل الثلاثي (Ternary Operator) ؟",
+      "choices": [
+        "للشروط البسيطة والتي تعيد قيمة واحدة سريعة كبديل للـ if/else",
+        "للشروط المعقدة التي تحتوي على 10 سطور",
+        "في تعريف الدوال فقط",
+        "لا يجب استخدامه أبداً"
+      ],
+      "answer": "للشروط البسيطة والتي تعيد قيمة واحدة سريعة كبديل للـ if/else"
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "قم بإنشاء دالة باسم displayMessage تستقبل النص وتضعه داخل عنصر الكلاس message",
+      "html": "<p class='message'></p>",
+      "solution": "const displayMessage = function(message) {\n  document.querySelector('.message').textContent = message;\n};"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "displayMessage(guess > secretNumber ________ 'Too high!' : 'Too low!');",
+      "answer": "?"
+    }
+  ]
+}

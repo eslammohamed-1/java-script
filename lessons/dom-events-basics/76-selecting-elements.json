@@ -1,0 +1,92 @@
+{
+  "title": "76. اختيار العناصر وتعديلها",
+  "goal": "تعلم كيفية استخدام querySelector لتحديد العناصر وتعديل محتواها وقيمها برؤية متقدمة.",
+  "duration": "30 دقيقة",
+  "schedule": [
+    {
+      "time": "30 دقيقة",
+      "topic": "تعديل النصوص والقيم عبر الـ DOM"
+    }
+  ],
+  "learning_summary": [
+    {
+      "topic": "التعديل عبر الـ DOM",
+      "objectives": [
+        "استخدام textContent",
+        "استخدام value للمدخلات"
+      ],
+      "details": "يمكننا تغيير نصوص العناصر، وكذلك تغيير قيم الـ inputs.",
+      "key_tools": [
+        "textContent",
+        "value"
+      ],
+      "practice": "غيّر نص الرسالة إلى 'Correct Number!' وضع قيمة 13 في حقل الإدخال."
+    }
+  ],
+  "lessons": [
+    {
+      "name": "دليل شامل: تعديل العناصر في DOM",
+      "explanation": "### 🎯 الهدف الأساسي\nالقدرة على جلب البيانات التي يدخلها المستخدم، وتعديل النصوص التي يراها على الشاشة.\n\n### 📖 الشرح المبسط\nلتعديل أي شيء في الصفحة، عليك أولاً اختياره باستخدام \\code{querySelector}. بعد ذلك، لديك حالتان:\n• \\textbf{لتعديل النصوص العادية:} نستخدم خاصية \\code{textContent} ونسند لها القيمة الجديدة بعلامة \\code{=}.\n• \\textbf{للتعامل مع حقول الإدخال (Inputs):} هذه العناصر ليس لها 'نص داخلي'، بل لها 'قيمة' أُدخلت بواسطة المستخدم. لذا نستخدم خاصية \\code{value} لقراءة هذه القيمة أو لتغييرها.\n\n### 💻 الكود والتطبيق\n\n// 1. تغيير نص عادي\ndocument.querySelector('.message').textContent = 'Correct Number!';\n\n// 2. إدخال قيمة برمجياً في الـ Input\ndocument.querySelector('.guess').value = 23;\n\n// 3. قراءة القيمة التي كتبها المستخدم\nconsole.log(document.querySelector('.guess').value);\n\\end{verbatim}\n\n### 🧠 رؤى الخبراء\n\n[معلومة]\n\\textbf{مهندس الواجهات (Senior Architect):}\nلماذا لا نستخدم \\code{innerHTML} بدلاً من \\code{textContent}؟ \\code{textContent} آمنة جداً لأنها تقوم بإدراج النصوص فقط كـ Plain Text. بينما \\code{innerHTML} تقوم بتحليل النص المدخل وتقديمه كعناصر HTML. إذا استخدمت \\code{innerHTML} مع بيانات أدخلها المستخدم، فإنك تفتح باباً لثغرة أمنية خطيرة تُسمى \\textbf{XSS (Cross-Site Scripting)}، حيث يمكن للمخترق حقن كود خبيث في صفحتك!\n\n[نصيحة]\n\\textbf{خبير الكود النظيف (Clean Code):}\nعندما تقوم بتحديد نفس العنصر عدة مرات في نفس الملف (مثلاً \\code{.message})، فهذا يعتبر تكراراً سيئاً للـ DOM Querying، ويُبطئ أداء التطبيق. الحل الأمثل هو حفظ العنصر في المتغيرات: \\code{const messageEl = document.querySelector('.message');} ثم استخدام المتغير لتعديل النصوص في باقي الكود.\n\n[تحذير]\n\\textbf{أخطاء شائعة:}\nاستخدام \\code{textContent} مع الـ \\code{<input>}: لن يعطيك أي خطأ في الكونسول، ولكنه ببساطة لن يقرأ القيمة المدخلة وسيعيد فراغاً. تذكر دائماً: المدخلات تحتاج إلى \\code{value}.",
+      "example": {
+        "html": "<input type='number' class='guess'>\n<p class='message'>Start guessing...</p>",
+        "javascript": "// الطريقة النظيفة للتعامل مع الـ DOM\nconst messageElement = document.querySelector('.message');\nconst guessInput = document.querySelector('.guess');\n\nmessageElement.textContent = 'Correct Number!';\nguessInput.value = 23;"
+      },
+      "senior_hints": [
+        {
+          "title": "ماذا عن querySelectorAll؟",
+          "explanation": "دالة querySelector تجلب لك (أول عنصر) يتطابق مع الكلاس المحدد فقط! إذا كان لديك 3 أزرار بنفس الكلاس، ستجلب لك الزر الأول. للتعامل مع أكثر من عنصر نستخدم querySelectorAll.",
+          "practice": "حاول إضافة زرين بنفس الكلاس، واستخدم querySelector، لتلاحظ أنه يتجاهل الزر الثاني تماماً."
+        }
+      ]
+    }
+  ],
+  "mcq": [
+    {
+      "question": "كيف يمكننا جلب القيمة المدخلة في عنصر الـ input؟",
+      "choices": [
+        "element.textContent",
+        "element.value",
+        "element.innerHTML",
+        "element.text"
+      ],
+      "answer": "element.value"
+    },
+    {
+      "question": "لماذا يُفضل استخدام textContent بدلاً من innerHTML عند تعديل النصوص؟",
+      "choices": [
+        "لأنه أسرع فقط",
+        "لأنه يمنع ثغرات الحقن الخبيث (XSS) من خلال إدراج النص كـ Plain Text",
+        "لأنه يدعم الصور",
+        "لأنه أسهل في الكتابة"
+      ],
+      "answer": "لأنه يمنع ثغرات الحقن الخبيث (XSS) من خلال إدراج النص كـ Plain Text"
+    },
+    {
+      "question": "ما الفائدة من حفظ العنصر في متغير (Caching) عند تحديده عبر querySelector؟",
+      "choices": [
+        "تلوين العنصر",
+        "تقليل عمليات البحث المتكررة في الـ DOM مما يحسن أداء التطبيق",
+        "حمايته من الحذف",
+        "إخفاء العنصر عن المستخدم"
+      ],
+      "answer": "تقليل عمليات البحث المتكررة في الـ DOM مما يحسن أداء التطبيق"
+    }
+  ],
+  "code_writing_tests": [
+    {
+      "task": "احفظ العنصر الذي يحمل كلاس score في متغير باسم scoreEl، ثم غير نصه إلى 10",
+      "html": "<p class='score'></p>",
+      "solution": "const scoreEl = document.querySelector('.score');\nscoreEl.textContent = 10;"
+    }
+  ],
+  "complete_code_tests": [
+    {
+      "question": "document.querySelector('.guess').________ = 23;",
+      "answer": "value"
+    },
+    {
+      "question": "document.querySelector('.message').________ = 'Hi';",
+      "answer": "textContent"
+    }
+  ]
+}

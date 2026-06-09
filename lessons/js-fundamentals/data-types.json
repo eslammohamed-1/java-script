@@ -1,0 +1,1954 @@
+{
+  "metadata": {
+    "sourceFile": "Data Types.tex",
+    "convertedAt": "2026-06-07T06:21:37.362080+00:00",
+    "title": "Data Types في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "توضيح الفرق الأدق بين Primitive Values و Objects، وإضافة ملاحظة أن functions نوع خاص من objects",
+        "تصحيح وتوسيع شرح Number: JavaScript تستخدم double-precision floating point، مع وجود NaN وInfinity ضمن number",
+        "إضافة ملاحظة عن Safe Integer وحدود Number وسبب استخدام BigInt",
+        "توضيح أن BigInt لا يختلط مباشرة مع Number في العمليات الحسابية",
+        "توضيح أن String يمكن كتابتها بـ single quotes أو double quotes أو template literals",
+        "إضافة Best Practice حول تقليل تغيير نوع نفس المتغير رغم Dynamic Typing",
+        "تحسين شرح typeof وإضافة typeof function و typeof NaN و typeof arrays",
+        "توضيح الفرق بين undefined كقيمة و typeof undeclared variable",
+        "إضافة طريقة صحيحة للتحقق من null و arrays و plain objects",
+        "تحسين أقسام Troubleshooting و Cheat Sheet والأسئلة النظرية والتمارين"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox",
+      "comparebox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "Data Types في JavaScript",
+    "أنواع البيانات السبعة في JavaScript والـ Dynamic Typing وأوبريتور typeof",
+    "من كورس The Complete JavaScript Course",
+    "القسم: JavaScript Fundamentals - Part 1",
+    "يتضمن: رسومات توضيحية -- تتبع خطوة بخطوة",
+    "أمثلة إضافية -- تمارين عملية متدرجة"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "قبل البداية وأهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قبل ما تبدأ، لازم تكون فاهم المفاهيم دي:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "Values and Variables: تعريف المتغيرات وتخزين القيم باستخدام let و const و var.",
+                "console.log(): طباعة القيم في Console.",
+                "Camel Case Naming: طريقة تسمية المتغيرات في JavaScript.",
+                "مفهوم Value: القيمة هي أصغر وحدة بيانات يتعامل معها البرنامج."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد ما تخلص الهاندبوك ده، هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفرّق بين Primitive Values و Objects.",
+                "تعدّد أنواع البيانات السبعة الـ Primitive.",
+                "تستخدم typeof لمعرفة نوع أي قيمة.",
+                "تفهم Dynamic Typing وأن النوع مرتبط بالقيمة وليس بالمتغير.",
+                "تعيد تعيين قيمة جديدة بنوع مختلف لنفس المتغير وتفهم مخاطره.",
+                "تفرّق بين undefined و null.",
+                "تكتب Comments بسطر واحد أو عدة سطور.",
+                "تتعرف على bug typeof null وتتعامل معه صح.",
+                "تفهم الحالات الخاصة مثل NaN و Infinity و arrays و functions مع typeof."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "بعد فهم القيم والمتغيرات، السؤال التالي هو: هل كل القيم من نفس النوع؟ الإجابة لا. JavaScript تقسم القيم إلى أنواع، وكل نوع له سلوك واستخدام مختلف."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تشبيه: كل قيمة عليها tag يوضح نوعها. المتغير هو label يشير لقيمة، لكن النوع نفسه تابع للقيمة."
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "في هذا الدرس سنتعلم الأنواع البدائية السبعة، مفهوم Dynamic Typing، استخدام typeof، الفرق بين undefined و null، والتعليقات Comments."
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "القيم في JavaScript -- Primitive مقابل Object",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Primitive: قيمة بسيطة مستقلة مثل number أو string أو boolean.",
+                "Object: قيمة مركبة يمكن أن تحتوي بيانات وسلوكًا، مثل object literal و array و function."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let me = {\n  name: 'Jonas',\n  age: 30\n};\n\nlet firstName = 'Jonas';\nlet age = 30;\nlet isStudent = true;"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس يركز على Primitive Types. لكن مهم تعرف أن arrays و functions ليست Primitive. الـ function لها نتيجة خاصة مع typeof وهي \"function\"، لكنها في العمق object callable."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "الفئة",
+                  "أمثلة",
+                  "ملاحظات"
+                ],
+                [
+                  "Primitive",
+                  "number, string, boolean, undefined, null, symbol, bigint",
+                  "قيم بسيطة immutable من حيث القيمة نفسها"
+                ],
+                [
+                  "Object",
+                  "object, array, function, date",
+                  "قيم مركبة غالبًا يتم التعامل معها عبر reference"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الأنواع السبعة الـ Primitive في JavaScript",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Number -- الأرقام",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Number يمثل الأرقام الصحيحة والعشرية في JavaScript. تقنيًا JavaScript تستخدم double-precision floating-point numbers لمعظم الأرقام."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let age = 23;\nlet price = 9.99;\nlet temperature = -5;\n\nconsole.log(age);\nconsole.log(price);\nconsole.log(temperature);"
+        },
+        {
+          "type": "output",
+          "text": "23\n9.99\n-5"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تحسين علمي: Number لا يعني فقط الأرقام العادية، بل يشمل أيضًا قيمًا خاصة مثل NaN و Infinity."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(typeof NaN);      // number\nconsole.log(typeof Infinity); // number"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بسبب floating point، بعض العمليات العشرية قد تعطي نتائج غير متوقعة:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(0.1 + 0.2); // 0.30000000000000004"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "String -- النصوص",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "String هو نص أو sequence of characters. يمكن كتابته بعلامات مفردة أو مزدوجة أو باستخدام template literals بالـ backticks."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let firstName = 'Jonas';\nlet greeting = \"Hello World\";\nlet message = `Hello ${firstName}`;\n\nconsole.log(firstName);\nconsole.log(greeting);\nconsole.log(message);"
+        },
+        {
+          "type": "output",
+          "text": "Jonas\nHello World\nHello Jonas"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو نسيت علامات التنصيص، JavaScript ستتعامل مع الكلمة كاسم متغير."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(Jonas); // ReferenceError\nconsole.log('Jonas'); // صحيح"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Boolean -- القيمة المنطقية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Boolean نوع منطقي له قيمتان فقط: true أو false. يستخدم في الشروط واتخاذ القرارات."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let javaScriptIsFun = true;\nlet isRaining = false;\n\nconsole.log(javaScriptIsFun);\nconsole.log(isRaining);"
+        },
+        {
+          "type": "output",
+          "text": "true\nfalse"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "true و false لازم يكونوا lowercase. True أو FALSE ستُعامل كأسماء identifiers وقد تسبب ReferenceError."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Undefined -- القيمة غير المعرّفة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "undefined هي القيمة الافتراضية لمتغير تم تعريفه بدون قيمة. وهي أيضًا نوع مستقل."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let children;\nconsole.log(children);\nconsole.log(typeof children);"
+        },
+        {
+          "type": "output",
+          "text": "undefined\nundefined"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فرق مهم: undefined كقيمة لمتغير معرف شيء، واستخدام متغير غير معرف تمامًا شيء آخر. لكن typeof على اسم غير معرف يرجع \"undefined\" بدل ReferenceError."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let x;\nconsole.log(typeof x);           // undefined\nconsole.log(typeof notDeclared); // undefined\n// console.log(notDeclared);     // ReferenceError"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Null -- القيمة الفارغة المتعمدة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "null تعني empty value أو absence of value بشكل متعمد. أنت تضعها صراحة لتقول: لا توجد قيمة الآن."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let selectedColor = null;\nconsole.log(selectedColor);\nconsole.log(typeof selectedColor);"
+        },
+        {
+          "type": "output",
+          "text": "null\nobject"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "typeof null يرجع \"object\" وهذا bug تاريخي. null ليست object؛ هي Primitive Value. للتحقق من null استخدم مقارنة صريحة:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "selectedColor === null; // true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Symbol -- قيمة فريدة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Symbol نوع Primitive يمثل قيمة فريدة. يستخدم كثيرًا كمفتاح خاص في objects أو في حالات متقدمة."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const id1 = Symbol('id');\nconst id2 = Symbol('id');\n\nconsole.log(typeof id1);\nconsole.log(id1 === id2);"
+        },
+        {
+          "type": "output",
+          "text": "symbol\nfalse"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "BigInt -- الأعداد الصحيحة الكبيرة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "BigInt يمثل أعدادًا صحيحة أكبر من حدود Number الآمنة. نكتب n في نهاية الرقم."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let bigNumber = 9007199254740991n;\nconsole.log(typeof bigNumber);"
+        },
+        {
+          "type": "output",
+          "text": "bigint"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "BigInt لا يختلط مباشرة مع Number في العمليات الحسابية. لازم تحوّل أحد النوعين بوضوح."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "// console.log(10n + 5); // TypeError\nconsole.log(10n + BigInt(5)); // 15n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "ملخص الأنواع السبعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "النوع",
+              "الوصف",
+              "مثال",
+              "typeof"
+            ],
+            [
+              "Number",
+              "أرقام عادية وNaN وInfinity",
+              "23, 9.99, NaN",
+              "number"
+            ],
+            [
+              "String",
+              "نصوص",
+              "'Hello', \"Hi\", `Hi`",
+              "string"
+            ],
+            [
+              "Boolean",
+              "صح أو غلط",
+              "true, false",
+              "boolean"
+            ],
+            [
+              "Undefined",
+              "متغير بدون قيمة",
+              "let x;",
+              "undefined"
+            ],
+            [
+              "Null",
+              "قيمة فارغة متعمدة",
+              "let x = null;",
+              "object (bug)"
+            ],
+            [
+              "Symbol",
+              "قيمة فريدة",
+              "Symbol(\"id\")",
+              "symbol"
+            ],
+            [
+              "BigInt",
+              "عدد صحيح كبير",
+              "123n",
+              "bigint"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أوبريتور typeof -- اعرف نوع أي قيمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "typeof مثل جهاز فحص: تعطيه قيمة أو متغير فيرجع string باسم النوع."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(typeof true);\nconsole.log(typeof 23);\nconsole.log(typeof 'Jonas');\nconsole.log(typeof undefined);\nconsole.log(typeof null);\nconsole.log(typeof NaN);\nconsole.log(typeof function () {});\nconsole.log(typeof []);"
+        },
+        {
+          "type": "output",
+          "text": "boolean\nnumber\nstring\nundefined\nobject\nnumber\nfunction\nobject"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "typeof يرجع String، لذلك نقارن بـ \"number\" وليس number.",
+                "typeof null يرجع object بسبب bug تاريخي.",
+                "typeof [] يرجع object لأن array نوع خاص من object. استخدم Array.isArray(arr).",
+                "typeof function يرجع function، وهي نتيجة خاصة مفيدة رغم أن functions objects في العمق."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Dynamic Typing -- النوع بيروح مع القيمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Dynamic Typing يعني JavaScript لا تطلب منك كتابة نوع المتغير. النوع تابع للقيمة الحالية وليس لاسم المتغير."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let javaScriptIsFun = true;\nconsole.log(typeof javaScriptIsFun);\n\njavaScriptIsFun = 'YES!';\nconsole.log(typeof javaScriptIsFun);"
+        },
+        {
+          "type": "output",
+          "text": "boolean\nstring"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "رغم أن تغيير نوع المتغير مسموح، من الأفضل في الكود الحقيقي ألا تغيّر نوع نفس المتغير كثيرًا لأن هذا يصعب القراءة وقد يسبب bugs."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "عند إعادة التعيين لا نكتب let مرة أخرى:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let x = 10;\nx = 'hello'; // صحيح\n\n// let x = 'hello'; // خطأ في نفس scope"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "التعليقات Comments",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "شرح الكود.",
+                "تقسيم الكود لأجزاء.",
+                "إلغاء كود مؤقتًا أثناء التجربة."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "// تعليق سطر واحد\nlet age = 30;\n\n/* تعليق\n   متعدد السطور */\nlet name = 'Ahmed';"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اختصار VS Code: Ctrl + / أو Cmd + / على Mac لعمل/إزالة تعليق بسرعة."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لا تترك كودًا معطلًا بالتعليقات لفترة طويلة في المشاريع الحقيقية. الأفضل استخدام Git لحفظ الإصدارات القديمة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفرق بين undefined و null",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "undefined = غالبًا JavaScript تخبرك أن القيمة غير موجودة/لم تُعطَ بعد.",
+                "null = أنت تعمدت وضع قيمة فارغة."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let a;\nconsole.log(a);\n\nlet b = null;\nconsole.log(b);"
+        },
+        {
+          "type": "output",
+          "text": "undefined\nnull"
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "النقطة",
+              "undefined",
+              "null"
+            ],
+            [
+              "مين وضعها؟",
+              "JavaScript غالبًا تلقائيًا",
+              "أنت غالبًا عن قصد"
+            ],
+            [
+              "المعنى",
+              "لا توجد قيمة بعد",
+              "غياب قيمة متعمد"
+            ],
+            [
+              "typeof",
+              "undefined",
+              "object (bug)"
+            ],
+            [
+              "التحقق",
+              "typeof x === \"undefined\"",
+              "x === null"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "التحقق الصحيح من object و array و null",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "من أكبر فخاخ typeof أنه يرجع object لكل من object العادي و array و null. لذلك نحتاج فحوصات أدق."
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const val = null;\nconst arr = [];\nconst obj = {};\n\nconsole.log(typeof val); // object\nconsole.log(typeof arr); // object\nconsole.log(typeof obj); // object\n\nconsole.log(val === null);       // true\nconsole.log(Array.isArray(arr)); // true\n\nfunction isPlainObject(value) {\n  return value !== null && typeof value === 'object' && !Array.isArray(value);\n}\n\nconsole.log(isPlainObject(obj)); // true\nconsole.log(isPlainObject(arr)); // false\nconsole.log(isPlainObject(val)); // false"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "هذا الفحص مهم جدًا قبل التعامل مع بيانات API أو inputs غير مضمونة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تتبع تنفيذ الكود خطوة بخطوة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let javaScriptIsFun = true;\nconsole.log(typeof javaScriptIsFun);\n\njavaScriptIsFun = 'YES!';\nconsole.log(typeof javaScriptIsFun);\n\nlet year;\nconsole.log(year);\nconsole.log(typeof year);\n\nyear = 1991;\nconsole.log(typeof year);\n\nconsole.log(typeof null);"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 1: javaScriptIsFun يبدأ بقيمة true ونوعها boolean."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 2: typeof javaScriptIsFun يرجع string قيمته \"boolean\"."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 3: إعادة تعيين javaScriptIsFun إلى \"YES!\" فيصبح النوع string."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 4: year يُعرّف بدون قيمة، فيأخذ undefined."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 5: typeof year يرجع \"undefined\"."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 6: year = 1991 يجعل نوع القيمة number."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخطوة 7: typeof null يرجع \"object\" بسبب bug تاريخي."
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "boolean\nstring\nundefined\nundefined\nnumber\nobject"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "المثال الكامل المحسّن",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let javaScriptIsFun = true;\nconsole.log(javaScriptIsFun);\n\nconsole.log(typeof true);\nconsole.log(typeof javaScriptIsFun);\nconsole.log(typeof 23);\nconsole.log(typeof 'Jonas');\n\njavaScriptIsFun = 'YES!';\nconsole.log(typeof javaScriptIsFun);\n\nlet year;\nconsole.log(year);\nconsole.log(typeof year);\n\nyear = 1991;\nconsole.log(typeof year);\n\nconsole.log(typeof null);\nconsole.log(typeof NaN);\nconsole.log(Array.isArray([]));"
+        },
+        {
+          "type": "output",
+          "text": "true\nboolean\nboolean\nnumber\nstring\nstring\nundefined\nundefined\nnumber\nobject\nnumber\ntrue"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية متنوعة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "مثال 1: التفريق بين الأنواع الأساسية",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let myName = 'Sara';\nlet myAge = 25;\nlet isStudent = true;\nlet job;\nlet salary = null;\n\nconsole.log(typeof myName);\nconsole.log(typeof myAge);\nconsole.log(typeof isStudent);\nconsole.log(typeof job);\nconsole.log(typeof salary);"
+        },
+        {
+          "type": "output",
+          "text": "string\nnumber\nboolean\nundefined\nobject"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 2: Dynamic Typing مع تتبع النوع",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let x = 42;\nconsole.log(typeof x);\n\nx = 'Hello World';\nconsole.log(typeof x);\n\nx = true;\nconsole.log(typeof x);\n\nx = undefined;\nconsole.log(typeof x);\n\nx = null;\nconsole.log(typeof x);"
+        },
+        {
+          "type": "output",
+          "text": "number\nstring\nboolean\nundefined\nobject"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 3: استخدام typeof في شرط",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let value = '100';\n\nif (typeof value === 'number') {\n  console.log('This is a number!');\n} else if (typeof value === 'string') {\n  console.log('This is a string, not a number!');\n}"
+        },
+        {
+          "type": "output",
+          "text": "This is a string, not a number!"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 4: Boolean في الحياة العملية",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let isLoggedIn = false;\nlet hasPermission = true;\nlet isAdult = true;\n\nconsole.log('Is logged in:', isLoggedIn);\nconsole.log('Has permission:', hasPermission);\nconsole.log('Is adult:', isAdult);\nconsole.log(typeof isLoggedIn);"
+        },
+        {
+          "type": "output",
+          "text": "Is logged in: false\nHas permission: true\nIs adult: true\nboolean"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 5: الفرق بين النص والرقم",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let num = 100;\nlet str = '100';\n\nconsole.log(typeof num);\nconsole.log(typeof str);\nconsole.log(num + 50);\nconsole.log(str + 50);"
+        },
+        {
+          "type": "output",
+          "text": "number\nstring\n150\n10050"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ الشائع",
+              "الحل الصح"
+            ],
+            [
+              "نسيان علامات التنصيص حول النص",
+              "استخدم quotes أو template literals"
+            ],
+            [
+              "كتابة True أو FALSE",
+              "اكتب true و false lowercase"
+            ],
+            [
+              "كتابة let مرة أخرى عند إعادة التعيين",
+              "اكتب اسم المتغير فقط"
+            ],
+            [
+              "الاعتماد على typeof null",
+              "تحقق بـ x === null"
+            ],
+            [
+              "الخلط بين undefined و null",
+              "undefined غالبًا غير معطاة، null فارغة عن قصد"
+            ],
+            [
+              "الخلط بين 100 و \"100\"",
+              "استخدم typeof والتحويل الصريح عند الحاجة"
+            ],
+            [
+              "تغيير نوع المتغير كثيرًا",
+              "حافظ على ثبات النوع قدر الإمكان"
+            ],
+            [
+              "نسيان أن typeof يرجع string",
+              "قارن بـ \"number\" وليس number"
+            ],
+            [
+              "استخدام typeof لمعرفة array",
+              "استخدم Array.isArray"
+            ],
+            [
+              "اعتبار NaN نوعًا مستقلًا",
+              "typeof NaN هو number"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح باختصار"
+            ],
+            [
+              "Primitive Types",
+              "Number, String, Boolean, Undefined, Null, Symbol, BigInt"
+            ],
+            [
+              "Number",
+              "أرقام double-precision وتشمل NaN و Infinity"
+            ],
+            [
+              "String",
+              "نصوص بين quotes أو backticks"
+            ],
+            [
+              "Boolean",
+              "true أو false"
+            ],
+            [
+              "Undefined",
+              "متغير أو قيمة غير معطاة"
+            ],
+            [
+              "Null",
+              "قيمة فارغة متعمدة"
+            ],
+            [
+              "Symbol",
+              "قيمة فريدة"
+            ],
+            [
+              "BigInt",
+              "أعداد صحيحة كبيرة"
+            ],
+            [
+              "typeof",
+              "يرجع نوع القيمة كـ string"
+            ],
+            [
+              "Dynamic Typing",
+              "النوع مرتبط بالقيمة وليس المتغير"
+            ],
+            [
+              "Comments",
+              "// و /* */"
+            ],
+            [
+              "typeof null bug",
+              "يرجع object بدل null"
+            ],
+            [
+              "Array check",
+              "استخدم Array.isArray"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "table",
+              "environment": "longtable",
+              "rows": [
+                [
+                  "النوع",
+                  "مثال",
+                  "typeof"
+                ],
+                [
+                  "Number",
+                  "42, 3.14, NaN",
+                  "number"
+                ],
+                [
+                  "String",
+                  "\"hello\", 'world', `hi`",
+                  "string"
+                ],
+                [
+                  "Boolean",
+                  "true, false",
+                  "boolean"
+                ],
+                [
+                  "Undefined",
+                  "undefined",
+                  "undefined"
+                ],
+                [
+                  "Null",
+                  "null",
+                  "object (bug)"
+                ],
+                [
+                  "Symbol",
+                  "Symbol(\"x\")",
+                  "symbol"
+                ],
+                [
+                  "BigInt",
+                  "123n",
+                  "bigint"
+                ],
+                [
+                  "Function",
+                  "function() {}",
+                  "function"
+                ],
+                [
+                  "Array",
+                  "[]",
+                  "object; استخدم Array.isArray"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "typeof value;\ntypeof variableName;\n\nlet x;\nx = newValue;\n\nconst isNull = x === null;\nconst isArray = Array.isArray(x);\nconst isObject = x !== null && typeof x === 'object' && !Array.isArray(x);\n\n// comment\n/* multi-line comment */"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق بالعربي",
+              "المعنى"
+            ],
+            [
+              "Data Type",
+              "داتا تايب",
+              "نوع البيانات"
+            ],
+            [
+              "Primitive",
+              "بريميتيف",
+              "قيمة بسيطة غير object"
+            ],
+            [
+              "Number",
+              "نمبر",
+              "رقم"
+            ],
+            [
+              "String",
+              "سترينج",
+              "نص"
+            ],
+            [
+              "Boolean",
+              "بوليان",
+              "true أو false"
+            ],
+            [
+              "Undefined",
+              "أنديفايند",
+              "غير معطى أو غير معرّف"
+            ],
+            [
+              "Null",
+              "نَل",
+              "فراغ متعمد"
+            ],
+            [
+              "Symbol",
+              "سيمبول",
+              "قيمة فريدة"
+            ],
+            [
+              "BigInt",
+              "بيج إنت",
+              "عدد صحيح كبير جدًا"
+            ],
+            [
+              "Dynamic Typing",
+              "داينامك تايبنج",
+              "النوع يتحدد وقت التشغيل حسب القيمة"
+            ],
+            [
+              "typeof",
+              "تايب أوف",
+              "operator لمعرفة النوع"
+            ],
+            [
+              "NaN",
+              "نان",
+              "Not-a-Number لكن typeof يرجع number"
+            ],
+            [
+              "Infinity",
+              "إنفينيتي",
+              "قيمة رقمية خاصة"
+            ],
+            [
+              "Concatenation",
+              "كونكاتينيشن",
+              "لصق نصوص"
+            ],
+            [
+              "Legacy",
+              "ليجاسي",
+              "سلوك قديم محفوظ للتوافق"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "ReferenceError: x is not defined",
+              "نص بدون quotes أو متغير غير معرّف",
+              "استخدم quotes أو عرّف المتغير"
+            ],
+            [
+              "Identifier has already been declared",
+              "كتبت let لنفس الاسم في نفس scope",
+              "احذف let عند إعادة التعيين"
+            ],
+            [
+              "typeof null = object",
+              "bug تاريخي",
+              "تحقق بـ x === null"
+            ],
+            [
+              "المتغير undefined",
+              "تم تعريفه بدون قيمة",
+              "أعطه قيمة أو تعامل مع الحالة"
+            ],
+            [
+              "الجمع يعمل لصق",
+              "واحدة من القيم string",
+              "حوّل صراحة بـ Number(value) عند الحاجة"
+            ],
+            [
+              "True/False لا يعملان",
+              "ليسا keywords في JavaScript",
+              "استخدم true/false"
+            ],
+            [
+              "فحص array بـ typeof لا يكفي",
+              "typeof [] يرجع object",
+              "استخدم Array.isArray"
+            ],
+            [
+              "خلط BigInt و Number",
+              "عملية بين bigint و number",
+              "حوّل أحدهما بوضوح"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين عملية متدرجة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تمرين 1: سهل -- تعرّف على الأنواع",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "عرّف city و population و isBig و mayor ثم اطبع typeof لكل واحد."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let city = 'Cairo';\nlet population = 20000000;\nlet isBig = true;\nlet mayor;\n\nconsole.log(typeof city);\nconsole.log(typeof population);\nconsole.log(typeof isBig);\nconsole.log(typeof mayor);"
+            },
+            {
+              "type": "output",
+              "text": "string\nnumber\nboolean\nundefined"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 2: سهل -- التعليقات",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب تعليقات single-line و multi-line حول متغيرات شخصية."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "/* This program stores personal information\n   and prints it to the console */\n\n// Name of the user\nlet myName = 'Ahmed';\n\n// Age of the user\nlet myAge = 22;\n\n// Is the user a student?\nlet isStudent = true;\n\nconsole.log(myName);\nconsole.log(myAge);\nconsole.log(isStudent);"
+            },
+            {
+              "type": "output",
+              "text": "Ahmed\n22\ntrue"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 3: متوسط -- تتبع Dynamic Typing",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "حدد ناتج typeof عند تغيير قيمة mystery."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let mystery = 'hello';\nconsole.log(typeof mystery); // string\n\nmystery = 42;\nconsole.log(typeof mystery); // number\n\nmystery = true;\nconsole.log(typeof mystery); // boolean\n\nmystery = undefined;\nconsole.log(typeof mystery); // undefined\n\nmystery = null;\nconsole.log(typeof mystery); // object (Bug)"
+            },
+            {
+              "type": "output",
+              "text": "string\nnumber\nboolean\nundefined\nobject"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 4: متوسط -- اكتشاف الأخطاء",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أصلح أخطاء quotes وcase وlet المكرر واسم المتغير."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let myName = 'Ahmed';\nlet age = 25;\nlet isHappy = true;\nconsole.log(typeof myName);"
+            },
+            {
+              "type": "output",
+              "text": "string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 5: صعب -- نظام بيانات منتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "عرّف بيانات منتج وتابع تغير الأنواع واحسب السعر بعد الخصم."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let productName = 'Laptop';\nlet price = 1500;\nlet inStock = true;\nlet discount;\nlet category = null;\n\nconsole.log('--- Before Changes ---');\nconsole.log(typeof productName);\nconsole.log(typeof price);\nconsole.log(typeof inStock);\nconsole.log(typeof discount);\nconsole.log(typeof category);\n\ndiscount = 15;\ncategory = 'Electronics';\n\nconsole.log('--- After Changes ---');\nconsole.log(typeof discount);\nconsole.log(typeof category);\n\nlet finalPrice = price - (price * discount / 100);\nconsole.log('Final price:', finalPrice);"
+            },
+            {
+              "type": "output",
+              "text": "--- Before Changes ---\nstring\nnumber\nboolean\nundefined\nobject\n--- After Changes ---\nnumber\nstring\nFinal price: 1275"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 6: متقدم -- فحص object حقيقي",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب دالة تتحقق أن القيمة object عادي وليست null أو array."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function isPlainObject(value) {\n  return value !== null && typeof value === 'object' && !Array.isArray(value);\n}\n\nconsole.log(isPlainObject({}));   // true\nconsole.log(isPlainObject([]));   // false\nconsole.log(isPlainObject(null)); // false"
+            },
+            {
+              "type": "output",
+              "text": "true\nfalse\nfalse"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة نظرية",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "إيه الفرق بين Primitive Values والـ Objects؟",
+              "answer": "Primitive قيم بسيطة، وObjects قيم مركبة يمكن أن تحتوي قيمًا أخرى أو سلوكًا."
+            },
+            {
+              "question": "ما معنى Dynamic Typing؟",
+              "answer": "النوع مرتبط بالقيمة الحالية، وليس بالمتغير نفسه."
+            },
+            {
+              "question": "ليه typeof null بيرجع object؟",
+              "answer": "bug تاريخي محفوظ للتوافق مع الأكواد القديمة."
+            },
+            {
+              "question": "إيه الفرق بين undefined و null؟",
+              "answer": "undefined غالبًا قيمة غير معطاة، null فراغ متعمد."
+            },
+            {
+              "question": "ليه typeof NaN بيرجع number؟",
+              "answer": "NaN قيمة رقمية خاصة تعني Not-a-Number ضمن نوع number."
+            },
+            {
+              "question": "إزاي تفحص array؟",
+              "answer": "باستخدام Array.isArray(value)، لأن typeof [] يرجع object."
+            },
+            {
+              "question": "متى تستخدم typeof فعليًا؟",
+              "answer": "عند فحص inputs أو بيانات API أو قبل تنفيذ عمليات تعتمد على النوع."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الدرس الجاي",
+              "هتتعلم فيه إيه",
+              "علاقته بالدرس ده"
+            ],
+            [
+              "let, const, and var",
+              "طرق تعريف المتغيرات",
+              "هتفهم إعادة التعيين والثبات"
+            ],
+            [
+              "Basic Operators",
+              "عمليات حسابية ومنطقية",
+              "هتتعامل مع numbers و booleans"
+            ],
+            [
+              "Type Conversion and Coercion",
+              "التحويل اليدوي والتلقائي",
+              "يفسر string + number"
+            ],
+            [
+              "Truthy and Falsy Values",
+              "قيم تتحول إلى true/false",
+              "يعتمد على boolean و null و undefined"
+            ],
+            [
+              "Objects",
+              "القيم المركبة",
+              "يكمل الفرق بين primitive و object"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "كل قيمة في JavaScript لها نوع.",
+                "القيم إما Primitive أو Object.",
+                "النوع تابع للقيمة وليس المتغير.",
+                "typeof مفيد لكنه له فخاخ مثل null و arrays."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بدون فهم الأنواع، ستقع في أخطاء مثل string concatenation بدل الجمع، أو اعتبار null object حقيقي، أو فحص arrays بطريقة خاطئة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "كل قيمة عليها tag يوضح نوعها. المتغير label يشير لقيمة. عند تغيير القيمة يتغير النوع المرتبط بالقيمة الجديدة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: typeof null يرجع object."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const x = null;\nconsole.log(typeof x); // object\nconsole.log(x === null); // true"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: typeof array يرجع object."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const arr = [];\nconsole.log(typeof arr); // object\nconsole.log(Array.isArray(arr)); // true"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: string + number يعمل concatenation."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log('100' + 50); // 10050\nconsole.log(Number('100') + 50); // 150"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "ليه typeof null بيرجع object؟",
+                "ما الفرق بين undefined و null من ناحية الاستخدام؟",
+                "إزاي Dynamic Typing يسبب bugs؟",
+                "إزاي تفحص plain object بدون null أو arrays؟",
+                "ليه typeof NaN يرجع number؟",
+                "ما حدود Number الآمنة ومتى تستخدم BigInt؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: API ترجع price كنص \"99.50\" والجمع يعطي \"99.5015\"."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "افحص typeof price.",
+                "حوّل صراحة باستخدام Number(price).",
+                "تحقق من Number.isNaN عند المدخلات غير الصالحة."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const total = Number(price) + tax;"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: حقل اختياري يرسل undefined للسيرفر."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "حدد هل API يريد null أو حذف الحقل.",
+                "لا تخلط undefined و null.",
+                "ابن payload حسب contract."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: شرط typeof val === \"object\" يمرر null و arrays."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (val !== null && typeof val === 'object' && !Array.isArray(val)) {\n  // plain object-ish check\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "حدد نتيجة console.log(typeof \"hello\")"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الإجابة: string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح الـ Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لماذا لا يعمل؟"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (typeof value === number) console.log(true);"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "number يجب أن تكون string: typeof value === \"number\"."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: حل مشكلة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب كود يتحقق هل x من نوع string."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (typeof x === \"string\") console.log(\"نص\"); else console.log(\"مش نص\");"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تشرح الفرق بين Primitive و Object.",
+                "تعرف ناتج typeof لكل نوع أساسي.",
+                "تعرف فخ typeof null.",
+                "تعرف فحص array بـ Array.isArray.",
+                "تفرق بين undefined و null.",
+                "تتوقع نتيجة Dynamic Typing بعد إعادة التعيين."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس الجاي let, const, var سيبني على فهمك للأنواع: متى المتغير يتغير ومتى يظل ثابتًا، وكيف يؤثر ذلك على جودة الكود."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ملخص الدرس:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "كل قيمة في JavaScript إما Primitive أو Object.",
+                "الـ Primitive Types هي: number, string, boolean, undefined, null, symbol, bigint.",
+                "typeof يرجع string باسم النوع، لكنه له حالات خاصة.",
+                "typeof null = object bug تاريخي.",
+                "Dynamic Typing يعني النوع مرتبط بالقيمة.",
+                "Comments تساعدك على شرح الكود أو تعطيله مؤقتًا."
+              ]
+            },
+            {
+              "type": "text",
+              "text": "الدرس الجاي: let و const و var."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 29,
+    "subsections": 22,
+    "subsubsections": 0,
+    "blocks": 225,
+    "codeBlocks": 41,
+    "outputs": 23,
+    "boxes": 69,
+    "tables": 9,
+    "lists": 13
+  }
+}

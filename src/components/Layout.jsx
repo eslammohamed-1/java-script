@@ -4,6 +4,7 @@ import Overview from './day/Overview';
 import DaySummary from './day/DaySummary';
 import Schedule from './day/Schedule';
 import Lessons from './day/Lessons';
+import ImprovedCourseContent from './day/ImprovedCourseContent';
 import MCQQuiz from './day/MCQQuiz';
 import CodeWritingTests from './day/CodeWritingTests';
 import FillInBlankTests from './day/FillInBlankTests';
@@ -132,6 +133,10 @@ export default function Layout({ lesson, module, onBack, onBackToLessons, onShow
     switch (activeSection) {
       case 'overview':
         return <Overview module={data} />;
+      case 'content':
+        return (
+          <ImprovedCourseContent module={data} lessonId={`${lesson.id}-${module.id}`} />
+        );
       case 'summary':
         return (
           <DaySummary summary={data.learning_summary} goal={data.goal} />

@@ -6,111 +6,117 @@
   "level": "مبتدئ",
   "estimatedDuration": "20 ساعة",
   "learningPath": [
-    "day-1", "day-2", "day-3", "day-4", "day-5", "day-6", "day-7", "day-8", "day-9", 
-    "day-10", "day-11", "day-12", "day-13", "day-14", "day-15", "day-16", "day-17"
+    "day-1", "day-2", "day-3", "day-4", "day-5", "day-6", "day-7", "day-8", "day-9",
+    "day-12", "day-13", "day-14", "day-15", "day-16", "day-17", "day-18", "day-19", "day-20"
   ],
   "modules": [
     {
       "id": "day-1",
       "type": "course",
       "label": "القيم والمتغيرات",
-      "source": "day-1-values-variables.json"
+      "source": "values-and-variables.json"
     },
     {
       "id": "day-2",
       "type": "course",
       "label": "أنواع البيانات",
-      "source": "day-2-data-types.json"
+      "source": "data-types.json"
     },
     {
       "id": "day-3",
       "type": "course",
       "label": "العوامل الأساسية",
-      "source": "day-3-basic-operators.json"
+      "source": "basic-operators.json"
     },
     {
       "id": "day-4",
       "type": "course",
       "label": "جمل الشرط (if/else)",
-      "source": "day-4-if-else.json"
+      "source": "if-else.json"
     },
     {
       "id": "day-5",
       "type": "course",
       "label": "تحويل أنواع البيانات",
-      "source": "day-5-type-conversion.json"
+      "source": "type-conversion.json"
     },
     {
       "id": "day-6",
       "type": "course",
       "label": "القيم الصحيحة والخاطئة",
-      "source": "day-6-truthy-falsy.json"
+      "source": "truthy-falsy.json"
     },
     {
       "id": "day-7",
       "type": "course",
       "label": "الوضع الصارم",
-      "source": "day-7-strict-mode.json"
+      "source": "strict-mode.json"
     },
     {
       "id": "day-8",
       "type": "course",
       "label": "الدوال (Functions)",
-      "source": "day-8-functions.json"
+      "source": "functions.json"
     },
     {
       "id": "day-9",
       "type": "course",
       "label": "تصريح الدوال والتعبيرات",
-      "source": "day-9-function-declarations.json"
-    },
-    {
-      "id": "day-10",
-      "type": "course",
-      "label": "الدوال السهمية",
-      "source": "day-10-arrow-functions.json"
-    },
-    {
-      "id": "day-11",
-      "type": "course",
-      "label": "استدعاء الدوال المتداخل",
-      "source": "day-11-functions-calling-functions.json"
+      "source": "function-declarations.json"
     },
     {
       "id": "day-12",
       "type": "course",
       "label": "مقدمة عن المصفوفات",
-      "source": "day-12-arrays.json"
+      "source": "arrays.json"
     },
     {
       "id": "day-13",
       "type": "course",
       "label": "عمليات المصفوفات",
-      "source": "day-13-array-methods.json"
+      "source": "array-methods.json"
     },
     {
       "id": "day-14",
       "type": "course",
       "label": "مقدمة عن الكائنات",
-      "source": "day-14-objects.json"
+      "source": "objects.json"
     },
     {
       "id": "day-15",
       "type": "course",
       "label": "التنقيط مقابل الأقواس",
-      "source": "day-15-dot-bracket.json"
+      "source": "dot-bracket.json"
     },
     {
       "id": "day-16",
       "type": "course",
       "label": "دوال الكائنات",
-      "source": "day-16-object-methods.json"
+      "source": "object-methods.json"
     },
     {
       "id": "day-17",
       "type": "course",
       "label": "حلقات التكرار (for Loop)",
-      "source": "day-17-for-loop.json"
+      "source": "for-loop.json"
+    },
+    {
+      "id": "day-18",
+      "type": "course",
+      "label": "التكرار على المصفوفات (break/continue)",
+      "source": "looping-arrays-breaking.json"
+    },
+    {
+      "id": "day-19",
+      "type": "course",
+      "label": "التكرار العكسي والحلقات المتداخلة",
+      "source": "looping-backwards.json"
+    },
+    {
+      "id": "day-20",
+      "type": "course",
+      "label": "حلقة while",
+      "source": "while-loop.json"
     }
   ]
 }

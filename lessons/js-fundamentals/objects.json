@@ -1,0 +1,1688 @@
+{
+  "metadata": {
+    "sourceFile": "Introduction to Objects.tex",
+    "convertedAt": "2026-06-07T06:52:07.447015+00:00",
+    "title": "Introduction to Objects في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "توضيح الفرق بين Objects و Arrays من حيث البيانات المسمّاة والبيانات المرتبة",
+        "توضيح Object Literal Syntax كأبسط طريقة لإنشاء object",
+        "توسيع شرح Key و Value و Property و Key-Value Pair",
+        "إضافة ملاحظة مهمة عن أن property keys في JavaScript غالبًا strings أو symbols، حتى لو كتبتها بدون تنصيص",
+        "توضيح duplicate keys وأن آخر قيمة هي التي تظهر في object literal",
+        "إضافة الفرق بين object literal و code block حسب السياق",
+        "إضافة أمثلة nested objects و arrays داخل objects",
+        "إضافة تمهيد خفيف للوصول للخصائص بـ dot/bracket notation دون التوسع لأنه الدرس القادم",
+        "إضافة ملاحظات عن reference و mutation مع objects و const",
+        "تحسين Troubleshooting و Cheat Sheet و Senior Questions والتمارين"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox",
+      "comparebox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "Introduction to Objects في JavaScript",
+    "مقدمة عن الـ Objects وطريقة Object Literal Syntax",
+    "من كورس The Complete JavaScript Course",
+    "القسم: JavaScript Fundamentals - Part 2"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "الربط بالمفاهيم السابقة وأهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قبل ما تبدأ، لازم تكون فاهم المفاهيم دي:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "Arrays: تعريف array والوصول للعناصر بالـ index.",
+                "Data Types: String و Number و Boolean و undefined و null.",
+                "Variables: تعريف المتغيرات باستخدام let و const.",
+                "Expressions: أي كود ينتج قيمة مثل 2037 - 1991.",
+                "Code Blocks: الأقواس المعقوفة في if/functions."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد الدرس هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفهم ما هو Object والفرق بينه وبين Array.",
+                "تنشئ Object باستخدام Object Literal Syntax.",
+                "تفهم Key-Value Pairs.",
+                "تعرف أن كل key-value pair يسمى Property.",
+                "تضع أي نوع بيانات كقيمة property.",
+                "تفرق بين Arrays للبيانات المرتبة وObjects للبيانات المسمّاة.",
+                "تفهم أن الترتيب في Objects ليس طريقة الاعتماد الأساسية للوصول للبيانات.",
+                "تكتب Objects منظمة على عدة سطور.",
+                "تفهم أساسيات nested objects.",
+                "تستعد لدرس Dot vs Bracket Notation."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Arrays ممتازة لتخزين قيم مرتبة، لكنها لا تعطي أسماء واضحة للقيم. Object يحل هذه المشكلة بتخزين البيانات كأسماء وقيم، مثل firstName و age و job."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Object من أهم مفاهيم JavaScript لأنه الشكل الطبيعي لتمثيل الكيانات: شخص، منتج، إعدادات تطبيق، مطعم، طلب، مستخدم، وغير ذلك."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "المشكلة: لماذا نحتاج شيئًا غير Arrays؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Array مثل ورقة مكتوب فيها القيم بالترتيب فقط. Object مثل بطاقة هوية، كل معلومة لها اسم واضح."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonasArray = [\n  'Jonas',\n  'Schmedtmann',\n  2037 - 1991,\n  'teacher',\n  ['Michael', 'Peter', 'Steven']\n];\n\nconsole.log(jonasArray[0]);\nconsole.log(jonasArray[3]);"
+        },
+        {
+          "type": "output",
+          "text": "Jonas\nteacher"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "jonasArray[0] غير واضح المعنى بدون معرفة ترتيب البيانات.",
+                "لو تغير ترتيب array، كل أرقام indexes قد تفقد معناها.",
+                "الكود أقل قراءة من استخدام أسماء properties واضحة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه هو Object؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Object هو Data Structure يخزن بيانات على شكل Key-Value Pairs. كل key-value pair يسمى Property."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "المعنى",
+              "مثال"
+            ],
+            [
+              "Object",
+              "الحاوية الكبيرة",
+              "jonas"
+            ],
+            [
+              "Key",
+              "اسم البيان",
+              "firstName"
+            ],
+            [
+              "Value",
+              "محتوى البيان",
+              "Jonas"
+            ],
+            [
+              "Property",
+              "Key + Value",
+              "firstName: \"Jonas\""
+            ],
+            [
+              "Key-Value Pair",
+              "زوج مفتاح وقيمة",
+              "age: 46"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تشبيه: Object مثل ملف شخصي على LinkedIn: الاسم، العمر، الوظيفة، المهارات، كل معلومة لها label وقيمة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إنشاء Object بالـ Object Literal Syntax",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "الصيغة العامة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Object Literal Syntax هي إنشاء object مباشرة باستخدام الأقواس المعقوفة {} وكتابة properties داخلها."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const objectName = {\n  key1: value1,\n  key2: value2,\n  key3: value3,\n};"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "داخل object نستخدم : بين key و value، ونستخدم , بين properties."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المثال الأساسي",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  lastName: 'Schmedtmann',\n  age: 2037 - 1991,\n  job: 'teacher',\n  friends: ['Michael', 'Peter', 'Steven'],\n};\n\nconsole.log(jonas);"
+        },
+        {
+          "type": "output",
+          "text": "{firstName: \"Jonas\", lastName: \"Schmedtmann\", age: 46, job: \"teacher\", friends: Array(3)}"
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "Key",
+              "Value",
+              "النوع"
+            ],
+            [
+              "firstName",
+              "Jonas",
+              "String"
+            ],
+            [
+              "lastName",
+              "Schmedtmann",
+              "String"
+            ],
+            [
+              "age",
+              "2037 - 1991 = 46",
+              "Number من Expression"
+            ],
+            [
+              "job",
+              "teacher",
+              "String"
+            ],
+            [
+              "friends",
+              "Array فيها أسماء",
+              "Array"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قيمة property يمكن أن تكون أي expression ينتج قيمة، وليس فقط literal ثابت."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "قواعد كتابة Object",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "قواعد Keys",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "استخدم camelCase مثل firstName و lastName.",
+                "لو الاسم فيه مسافة أو رمز خاص، اكتبه بين quotes مثل \"first-name\".",
+                "كل key داخل object literal يُعامل غالبًا كسلسلة نصية string key، حتى لو كتبته بدون quotes.",
+                "يمكن استخدام symbols كـ property keys، لكن هذا موضوع متقدم."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const person = {\n  firstName: 'Ahmed',\n  'home-city': 'Cairo',\n  2025: 'year key becomes string-like property key',\n};"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "الفواصل والتنسيق",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const person = {\n  name: 'Ahmed',\n  age: 25,\n  city: 'Cairo',\n};"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "نسيان comma بين properties من أشهر أسباب SyntaxError. trailing comma بعد آخر property اختيارية ومفيدة في التعديلات."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Duplicate Keys",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const user = {\n  name: 'Ali',\n  name: 'Ahmed',\n};\n\nconsole.log(user);"
+        },
+        {
+          "type": "output",
+          "text": "{name: \"Ahmed\"}"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو كررت نفس key في object literal، آخر قيمة هي التي تظهر عادةً. الأفضل تجنب التكرار لأنه يسبب لبس وأخطاء."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الأقواس المعقوفة: Object Literal أم Code Block؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الأقواس المعقوفة {} تستخدم في JavaScript لأكثر من معنى. السياق هو الذي يحدد: object literal أم code block."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الاستخدام",
+              "السياق",
+              "مثال"
+            ],
+            [
+              "Object Literal",
+              "في مكان قيمة أو بعد =",
+              "const obj = { name: \"Jonas\" }"
+            ],
+            [
+              "Code Block",
+              "بعد if/for/function",
+              "if (x) { ... }"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "if (true) {\n  console.log('This is a code block');\n}\n\nconst obj = {\n  name: 'Jonas',\n};\n\nfunction greet() {\n  console.log('Hello');\n}"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفرق بين Objects و Arrays",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "النقطة",
+              "Array",
+              "Object"
+            ],
+            [
+              "الرمز",
+              "[]",
+              "{}"
+            ],
+            [
+              "الوصول",
+              "بالرقم index",
+              "بالاسم key/property"
+            ],
+            [
+              "الترتيب",
+              "مهم جدًا",
+              "ليس طريقة الاعتماد الأساسية"
+            ],
+            [
+              "العناصر تسمى",
+              "Elements",
+              "Properties"
+            ],
+            [
+              "أفضل استخدام",
+              "قوائم مرتبة",
+              "بيانات مسمّاة"
+            ],
+            [
+              "مثال",
+              "weekdays",
+              "person"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "compare",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Array: بيانات مرتبة"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const weekdays = ['Mon', 'Tue', 'Wed'];\nconsole.log(weekdays[0]);"
+            },
+            {
+              "type": "output",
+              "text": "Mon"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "compare",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Object: بيانات مسمّاة"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const person = {\n  firstName: 'Jonas',\n  age: 46,\n  job: 'teacher',\n};"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "استخدم Arrays عندما يكون الترتيب مهمًا أو عند التعامل مع قائمة عناصر متشابهة.",
+                "استخدم Objects عندما تريد وصف كيان بخصائص مسمّاة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أنواع القيم في Properties",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Value في property يمكن أن تكون أي قيمة JavaScript: string, number, boolean, null, undefined, array, object, function لاحقًا، أو expression."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const everything = {\n  myString: 'Hello',\n  myNumber: 42,\n  myBoolean: true,\n  myUndefined: undefined,\n  myNull: null,\n  myArray: [1, 2, 3],\n  myObject: { nested: 'yes' },\n  myExpression: 2037 - 1991,\n};\n\nconsole.log(everything);"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Object داخل Object يسمى Nested Object، وهو شائع جدًا في التطبيقات الحقيقية."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تتبع تنفيذ Object Literal خطوة بخطوة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  lastName: 'Schmedtmann',\n  age: 2037 - 1991,\n  job: 'teacher',\n  friends: ['Michael', 'Peter', 'Steven'],\n};\n\nconsole.log(jonas);"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "JavaScript ترى const jonas = { ... } وتتعامل معها كـ object literal.",
+                "تقرأ properties واحدة واحدة.",
+                "القيم المباشرة مثل \"Jonas\" تُخزن كما هي.",
+                "expression مثل 2037 - 1991 تُحسب أولًا وتصبح 46.",
+                "array في friends تُنشأ كقيمة داخل property.",
+                "المتغير jonas يصبح reference لهذا object في الذاكرة.",
+                "console.log يعرض object في console."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "{firstName: \"Jonas\", lastName: \"Schmedtmann\", age: 46, job: \"teacher\", friends: Array(3)}"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مثال الفيديو الكامل",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonasArray = [\n  'Jonas',\n  'Schmedtmann',\n  2037 - 1991,\n  'teacher',\n  ['Michael', 'Peter', 'Steven']\n];\n\nconst jonas = {\n  firstName: 'Jonas',\n  lastName: 'Schmedtmann',\n  age: 2037 - 1991,\n  job: 'teacher',\n  friends: ['Michael', 'Peter', 'Steven'],\n};\n\nconsole.log(jonas);"
+        },
+        {
+          "type": "output",
+          "text": "{firstName: \"Jonas\", lastName: \"Schmedtmann\", age: 46, job: \"teacher\", friends: Array(3)}"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية متنوعة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "بيانات طالب",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const student = {\n  name: 'Ahmed',\n  university: 'Cairo University',\n  gpa: 3.5,\n  isGraduated: false,\n  courses: ['Math', 'Physics', 'CS101'],\n};\n\nconsole.log(student);"
+        },
+        {
+          "type": "output",
+          "text": "{name: \"Ahmed\", university: \"Cairo University\", gpa: 3.5, isGraduated: false, courses: Array(3)}"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "بيانات منتج",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const product = {\n  name: 'Laptop',\n  brand: 'Dell',\n  price: 15000,\n  inStock: true,\n  colors: ['Silver', 'Black', 'White'],\n  specs: {\n    ram: 16,\n    storage: 512,\n    screen: 15.6,\n  },\n};\n\nconsole.log(product);"
+        },
+        {
+          "type": "output",
+          "text": "{name: \"Laptop\", brand: \"Dell\", price: 15000, inStock: true, colors: Array(3), specs: {...}}"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "إعدادات تطبيق",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const appSettings = {\n  theme: 'dark',\n  language: 'ar',\n  fontSize: 16,\n  notificationsEnabled: true,\n  maxItems: 50,\n};\n\nconsole.log(appSettings);"
+        },
+        {
+          "type": "output",
+          "text": "{theme: \"dark\", language: \"ar\", fontSize: 16, notificationsEnabled: true, maxItems: 50}"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Object فاضي",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const emptyObj = {};\nconsole.log(emptyObj);\nconsole.log(typeof emptyObj);"
+        },
+        {
+          "type": "output",
+          "text": "{}\nobject"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "بيانات مطعم",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const restaurant = {\n  name: 'Classico Italiano',\n  location: 'Via Angelo Tavanti 23, Firenze, Italy',\n  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],\n  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread'],\n  mainMenu: ['Pizza', 'Pasta', 'Risotto'],\n  openingHours: {\n    thu: { open: 12, close: 22 },\n    fri: { open: 11, close: 23 },\n    sat: { open: 0, close: 24 },\n  },\n};\n\nconsole.log(restaurant);"
+        },
+        {
+          "type": "output",
+          "text": "{name: \"Classico Italiano\", location: \"...\", categories: Array(4), starterMenu: Array(3), mainMenu: Array(3), openingHours: {...}}"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمهيد: الوصول للـ Properties",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس القادم سيتوسع في Dot Notation و Bracket Notation. هنا فقط تلميح سريع حتى تفهم أمثلة مثل school.foundedYear."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const person = {\n  firstName: 'Jonas',\n  age: 46,\n};\n\nconsole.log(person.firstName);\nconsole.log(person['age']);"
+        },
+        {
+          "type": "output",
+          "text": "Jonas\n46"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Dot notation أسهل عندما تعرف اسم property مباشرة. Bracket notation مفيدة عندما يكون اسم property في متغير أو يحتوي رموزًا خاصة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "const و Objects و Reference",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const person = {\n  name: 'Ali',\n  age: 25,\n};\n\nperson.age = 26;       // يعمل: تعديل محتوى object\n// person = {};        // خطأ: إعادة تعيين const\n\nconsole.log(person);"
+        },
+        {
+          "type": "output",
+          "text": "{name: \"Ali\", age: 26}"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مثل arrays، const يمنع إعادة تعيين المتغير نفسه، لكنه لا يمنع تعديل محتوى object. السبب أن المتغير يحتفظ بمرجع reference للـ object."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ الشائع",
+              "الحل الصح"
+            ],
+            [
+              "نسيان الفاصلة بين properties",
+              "ضع comma بين كل property والثانية"
+            ],
+            [
+              "استخدام = بدل : داخل object",
+              "استخدم colon : بين key و value"
+            ],
+            [
+              "استخدام [] بدل {}",
+              "[] للـ arrays و{} للـ objects"
+            ],
+            [
+              "تكرار نفس key",
+              "استخدم keys فريدة؛ آخر قيمة ستغلب غالبًا"
+            ],
+            [
+              "استخدام ; بين properties",
+              "استخدم comma ,"
+            ],
+            [
+              "الاعتماد على ترتيب object مثل array",
+              "استخدم keys للوصول للبيانات"
+            ],
+            [
+              "الخلط بين object literal و code block",
+              "افهم السياق: بعد = غالبًا object، بعد if/function block"
+            ],
+            [
+              "اسم key غير صالح بدون quotes",
+              "استخدم quotes للأسماء التي تحتوي مسافات أو رموز"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح"
+            ],
+            [
+              "Object",
+              "Data Structure تخزن key-value pairs"
+            ],
+            [
+              "Key",
+              "اسم البيان"
+            ],
+            [
+              "Value",
+              "محتوى البيان"
+            ],
+            [
+              "Property",
+              "Key + Value"
+            ],
+            [
+              "Object Literal Syntax",
+              "إنشاء object باستخدام {}"
+            ],
+            [
+              "الترتيب",
+              "ليس طريقة الاعتماد الأساسية في objects"
+            ],
+            [
+              "الفاصل بين properties",
+              "comma ,"
+            ],
+            [
+              "الفاصل بين key و value",
+              "colon :"
+            ],
+            [
+              "Nested Object",
+              "object داخل object"
+            ],
+            [
+              "Array vs Object",
+              "Array للترتيب، Object للتسمية"
+            ],
+            [
+              "typeof",
+              "يرجع \"object\" للـ objects"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الشكل العام:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const obj = {\n  key1: value1,\n  key2: value2,\n};"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مثال كامل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const person = {\n  firstName: 'Jonas',\n  age: 46,\n  isTeacher: true,\n  friends: ['A', 'B'],\n  address: {\n    city: 'Lisbon',\n    country: 'Portugal',\n  },\n};"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "استخدم Array عندما",
+              "استخدم Object عندما"
+            ],
+            [
+              "قائمة مرتبة",
+              "بيانات مسمّاة"
+            ],
+            [
+              "الترتيب مهم",
+              "الأسماء مهمة"
+            ],
+            [
+              "تصل بالرقم",
+              "تصل بالاسم"
+            ],
+            [
+              "[\"a\", \"b\"]",
+              "{ name: \"a\" }"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق بالعربي",
+              "المعنى"
+            ],
+            [
+              "Object",
+              "أوبجكت",
+              "كائن؛ هيكل بيانات بـ key-value pairs"
+            ],
+            [
+              "Property",
+              "بروبرتي",
+              "خاصية = key + value"
+            ],
+            [
+              "Key",
+              "كي",
+              "اسم property"
+            ],
+            [
+              "Value",
+              "فاليو",
+              "قيمة property"
+            ],
+            [
+              "Key-Value Pair",
+              "كي فاليو بير",
+              "زوج مفتاح وقيمة"
+            ],
+            [
+              "Object Literal",
+              "أوبجكت ليترال",
+              "إنشاء object بكتابته مباشرة"
+            ],
+            [
+              "Curly Braces",
+              "كيرلي بريسز",
+              "الأقواس المعقوفة {}"
+            ],
+            [
+              "Data Structure",
+              "داتا ستراكتشر",
+              "طريقة لتنظيم البيانات"
+            ],
+            [
+              "Nested Object",
+              "نيستد أوبجكت",
+              "object داخل object"
+            ],
+            [
+              "Trailing Comma",
+              "تريلنج كوما",
+              "فاصلة اختيارية بعد آخر property"
+            ],
+            [
+              "Expression",
+              "إكسبريشن",
+              "تعبير ينتج قيمة"
+            ],
+            [
+              "Code Block",
+              "كود بلوك",
+              "مجموعة أوامر داخل {}"
+            ],
+            [
+              "Syntax",
+              "سينتاكس",
+              "قواعد كتابة الكود"
+            ],
+            [
+              "Reference",
+              "ريفيرنس",
+              "إشارة لكائن في الذاكرة"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "SyntaxError: Unexpected token",
+              "غالبًا فاصلة ناقصة بين properties",
+              "أضف comma بين properties"
+            ],
+            [
+              "SyntaxError: Unexpected identifier",
+              "استخدمت = بدل : داخل object",
+              "استخدم :"
+            ],
+            [
+              "Property الثانية غلبت الأولى",
+              "كررت نفس key",
+              "اجعل keys فريدة"
+            ],
+            [
+              "undefined عند قراءة property",
+              "اسم property خطأ أو غير موجود",
+              "راجع spelling وحالة الحروف"
+            ],
+            [
+              "typeof array يرجع object",
+              "arrays objects خاصة",
+              "استخدم Array.isArray للتفريق"
+            ],
+            [
+              "object لا يظهر كاملًا في console",
+              "المتصفح يطويه",
+              "افتح السهم في console"
+            ],
+            [
+              "SyntaxError بسبب ; بين properties",
+              "استخدمت semicolon داخل object",
+              "استخدم comma"
+            ],
+            [
+              "ReferenceError عند استخدام object",
+              "استخدمته قبل تعريفه",
+              "عرّفه قبل الاستخدام"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين عملية متدرجة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تمرين 1: بيانات شخصية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المطلوب: أنشئ object مناسب حسب وصف التمرين."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const myProfile = {\n  name: 'Ahmed',\n  age: 2025 - 1999,\n  city: 'Cairo',\n  isStudent: true,\n  hobbies: ['Reading', 'Gaming', 'Coding'],\n};\n\nconsole.log(myProfile);"
+            },
+            {
+              "type": "output",
+              "text": "{name: \"Ahmed\", age: 26, city: \"Cairo\", isStudent: true, hobbies: Array(3)}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 2: بيانات كتاب",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المطلوب: أنشئ object مناسب حسب وصف التمرين."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const book = {\n  title: 'Atomic Habits',\n  author: 'James Clear',\n  pages: 320,\n  isRead: true,\n  rating: 4.5,\n};\n\nconsole.log(book);"
+            },
+            {
+              "type": "output",
+              "text": "{title: \"Atomic Habits\", author: \"James Clear\", pages: 320, isRead: true, rating: 4.5}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 3: تحويل Array إلى Object",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المطلوب: أنشئ object مناسب حسب وصف التمرين."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const car = {\n  brand: 'Toyota',\n  model: 'Corolla',\n  year: 2022,\n  color: 'White',\n  isAvailable: true,\n};\n\nconsole.log(car);"
+            },
+            {
+              "type": "output",
+              "text": "{brand: \"Toyota\", model: \"Corolla\", year: 2022, color: \"White\", isAvailable: true}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 4: Nested Object",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المطلوب: أنشئ object مناسب حسب وصف التمرين."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const employee = {\n  name: 'Sara Mohamed',\n  department: 'Engineering',\n  salary: 15000,\n  skills: ['JavaScript', 'React', 'Node.js'],\n  contact: {\n    email: 'sara@company.com',\n    phone: '01012345678',\n  },\n  address: {\n    city: 'Cairo',\n    street: 'Tahrir St.',\n    building: 42,\n  },\n};\n\nconsole.log(employee);"
+            },
+            {
+              "type": "output",
+              "text": "{name: \"Sara Mohamed\", department: \"Engineering\", salary: 15000, skills: Array(3), contact: {...}, address: {...}}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 5: نظام بيانات مدرسة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المطلوب: أنشئ object مناسب حسب وصف التمرين."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const school = {\n  name: 'Future Academy',\n  location: {\n    city: 'Alexandria',\n    country: 'Egypt',\n  },\n  foundedYear: 1995,\n  totalStudents: 1200,\n  isPrivate: true,\n  departments: ['Science', 'Arts', 'Technology'],\n  principal: {\n    name: 'Dr. Hassan',\n    age: 55,\n    yearsOfExperience: 30,\n  },\n  ratings: {\n    academic: 8.5,\n    facilities: 7.0,\n    overall: 8.0,\n  },\n};\n\nconsole.log(school);\nconsole.log(typeof school);\nconst schoolAge = 2025 - school.foundedYear;\nconsole.log('School age:', schoolAge);"
+            },
+            {
+              "type": "output",
+              "text": "{name: \"Future Academy\", location: {...}, foundedYear: 1995, ...}\nobject\nSchool age: 30"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة نظرية",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "ما الفرق الأساسي بين Array و Object؟",
+              "answer": "Array للبيانات المرتبة والوصول بالـ index، أما Object للبيانات المسمّاة والوصول بالـ key/property."
+            },
+            {
+              "question": "ما معنى Object Literal Syntax؟",
+              "answer": "إنشاء object مباشرة في الكود باستخدام {} وكتابة properties داخله."
+            },
+            {
+              "question": "ما الفرق بين Key و Property؟",
+              "answer": "Key هو الاسم فقط، أما property فهي key مع value."
+            },
+            {
+              "question": "هل ممكن Object داخل Object؟",
+              "answer": "نعم، اسمه Nested Object."
+            },
+            {
+              "question": "كيف تفرق JavaScript بين {} كـ object و{} كـ code block؟",
+              "answer": "من السياق: بعد = أو في مكان value تكون object literal، وبعد if/function تكون block."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الدرس الجاي",
+              "هتتعلم فيه إيه",
+              "العلاقة"
+            ],
+            [
+              "Dot vs Bracket Notation",
+              "الوصول للproperties",
+              "قراءة وتعديل بيانات object"
+            ],
+            [
+              "Object Methods",
+              "دوال داخل objects",
+              "إضافة سلوك للobject"
+            ],
+            [
+              "for loop / iteration",
+              "تكرار كود",
+              "لفّ على properties لاحقًا"
+            ],
+            [
+              "Destructuring Objects",
+              "استخراج قيم بسهولة",
+              "طريقة حديثة للوصول"
+            ],
+            [
+              "Enhanced Object Literals",
+              "اختصارات ES6",
+              "كتابة objects بطريقة أسهل"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Object يخزن بيانات كـ key-value pairs.",
+                "كل key-value pair يسمى property.",
+                "Object Literal Syntax تستخدم {}.",
+                "استخدم object للبيانات المسمّاة، وarray للبيانات المرتبة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Objects تجعل البيانات مفهومة ومسمّاة. بدل jonasArray[3] تكتب jonas.job، وهذا يجعل الكود أقرب للغة الإنسان وأسهل في الصيانة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Object مثل بطاقة بيانات: كل خانة لها اسم وقيمة. لا تعتمد على العدّ مثل arrays، بل على اسم المعلومة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: استخدام = بدل : داخل object."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "// غلط\n// const obj = { name = 'Ali' };\n\n// صح\nconst obj = { name: 'Ali' };"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: تكرار نفس key."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const obj = { a: 1, a: 2 };\nconsole.log(obj); // { a: 2 }"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: الخلط بين {} كـ block و{} كـ object."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const obj = { name: 'Ali' };\nif (true) { console.log('block'); }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "متى تختار Object بدل Array؟",
+                "ما الفرق بين property و key؟",
+                "ماذا يحدث عند duplicate keys؟",
+                "هل object يحافظ على ترتيب properties؟ وهل يجب الاعتماد على ذلك؟",
+                "لماذا const object يمكن تعديل properties داخله؟",
+                "ما الفرق بين object literal و JSON؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: بيانات مستخدم مخزنة في array والكود غير مفهوم."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "حوّل البيانات إلى object بأسماء واضحة.",
+                "استخدم firstName, age, role بدل indexes."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const user = {\n  firstName: 'Ali',\n  age: 25,\n  role: 'admin',\n};"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: property ترجع undefined."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "راجع spelling.",
+                "تذكر أن أسماء properties حساسة لحالة الحروف.",
+                "الدرس القادم يشرح dot/bracket notation."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: Object فيه nested data كثيرة وصعب القراءة."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "اكتب object على عدة سطور.",
+                "استخدم indentation واضح.",
+                "افصل البيانات الكبيرة لاحقًا لو احتجت."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: Object بسيط",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب object اسمه movie فيه title و year و rating."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const movie = {\n  title: 'Inception',\n  year: 2010,\n  rating: 8.8,\n};"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: Nested Object",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب object اسمه order فيه id و customer object و items array."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const order = {\n  id: 101,\n  customer: {\n    name: 'Sara',\n    city: 'Cairo',\n  },\n  items: ['Book', 'Pen'],\n};"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: Array أم Object؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أيام الأسبوع: Array أم Object؟ بيانات شخص: Array أم Object؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أيام الأسبوع Array لأن الترتيب مهم. بيانات شخص Object لأن البيانات مسمّاة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تعرف تكتب object literal صحيح.",
+                "تفرق بين key و value و property.",
+                "تعرف تستخدم comma و colon في مكانهم.",
+                "تفرق بين array و object.",
+                "تعرف أن value يمكن أن تكون array أو object.",
+                "تفهم أن الدرس القادم سيشرح الوصول للproperties."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس القادم Dot vs Bracket Notation سيشرح كيف نقرأ ونعدل properties داخل object، وهذا هو الجزء العملي المكمل لهذا الدرس."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Objects هي أساس تمثيل البيانات المسمّاة في JavaScript. إذا فهمت key-value pairs و object literal syntax، فأنت جاهز للخطوة التالية: قراءة وتعديل الخصائص باستخدام dot و bracket notation."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 31,
+    "subsections": 18,
+    "subsubsections": 0,
+    "blocks": 178,
+    "codeBlocks": 32,
+    "outputs": 18,
+    "boxes": 54,
+    "tables": 10,
+    "lists": 13
+  }
+}

@@ -1,5 +1,21 @@
 import LearningPath from './LearningPath';
 
+function buildLearningSteps(lesson) {
+  return (lesson.learningPath ?? []).map((entry, index) => {
+    if (typeof entry === 'object' && entry !== null) {
+      return entry;
+    }
+
+    const mod = lesson.modules.find((m) => m.id === entry);
+    return {
+      id: entry,
+      num: index + 1,
+      title: mod?.label ?? entry,
+      desc: mod?.data?.goal ?? mod?.data?.purpose ?? '',
+    };
+  });
+}
+
 function moduleBadge(mod) {
   if (mod.isExam) return 'اختبار نهائي';
   if (mod.type === 'projects-workshop') return 'ورشة مشاريع';
@@ -17,7 +33,7 @@ export default function ModulePicker({ lesson, onSelect, onBack }) {
         <h1>{lesson.title}</h1>
         <p>{lesson.description}</p>
       </div>
-      <LearningPath steps={lesson.learningPath} />
+      <LearningPath steps={buildLearningSteps(lesson)} />
       <div className="day-picker__grid">
         {lesson.modules.map((mod) => (
           <button

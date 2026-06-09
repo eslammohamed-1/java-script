@@ -1,0 +1,1655 @@
+{
+  "metadata": {
+    "sourceFile": "Function Declarations vs Expressions.tex",
+    "convertedAt": "2026-06-07T06:44:48.766228+00:00",
+    "title": "Function Declarations vs Function Expressions في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "توضيح الفرق بين Function Declaration و Function Expression بشكل أدق",
+        "تصحيح شرح hoisting: Function Declarations تُهيّأ قبل التنفيذ، أما const/let Function Expressions تكون داخل Temporal Dead Zone قبل التهيئة",
+        "توضيح أن Function Expressions قد تكون Anonymous أو Named Function Expressions",
+        "إضافة شرح أن functions في JavaScript قيم من الدرجة الأولى First-Class Values",
+        "توضيح الفرق بين function reference و function call خصوصًا في callbacks مثل setTimeout",
+        "إضافة أمثلة على scope عند تعريف Function Expression داخل block",
+        "إضافة named function expression وفائدتها في recursion و stack traces",
+        "إضافة مقارنة مع var function expressions كتحذير متقدم",
+        "تحسين Troubleshooting و Cheat Sheet و Senior Questions والتمارين"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox",
+      "comparebox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "Function Declarations vs Function Expressions",
+    "الطرق المختلفة لكتابة الدوال في JavaScript",
+    "من كورس The Complete JavaScript Course",
+    "القسم التاني: JavaScript Fundamentals -- Part 2"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "الربط بالمفاهيم السابقة وأهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس ده بيبني مباشرة على درس Functions. قبل ما تبدأ، تأكد إنك فاهم:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "تعريف function واستدعاؤها.",
+                "parameters و arguments.",
+                "return والقيمة الراجعة.",
+                "console.log مقابل return.",
+                "functions ككود قابل لإعادة الاستخدام."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد الدرس هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تكتب Function Declaration وتفهم شكلها.",
+                "تكتب Function Expression وتفهم شكلها.",
+                "تفهم Anonymous Function و Named Function Expression.",
+                "تعرف أن functions في JavaScript قيم يمكن تخزينها وتمريرها.",
+                "تفهم الفرق العملي الأهم: hoisting.",
+                "تستدعي Function Declaration قبل تعريفها وتفهم السبب.",
+                "تعرف لماذا Function Expression بـ const/let لا تُستدعى قبل تعريفها.",
+                "تختار النوع المناسب حسب السياق.",
+                "تفهم function reference مقابل function call."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "في JavaScript توجد أكثر من طريقة لكتابة الدوال. الطريقتان الأساسيتان هنا هما Function Declaration و Function Expression. كلاهما ينتج دالة قابلة للاستدعاء، لكن الفرق في طريقة التعريف والـ hoisting وطريقة التعامل معها كقيمة."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "حتى لو فضّلت أسلوبًا معينًا، لازم تعرف الاثنين لأنهما يظهران بكثرة في الكود الحقيقي."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Function Declaration",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "التعريف والشكل العام",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Function Declaration هي إعلان دالة باستخدام keyword function متبوعًا باسم الدالة مباشرة."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function functionName(param1, param2) {\n  return result;\n}"
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function calcAge1(birthYear) {\n  return 2037 - birthYear;\n}\n\nconst age1 = calcAge1(1991);\nconsole.log(age1);"
+        },
+        {
+          "type": "output",
+          "text": "46"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو كل ما تفعله هو حساب قيمة ثم إرجاعها، يمكنك إرجاع expression مباشرة بدون متغير وسيط."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "لماذا اسمها Declaration؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لأنك تعلن عن دالة باسم واضح في نطاق معين، مثلما تعلن عن متغير باستخدام let أو const، لكن بسلوك hoisting مختلف."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Function Expression",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "التعريف والشكل العام",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Function Expression هي دالة تُكتب كتعبير value ثم تُخزن غالبًا في متغير."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const functionName = function(param1, param2) {\n  return result;\n};"
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const calcAge2 = function(birthYear) {\n  return 2037 - birthYear;\n};\n\nconst age2 = calcAge2(1991);\nconsole.log(age2);"
+        },
+        {
+          "type": "output",
+          "text": "46"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Anonymous Function",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في المثال الشائع، الدالة بعد علامة = ليس لها اسم، لذلك تسمى Anonymous Function. الاسم المستخدم للاستدعاء هو اسم المتغير calcAge2."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const calcAge2 = function(birthYear) {\n  return 2037 - birthYear;\n};"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Named Function Expression كمعلومة مهمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Function Expression يمكن أن تكون anonymous أو named. الاسم الداخلي مفيد أحيانًا في recursion أو stack traces."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const factorial = function fact(n) {\n  if (n <= 1) return 1;\n  return n * fact(n - 1);\n};\n\nconsole.log(factorial(5));"
+        },
+        {
+          "type": "output",
+          "text": "120"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الاسم fact متاح داخل الدالة نفسها، وليس كمتغير عادي خارجها في أغلب الحالات. الاستدعاء الخارجي يكون عبر factorial."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقارنة جنب بعض",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "compare",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Function Declaration"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function calcAge1(birthYear) {\n  return 2037 - birthYear;\n}\n\nconst age1 = calcAge1(1991);\nconsole.log(age1);"
+            },
+            {
+              "type": "output",
+              "text": "46"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "compare",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Function Expression"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const calcAge2 = function(birthYear) {\n  return 2037 - birthYear;\n};\n\nconst age2 = calcAge2(1991);\nconsole.log(age2);"
+            },
+            {
+              "type": "output",
+              "text": "46"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المقارنة",
+              "Function Declaration",
+              "Function Expression"
+            ],
+            [
+              "الشكل",
+              "function name() { }",
+              "const name = function() { }"
+            ],
+            [
+              "الدالة لها اسم؟",
+              "نعم",
+              "غالبًا لا، إلا لو Named Function Expression"
+            ],
+            [
+              "محفوظة في متغير؟",
+              "لا بنفس الشكل",
+              "نعم غالبًا"
+            ],
+            [
+              "الاستدعاء",
+              "name(args)",
+              "name(args)"
+            ],
+            [
+              "hoisting",
+              "نعم يمكن استدعاؤها قبل التعريف",
+              "لا مع const/let قبل التهيئة"
+            ],
+            [
+              "; في الآخر",
+              "لا عادة",
+              "نعم لأنها assignment statement"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Functions كقيم First-Class Values",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في JavaScript، functions قيم. يمكن تخزينها في متغيرات، وتمريرها كـ arguments، وإرجاعها من functions أخرى. هذا أساس callbacks و higher-order functions."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const x = 10;\nconst name = 'Jonas';\n\nconst calcAge = function(birthYear) {\n  return 2037 - birthYear;\n};\n\nconsole.log(typeof calcAge);"
+        },
+        {
+          "type": "output",
+          "text": "function"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Function Expression توضح هذه الفكرة بقوة: الدالة value محفوظة داخل variable."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Hoisting: الفرق العملي الأهم",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "ما هو Hoisting؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Hoisting يعني أن بعض التعريفات تكون متاحة قبل وصول التنفيذ إلى سطرها. Function Declarations يتم تهيئتها قبل التنفيذ داخل scope، لذلك يمكن استدعاؤها قبل مكان كتابتها."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تصحيح مهم: let و const أيضًا يمران بمرحلة hoisting بمعنى تقني، لكنهما يكونان في Temporal Dead Zone قبل التهيئة، لذلك لا يمكنك استخدامهما قبل السطر. للمبتدئ: اعتبر const/let expressions غير متاحة قبل التعريف."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Declaration قبل التعريف",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const age1 = calcAge1(1991);\nconsole.log(age1);\n\nfunction calcAge1(birthYear) {\n  return 2037 - birthYear;\n}"
+        },
+        {
+          "type": "output",
+          "text": "46"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "هذا يعمل لأن Function Declaration متاحة قبل التنفيذ بفضل hoisting."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Expression قبل التعريف",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const age2 = calcAge2(1991); // ReferenceError\nconsole.log(age2);\n\nconst calcAge2 = function(birthYear) {\n  return 2037 - birthYear;\n};"
+        },
+        {
+          "type": "output",
+          "text": "ReferenceError: Cannot access 'calcAge2' before initialization"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "calcAge2 متغير const. قبل سطر التهيئة هو داخل Temporal Dead Zone، لذلك الاستدعاء قبل التعريف يعطي ReferenceError."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تحذير متقدم: Function Expression مع var",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(calcAge); // undefined\n// calcAge(1991); // TypeError: calcAge is not a function\n\nvar calcAge = function(birthYear) {\n  return 2037 - birthYear;\n};"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مع var يتم hoisting للمتغير كـ undefined، وليس للدالة كقيمة. لذلك الاستدعاء قبل assignment يعطي TypeError. الأفضل استخدام const/let."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تتبع الكود خطوة بخطوة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function calcAge1(birthYear) {\n  return 2037 - birthYear;\n}\nconst age1 = calcAge1(1991);\n\nconst calcAge2 = function(birthYear) {\n  return 2037 - birthYear;\n};\nconst age2 = calcAge2(1991);\n\nconsole.log(age1, age2);"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "JavaScript تهيئ Function Declaration باسم calcAge1.",
+                "تنفذ calcAge1(1991): ترجع 46 وتحفظها في age1.",
+                "تصل إلى const calcAge2 وتحفظ function value في المتغير.",
+                "تنفذ calcAge2(1991): ترجع 46 وتحفظها في age2.",
+                "console.log تطبع 46 46."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "46 46"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Function Reference vs Function Call",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اسم الدالة بدون أقواس يعني reference للدالة. الاسم مع الأقواس يعني call أو invoke وتنفيذ الدالة فورًا."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function sayHi() {\n  console.log('Hi');\n}\n\nconsole.log(sayHi); // function reference\nsayHi();            // function call"
+        },
+        {
+          "type": "output",
+          "text": "function sayHi() { ... }\nHi"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في callbacks مثل setTimeout، غالبًا تريد تمرير reference لا call."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function sayHi() {\n  console.log('Hi');\n}\n\nsetTimeout(sayHi, 1000);   // صحيح: ينفذ بعد ثانية\n// setTimeout(sayHi(), 1000); // غلط غالبًا: ينفذ فورًا ويمرر return value"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Scope مع Function Expressions داخل Blocks",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let f;\n\nif (true) {\n  f = function() {\n    return 'Hello';\n  };\n}\n\nconsole.log(f());"
+        },
+        {
+          "type": "output",
+          "text": "Hello"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو كتبت const f داخل if، سيكون f متاحًا فقط داخل block. لو تحتاج استخدامه خارج block، عرّف let f خارجًا ثم أسند الدالة داخله."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أنهي نوع أختار؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في أغلب الأحوال الاختيار تفضيل أو style guide. الأهم أن تكون متسقًا في المشروع وتفهم الفرق في hoisting وscope."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الموقف",
+              "Declaration",
+              "Expression"
+            ],
+            [
+              "كود عادي",
+              "ممكن",
+              "ممكن"
+            ],
+            [
+              "تحتاج استدعاء قبل التعريف",
+              "أفضل/يعمل",
+              "لا"
+            ],
+            [
+              "تريد تجنب الاعتماد على hoisting",
+              "عرّف قبل الاستدعاء",
+              "مناسب"
+            ],
+            [
+              "Callbacks",
+              "ممكن",
+              "شائع جدًا"
+            ],
+            [
+              "Named recursion داخل expression",
+              "أقل احتياجًا",
+              "Named Function Expression مفيدة"
+            ],
+            [
+              "Arrow functions",
+              "لا ينطبق",
+              "نوع مختصر من expressions"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "كثير من المطورين يفضلون تعريف الدوال قبل استخدامها مهما كان النوع؛ هذا يقلل الاعتماد على hoisting ويجعل القراءة أسهل."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "نفس الدالة بالطريقتين",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function greet1(name) {\n  return `Hello, ${name}!`;\n}\n\nconst greet2 = function(name) {\n  return `Hello, ${name}!`;\n};\n\nconsole.log(greet1('Ahmed'));\nconsole.log(greet2('Ahmed'));"
+        },
+        {
+          "type": "output",
+          "text": "Hello, Ahmed!\nHello, Ahmed!"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "دالة الضريبة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function calcTax1(income) {\n  if (income > 50000) return income * 0.25;\n  return income * 0.15;\n}\n\nconst calcTax2 = function(income) {\n  if (income > 50000) return income * 0.25;\n  return income * 0.15;\n};\n\nconsole.log(calcTax1(80000));\nconsole.log(calcTax2(30000));"
+        },
+        {
+          "type": "output",
+          "text": "20000\n4500"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Hoisting مع Declaration فقط",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(square(5));\n\nfunction square(n) {\n  return n * n;\n}\n\nconst cube = function(n) {\n  return n * n * n;\n};\n\nconsole.log(cube(3));"
+        },
+        {
+          "type": "output",
+          "text": "25\n27"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "قسم خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ",
+              "الصح"
+            ],
+            [
+              "استدعاء Expression قبل تعريفها",
+              "عرّفها أولًا أو استخدم Declaration"
+            ],
+            [
+              "نسيان ; بعد Function Expression",
+              "ضع ; لأنها assignment statement"
+            ],
+            [
+              "الخلط بين اسم المتغير واسم الدالة",
+              "في expression الاسم الخارجي غالبًا هو المتغير"
+            ],
+            [
+              "اعتقاد أن نوعًا أفضل دائمًا",
+              "كلاهما صحيح حسب السياق"
+            ],
+            [
+              "الاعتماد الزائد على hoisting",
+              "عرّف الدوال قبل استخدامها للوضوح"
+            ],
+            [
+              "نسيان return",
+              "بدونها ترجع undefined"
+            ],
+            [
+              "تمرير sayHi() بدل sayHi كـ callback",
+              "مرر reference إذا مطلوب التنفيذ لاحقًا"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح"
+            ],
+            [
+              "Function Declaration",
+              "function name() { } دالة باسم مباشر"
+            ],
+            [
+              "Function Expression",
+              "const name = function() { } دالة كقيمة في متغير"
+            ],
+            [
+              "Anonymous Function",
+              "دالة بدون اسم"
+            ],
+            [
+              "Named Function Expression",
+              "دالة بتعبير ولها اسم داخلي اختياري"
+            ],
+            [
+              "Functions كقيم",
+              "يمكن تخزينها وتمريرها وإرجاعها"
+            ],
+            [
+              "Hoisting",
+              "Declarations متاحة قبل التعريف؛ expressions بـ const/let لا"
+            ],
+            [
+              "الاستدعاء",
+              "نفس الطريقة name(args)"
+            ],
+            [
+              "الاختيار",
+              "تفضيل وسياق، المهم تعرف الاثنين"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Function Declaration"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function calcAge(birthYear) {\n  return 2037 - birthYear;\n}\nconst age = calcAge(1991);"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Function Expression"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const calcAge = function(birthYear) {\n  return 2037 - birthYear;\n};\nconst age = calcAge(1991);"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Named Function Expression"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const factorial = function fact(n) {\n  if (n <= 1) return 1;\n  return n * fact(n - 1);\n};"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "السؤال",
+              "Declaration",
+              "Expression"
+            ],
+            [
+              "استدعاء قبل التعريف؟",
+              "نعم",
+              "لا مع const/let"
+            ],
+            [
+              "الدالة كقيمة في متغير؟",
+              "لا بالشكل المباشر",
+              "نعم"
+            ],
+            [
+              "مناسبة للcallbacks؟",
+              "ممكن",
+              "شائعة"
+            ],
+            [
+              "; في النهاية؟",
+              "لا غالبًا",
+              "نعم"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات Glossary",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق",
+              "المعنى"
+            ],
+            [
+              "Function Declaration",
+              "فانكشن ديكلاريشن",
+              "تعريف دالة باسم باستخدام function"
+            ],
+            [
+              "Function Expression",
+              "فانكشن إكسبريشن",
+              "دالة مكتوبة كتعبير ومحفوظة غالبًا في متغير"
+            ],
+            [
+              "Anonymous Function",
+              "أنونيموس فانكشن",
+              "دالة بدون اسم"
+            ],
+            [
+              "Named Function Expression",
+              "نيمد فانكشن إكسبريشن",
+              "Function expression لها اسم داخلي"
+            ],
+            [
+              "Hoisting",
+              "هويستنج",
+              "إتاحة بعض التعريفات قبل التنفيذ"
+            ],
+            [
+              "Temporal Dead Zone",
+              "تمبورال ديد زون",
+              "منطقة قبل تهيئة let/const لا يمكن استخدامها"
+            ],
+            [
+              "Expression",
+              "إكسبريشن",
+              "كود ينتج قيمة"
+            ],
+            [
+              "ReferenceError",
+              "ريفيرنس إيرور",
+              "محاولة استخدام اسم غير متاح"
+            ],
+            [
+              "Callback",
+              "كولباك",
+              "دالة تُمرر لدالة أخرى لتُستدعى لاحقًا"
+            ],
+            [
+              "Function Reference",
+              "فانكشن رفرنس",
+              "الإشارة للدالة بدون تشغيلها"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "Cannot access before initialization",
+              "استدعاء expression قبل const/let initialization",
+              "انقل الاستدعاء بعد التعريف"
+            ],
+            [
+              "is not a function",
+              "المتغير ليس function وقت الاستدعاء",
+              "راجع الترتيب والقيمة"
+            ],
+            [
+              "undefined نتيجة الدالة",
+              "نسيان return",
+              "أضف return"
+            ],
+            [
+              "Declaration تعمل قبل التعريف",
+              "Hoisting طبيعي",
+              "مسموح لكن لا تعتمد عليه كثيرًا"
+            ],
+            [
+              "setTimeout ينفذ فورًا",
+              "كتبت fn() بدل fn",
+              "مرر reference بدون ()"
+            ],
+            [
+              "f غير معرّفة خارج if",
+              "f معرفة بـ const داخل block",
+              "عرّف let f خارج block ثم أسند داخله"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين عملية متدرجة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تمرين 1: حوّل Declaration إلى Expression",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "حوّل double إلى function expression."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const double = function(num) {\n  return num * 2;\n};\n\nconsole.log(double(5));"
+            },
+            {
+              "type": "output",
+              "text": "10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 2: اكتب isAdult بالطريقتين",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "دالة تأخذ birthYear وترجع true لو العمر 18 أو أكثر."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function isAdult1(birthYear) {\n  return (2024 - birthYear) >= 18;\n}\n\nconst isAdult2 = function(birthYear) {\n  return (2024 - birthYear) >= 18;\n};\n\nconsole.log(isAdult1(2000));\nconsole.log(isAdult2(2010));"
+            },
+            {
+              "type": "output",
+              "text": "true\nfalse"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 3: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Declaration قبل التعريف."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(add(3, 5));\n\nfunction add(a, b) {\n  return a + b;\n}"
+            },
+            {
+              "type": "output",
+              "text": "8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 4: توقع الخطأ",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Expression قبل التعريف."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "// console.log(multiply(3, 5));\n\nconst multiply = function(a, b) {\n  return a * b;\n};\n\nconsole.log(multiply(3, 5));"
+            },
+            {
+              "type": "output",
+              "text": "15"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 5: برنامج كامل",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "calcAge و isRetired كـ expressions."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const calcAge = function(birthYear) {\n  return 2024 - birthYear;\n};\n\nconst isRetired = function(age) {\n  return age >= 65;\n};\n\nconst myAge = calcAge(1955);\nconsole.log(myAge);\nconsole.log(isRetired(myAge));\n\nconst age2 = calcAge(1990);\nconsole.log(age2);\nconsole.log(isRetired(age2));"
+            },
+            {
+              "type": "output",
+              "text": "69\ntrue\n34\nfalse"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 6: callback reference",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب setTimeout بشكل صحيح."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function sayHi() {\n  console.log('Hi');\n}\n\n// setTimeout(sayHi, 1000); // correct in browser/runtime\nconsole.log('Pass function reference, not sayHi()');"
+            },
+            {
+              "type": "output",
+              "text": "Pass function reference, not sayHi()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة نظرية لاختبار فهمك",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "ما الفرق الأساسي في الشكل بين Declaration و Expression؟",
+              "answer": "Declaration: function name() {}. Expression: const name = function() {}."
+            },
+            {
+              "question": "ما هي Anonymous Function؟",
+              "answer": "دالة بدون اسم، شائعة في Function Expressions."
+            },
+            {
+              "question": "لماذا نقول إن functions قيم؟",
+              "answer": "لأنها يمكن تخزينها في متغيرات وتمريرها وإرجاعها."
+            },
+            {
+              "question": "ما علاقة hoisting بالموضوع؟",
+              "answer": "Function Declarations متاحة قبل السطر، أما Function Expressions بـ const/let ليست متاحة قبل التهيئة."
+            },
+            {
+              "question": "هل نوع أفضل من الآخر؟",
+              "answer": "لا دائمًا. الاختيار حسب السياق والتفضيل وstyle guide."
+            },
+            {
+              "question": "ما الفرق بين sayHi و sayHi()؟",
+              "answer": "sayHi reference للدالة، sayHi() استدعاء فوري لها."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس الجاي Arrow Functions: شكل مختصر من Function Expressions من ES6. وسيظهر كثيرًا في callbacks و array methods."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "النوع",
+              "الحالة"
+            ],
+            [
+              "Function Declaration",
+              "تم تعلمه"
+            ],
+            [
+              "Function Expression",
+              "تم تعلمه"
+            ],
+            [
+              "Arrow Function",
+              "الدرس القادم"
+            ]
+          ]
+        },
+        {
+          "type": "unordered_list",
+          "items": [
+            "Functions Calling Other Functions.",
+            "Default Parameters.",
+            "Closures.",
+            "Callback Functions.",
+            "Array Methods."
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Declaration: function name() {} وتعمل قبل مكان كتابتها بسبب hoisting.",
+                "Expression: const name = function() {} ولا تعمل قبل التهيئة.",
+                "functions قيم يمكن تخزينها وتمريرها.",
+                "الاستدعاء نفسه في الحالتين: name(args)."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Function Expressions تجعل الدوال قيمًا واضحة يمكن تمريرها كـ callbacks أو تخزينها في هياكل بيانات. Declarations مريحة ومقروءة للدوال الأساسية. الفرق في hoisting يؤثر على ترتيب الكود."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Declaration مثل إعلان رسمي متاح من بداية النطاق. Expression مثل وضع دالة داخل صندوق const: لا تقدر تستخدم الصندوق قبل أن تصل لسطر إنشائه."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: استدعاء Expression قبل تعريفها."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "// sayHi();\nconst sayHi = function() {};"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: تمرير call بدل reference."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "// setTimeout(sayHi(), 1000); // غالبًا خطأ\nsetTimeout(sayHi, 1000);     // صحيح"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: function expression داخل block ثم استخدامها خارجه."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let f;\nif (true) {\n  f = function() { return 'ok'; };\n}\nconsole.log(f());"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "لماذا Function Declaration تُستدعى قبل تعريفها؟",
+                "ما الفرق بين hoisting للـ declaration و const expression؟",
+                "متى تستخدم Named Function Expression؟",
+                "لماذا functions first-class values؟",
+                "لماذا setTimeout(fn, 1000) وليس setTimeout(fn(), 1000)؟",
+                "ما علاقة TDZ بـ Function Expressions؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: button.onclick = handleClick قبل تعريف expression."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "لو handleClick const expression، فهي غير مهيأة بعد.",
+                "انقل التعريف فوق أو استخدم declaration."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function handleClick() {\n  console.log('clicked');\n}\nbutton.onclick = handleClick;"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: const f داخل if غير متاح خارجه."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let f;\nif (cond) {\n  f = function() {};\n}\nif (f) f();"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: setTimeout(sayHi(), 1000) تنفذ فورًا."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "setTimeout(sayHi, 1000);"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "foo(); function foo(){ console.log(1); }"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الإجابة: 1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "bar(); const bar = function(){ console.log(2); };"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "انقل bar() بعد التعريف، أو اكتبها كـ Function Declaration."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: حل مشكلة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب Function Expression باسم double."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const double = function(n) { return n * 2; };"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تفرق بين Declaration و Expression.",
+                "تعرف معنى hoisting للدوال.",
+                "تقدر تمرر دالة كـ argument.",
+                "تعرف الفرق بين fn و fn().",
+                "تعرف TDZ بشكل مبدئي مع const/let expressions.",
+                "تعرف متى تستخدم كل نوع."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس القادم Arrow Functions سيقدم صيغة مختصرة لـ Function Expressions، وهي أساسية في callbacks و array methods."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الخلاصة: Function Declaration و Function Expression كلاهما دوال. الفرق الأهم هو hoisting وطريقة تخزين الدالة كقيمة. اعرف الاثنين جيدًا لأنهما يظهران دائمًا في JavaScript الحقيقي."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 29,
+    "subsections": 21,
+    "subsubsections": 0,
+    "blocks": 194,
+    "codeBlocks": 35,
+    "outputs": 20,
+    "boxes": 60,
+    "tables": 8,
+    "lists": 9
+  }
+}

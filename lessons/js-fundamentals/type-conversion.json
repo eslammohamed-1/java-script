@@ -1,0 +1,1404 @@
+{
+  "metadata": {
+    "sourceFile": "Type Conversion and Coercion.tex",
+    "convertedAt": "2026-06-07T06:28:09.013399+00:00",
+    "title": "Type Conversion & Type Coercion في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "توضيح الفرق بين Type Conversion الصريح و Type Coercion الضمني",
+        "توسيع شرح Number() و String() و Boolean()",
+        "إضافة قواعد دقيقة عن + و - و * و / والتحويلات الضمنية",
+        "توضيح NaN كقيمة number غير صالحة وكيفية فحصها بـ Number.isNaN",
+        "إضافة parseInt و parseFloat كتنبيه عملي مع الفرق عن Number()",
+        "إضافة unary plus كاختصار تحويل شائع مع التحذير من الإفراط فيه",
+        "إضافة مقارنة عملية بين || و ?? للقيم الافتراضية",
+        "إضافة فخاخ واقعية من forms و APIs و reduce",
+        "تطوير Troubleshooting و Cheat Sheet و Senior Questions والتمارين"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "multirow",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "Type Conversion",
+    "& Type Coercion",
+    "تحويل الأنواع في JavaScript",
+    "إزاي JavaScript بتتعامل مع الأنواع المختلفة",
+    "من كورس The Complete JavaScript Course",
+    "القسم الأول: JavaScript Fundamentals -- Part 1"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "أهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد ما تخلص الهاندبوك ده، هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفرّق بين Type Conversion و Type Coercion.",
+                "تستخدم Number() لتحويل النصوص لأرقام.",
+                "تستخدم String() لتحويل القيم لنصوص.",
+                "تفهم Boolean() وعلاقته بـ truthy/falsy.",
+                "تفهم NaN ومتى يظهر ولماذا typeof NaN هو number.",
+                "تتوقع سلوك + و - و * و / مع أنواع مختلطة.",
+                "تتعامل مع input.value وبيانات API بأمان.",
+                "تختار بين || و ?? للقيم الافتراضية."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة: ليه التحويل بين الأنواع مهم؟",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "في JavaScript كثير من البيانات تأتي كنصوص حتى لو شكلها أرقام، خصوصًا من input fields و APIs. لذلك نحتاج تحويل الأنواع قبل الحساب أو المقارنة."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Type Conversion: تحويل يدوي وصريح مثل Number(\"23\").",
+                "Type Coercion: تحويل تلقائي وضمني يحدث بسبب operators أو contexts مثل if."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "JavaScript قد تعطي نتائج تبدو غريبة لو لم تفهم قواعد coercion، مثل \"5\" + 3 التي تنتج \"53\" وليس 8."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "التحويل اليدوي Type Conversion",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تحويل نص لرقم باستخدام Number()",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Number() تحول قيمة إلى رقم. لو القيمة نص رقمي مثل \"1991\" فترجع الرقم 1991."
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const inputYear = \"1991\";\n\nconsole.log(inputYear + 18);\nconsole.log(Number(inputYear) + 18);"
+        },
+        {
+          "type": "output",
+          "text": "199118\n2009"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Number() لا تغير المتغير الأصلي، بل ترجع قيمة جديدة محولة."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const inputYear = \"1991\";\nconsole.log(Number(inputYear)); // 1991 number\nconsole.log(inputYear);         // \"1991\" string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "عندما يفشل التحويل: NaN",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(Number(\"Jonas\"));\nconsole.log(typeof NaN);"
+        },
+        {
+          "type": "output",
+          "text": "NaN\nnumber"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "NaN اختصار Not a Number، لكنه من نوع number.",
+                "المعنى الأدق: رقم غير صالح Invalid Number.",
+                "أي عملية حسابية مع NaN غالبًا تنتج NaN."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم Number.isNaN() للفحص الآمن بعد التحويل."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const value = Number('hello');\nconsole.log(Number.isNaN(value)); // true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تحويل رقم لنص باستخدام String()",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(String(23));\nconsole.log(typeof String(23));\nconsole.log(typeof 23);"
+        },
+        {
+          "type": "output",
+          "text": "23\nstring\nnumber"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "JavaScript حساسة لحالة الحروف: Number() و String() بحرف كبير، أما number() و string() فليست دوال built-in صحيحة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Boolean() والتحويل إلى Boolean",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Boolean() تحول أي قيمة إلى true أو false حسب قواعد truthy/falsy."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(Boolean(0));\nconsole.log(Boolean(''));\nconsole.log(Boolean('hello'));\nconsole.log(Boolean(42));\nconsole.log(Boolean(null));\nconsole.log(Boolean(undefined));\nconsole.log(Boolean(NaN));"
+        },
+        {
+          "type": "output",
+          "text": "false\nfalse\ntrue\ntrue\nfalse\nfalse\nfalse"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "القيم falsy الأساسية: false, 0, \"\", null, undefined, NaN. وما عدا ذلك غالبًا truthy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Number() مقابل parseInt() و parseFloat()",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Number() يحاول تحويل النص كله إلى رقم. parseInt و parseFloat يقرؤون الرقم من بداية النص فقط وقد يتوقفون عند أول جزء غير رقمي."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(Number('123px'));\nconsole.log(parseInt('123px', 10));\nconsole.log(parseFloat('12.5rem'));\nconsole.log(Number('12.5rem'));"
+        },
+        {
+          "type": "output",
+          "text": "NaN\n123\n12.5\nNaN"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم Number() عندما تتوقع أن النص كله رقم. استخدم parseInt/parseFloat عندما تتعامل مع نص يبدأ برقم مثل CSS values."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "التحويل التلقائي Type Coercion",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المعامل + مع النصوص",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(\"I am \" + 23 + \" years old\");"
+        },
+        {
+          "type": "output",
+          "text": "I am 23 years old"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "+ وجد string.",
+                "حوّل الرقم 23 إلى string.",
+                "عمل concatenation."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Template Literals تحول القيم إلى نصوص داخل ${} تلقائيًا عند بناء النص."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(`I am ${23} years old`);"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المعامل - مع النصوص",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(\"23\" - \"10\" - 3);"
+        },
+        {
+          "type": "output",
+          "text": "10"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "- لا يعمل concatenation، لذلك يحاول تحويل النصوص الرقمية إلى numbers ثم يطرح."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المعاملات * و /",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(\"23\" * \"2\");\nconsole.log(\"30\" / \"5\");"
+        },
+        {
+          "type": "output",
+          "text": "46\n6"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أي operator حسابي ما عدا + غالبًا يحاول تحويل النصوص إلى أرقام."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "ليه + مختلف عن الباقي؟",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "التعبير",
+              "الناتج",
+              "السبب"
+            ],
+            [
+              "\"10\" + 3",
+              "\"103\"",
+              "+ وجد string فعمل concatenation"
+            ],
+            [
+              "\"10\" - 3",
+              "7",
+              "- حوّل string إلى number"
+            ],
+            [
+              "\"10\" * 3",
+              "30",
+              "* حوّل string إلى number"
+            ],
+            [
+              "\"10\" / 3",
+              "3.333...",
+              "/ حوّل string إلى number"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(\"10\" + 3);\nconsole.log(\"10\" - 3);\nconsole.log(\"10\" * 3);\nconsole.log(\"10\" / 3);"
+        },
+        {
+          "type": "output",
+          "text": "103\n7\n30\n3.3333333333333335"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Unary Plus +value",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الـ unary plus هو + قبل قيمة واحدة، ويستخدم كاختصار لتحويل القيمة إلى Number."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const input = '42';\nconsole.log(+input);\nconsole.log(typeof +input);"
+        },
+        {
+          "type": "output",
+          "text": "42\nnumber"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "رغم أنه مختصر، Number(input) أوضح للمبتدئين وأفضل في الشروحات التعليمية."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "لعبة Guess the Output",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المثال الأول",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let n = \"1\" + 1;\nn = n - 1;\nconsole.log(n);"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل خطوة بخطوة:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "\"1\" + 1 ينتج \"11\" بسبب concatenation.",
+                "\"11\" - 1 يحول \"11\" إلى 11 ثم يطرح."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "10"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المثال الثاني",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(2 + 3 + 4 + \"5\");"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل خطوة بخطوة:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "2 + 3 = 5.",
+                "5 + 4 = 9.",
+                "9 + \"5\" ينتج \"95\"."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "95"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المثال الثالث",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(\"10\" - \"4\" - \"3\" - 2 + \"5\");"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل خطوة بخطوة:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "\"10\" - \"4\" = 6.",
+                "6 - \"3\" = 3.",
+                "3 - 2 = 1.",
+                "1 + \"5\" = \"15\"."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "15"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال إضافي",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(5 + 3 + \"2\" - 1);"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل خطوة بخطوة:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "5 + 3 = 8.",
+                "8 + \"2\" = \"82\".",
+                "\"82\" - 1 = 81."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "81"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص قواعد Type Coercion",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المعامل/السياق",
+              "اتجاه التحويل",
+              "مثال",
+              "النتيجة"
+            ],
+            [
+              "+ مع string",
+              "إلى String",
+              "\"5\" + 3",
+              "\"53\""
+            ],
+            [
+              "-",
+              "إلى Number",
+              "\"5\" - 3",
+              "2"
+            ],
+            [
+              "*",
+              "إلى Number",
+              "\"5\" * 3",
+              "15"
+            ],
+            [
+              "/",
+              "إلى Number",
+              "\"15\" / 3",
+              "5"
+            ],
+            [
+              "> أو < غالبًا",
+              "إلى Number أو مقارنة نصية حسب الطرفين",
+              "\"5\" > 3",
+              "true"
+            ],
+            [
+              "Template Literal",
+              "إلى String",
+              "`${23}`",
+              "\"23\""
+            ],
+            [
+              "if condition",
+              "إلى Boolean",
+              "if (\"hello\")",
+              "true"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "رأي عملي: Type Coercion كويس ولا وحش؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الآراء تختلف. البعض يفضّل التحويل الصريح دائمًا لتقليل المفاجآت، والبعض يرى أن coercion مفيد لو كنت فاهم القواعد."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "حوّل صراحة عند التعامل مع input/API.",
+                "استخدم coercion البسيط عندما يكون واضحًا وشائعًا.",
+                "في التعليم والكود المهم، الوضوح أهم من الاختصار."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "|| و ?? والقيم الافتراضية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "|| يعتمد على falsy، لذلك قد يستبدل قيمًا صحيحة مثل 0 أو \"\". أما ?? فيستبدل فقط null و undefined."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(0 || 100);\nconsole.log(0 ?? 100);\nconsole.log('' || 'default');\nconsole.log('' ?? 'default');\nconsole.log(null ?? 'default');\nconsole.log(undefined ?? 'default');"
+        },
+        {
+          "type": "output",
+          "text": "100\n0\ndefault\n\ndefault\ndefault"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم ?? عندما تكون 0 أو النص الفارغ قيمًا صالحة لا تريد استبدالها."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "NaN بشكل أعمق",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "NaN قيمة خاصة: لا تساوي نفسها حتى! لذلك لا تستخدم NaN === NaN للفحص."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(NaN === NaN);\nconsole.log(Number.isNaN(NaN));\nconsole.log(Number.isNaN(Number('hello')));"
+        },
+        {
+          "type": "output",
+          "text": "false\ntrue\ntrue"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم Number.isNaN(value) بعد التحويل. تجنب isNaN العام في البداية لأنه يقوم بتحويل ضمني وقد يربكك."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح"
+            ],
+            [
+              "Type Conversion",
+              "تحويل يدوي باستخدام Number/String/Boolean"
+            ],
+            [
+              "Type Coercion",
+              "تحويل تلقائي وضمني"
+            ],
+            [
+              "Number(\"text\")",
+              "يرجع number أو NaN"
+            ],
+            [
+              "String(23)",
+              "يرجع \"23\""
+            ],
+            [
+              "Boolean(value)",
+              "يرجع true/false حسب truthy/falsy"
+            ],
+            [
+              "NaN",
+              "رقم غير صالح، typeof هو number"
+            ],
+            [
+              "+ مع نص",
+              "يعمل concatenation"
+            ],
+            [
+              "- * / مع نص رقمي",
+              "تحول إلى number"
+            ],
+            [
+              "||",
+              "يستخدم falsy"
+            ],
+            [
+              "??",
+              "يستخدم null/undefined فقط"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Conversion Functions"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "Number('1991');   // 1991\nString(23);       // '23'\nBoolean('hello'); // true\nBoolean(0);       // false"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Coercion Rules"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log('5' + 3);  // '53'\nconsole.log('5' - 3);  // 2\nconsole.log('5' * 3);  // 15\nconsole.log('15' / 3); // 5"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Safe Patterns"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const quantity = Number(input.value);\n\nif (Number.isNaN(quantity)) {\n  console.log('Invalid number');\n}\n\nconst pageSize = settings.pageSize ?? 10;\nconst total = prices.reduce((sum, p) => sum + Number(p), 0);"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات Glossary",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق",
+              "المعنى"
+            ],
+            [
+              "Type Conversion",
+              "تايب كونفيرشن",
+              "تحويل صريح يدوي"
+            ],
+            [
+              "Type Coercion",
+              "تايب كويرشن",
+              "تحويل ضمني تلقائي"
+            ],
+            [
+              "NaN",
+              "نان",
+              "رقم غير صالح"
+            ],
+            [
+              "Concatenation",
+              "كونكاتينيشن",
+              "دمج نصوص"
+            ],
+            [
+              "Implicit",
+              "إمبليسيت",
+              "ضمني"
+            ],
+            [
+              "Explicit",
+              "إكسبليسيت",
+              "صريح"
+            ],
+            [
+              "Operand",
+              "أوبراند",
+              "قيمة يعمل عليها operator"
+            ],
+            [
+              "Template Literal",
+              "تمبليت ليترال",
+              "نص بـ backticks و ${}"
+            ],
+            [
+              "Input Field",
+              "إنبوت فيلد",
+              "حقل إدخال في صفحة ويب"
+            ],
+            [
+              "Nullish Coalescing",
+              "نلش كواليسنج",
+              "?? لاستخدام fallback مع null/undefined فقط"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "\"1991\" + 18 = \"199118\"",
+              "+ مع string يعمل concatenation",
+              "Number(\"1991\") + 18"
+            ],
+            [
+              "Number(\"hello\") = NaN",
+              "النص ليس رقمًا صالحًا",
+              "افحص المدخل قبل/بعد التحويل"
+            ],
+            [
+              "number() أو string() Error",
+              "حروف صغيرة",
+              "استخدم Number() و String()"
+            ],
+            [
+              "بعد Number(x) المتغير مازال string",
+              "التحويل يرجع قيمة جديدة",
+              "خزن النتيجة أو استخدمها مباشرة"
+            ],
+            [
+              "2 + 3 + \"5\" = \"55\"",
+              "+ من اليسار لليمين ثم string",
+              "حوّل النص أو استخدم parentheses"
+            ],
+            [
+              "0 || 100 = 100",
+              "0 falsy",
+              "استخدم 0 ?? 100 لو 0 قيمة صالحة"
+            ],
+            [
+              "NaN === NaN false",
+              "NaN لا يساوي نفسه",
+              "استخدم Number.isNaN"
+            ],
+            [
+              "reduce يجمع كنص",
+              "العناصر strings",
+              "sum + Number(p)"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة لاختبار فهمك",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "ما الفرق بين Type Conversion و Type Coercion؟",
+              "answer": "Conversion صريح تكتبه أنت، Coercion ضمني تقوم به JavaScript."
+            },
+            {
+              "question": "ما نتيجة \"5\" + 3 و \"5\" - 3؟",
+              "answer": "الأولى \"53\" لأن + مع string يدمج، والثانية 2 لأن - يحول إلى number."
+            },
+            {
+              "question": "ما نوع NaN؟",
+              "answer": "typeof NaN هو number لأنه رقم غير صالح."
+            },
+            {
+              "question": "ما نتيجة let result = \"10\" - \"5\" + \"3\"؟",
+              "answer": "\"53\" لأن الطرح ينتج 5 ثم + مع \"3\" يدمج."
+            },
+            {
+              "question": "لماذا Number(\"hello\") ترجع NaN؟",
+              "answer": "لأن النص لا يمثل رقمًا صالحًا."
+            },
+            {
+              "question": "لماذا NaN === NaN يرجع false؟",
+              "answer": "NaN قيمة خاصة لا تساوي نفسها. افحصها بـ Number.isNaN."
+            },
+            {
+              "question": "متى تستخدم ?? بدل ||؟",
+              "answer": "عندما تريد fallback فقط مع null أو undefined وليس مع 0 أو \"\"."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "التحويل اليدوي: Number(), String(), Boolean().",
+                "التحويل التلقائي: JavaScript تحول القيم حسب operator أو السياق.",
+                "+ مع string = concatenation.",
+                "- و * و / مع strings رقمية = تحويل إلى Number.",
+                "استخدم Number.isNaN و ?? لتفادي فخاخ شائعة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فهم conversion/coercion يفسر سلوكيات JavaScript الشهيرة مثل \"5\" + 3 ويفيد جدًا عند التعامل مع forms و APIs."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "+ لديه وضعان: جمع ودمج. إذا وجد string اختار الدمج. operators الأخرى مثل - و * و / تختار الحساب وتحاول تحويل النصوص لأرقام."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: value || default يستبدل 0 و \"\" أيضًا."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(0 || 'fallback');\nconsole.log(0 ?? 'fallback');"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: \"5\" + 3 ليس جمعًا."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(Number('5') + 3); // 8"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: \"10\" - \"5\" يعمل بسبب تحويل ضمني إلى number."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log('10' - '5'); // 5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "ليه \"5\" + 3 بيرجع \"53\"؟",
+                "إمتى || تفشل كقيمة افتراضية؟",
+                "ما الفرق بين Number(\"\") و Boolean(\"\")؟",
+                "ليه NaN === NaN false؟",
+                "إزاي تتحقق من NaN بشكل آمن؟",
+                "ما الفرق بين Number(\"123px\") و parseInt(\"123px\", 10)؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: input.value دائمًا string وقد ينتج NaN."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "حوّل بـ Number.",
+                "افحص Number.isNaN.",
+                "لا تعتمد على + مع strings."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const q = Number(quantity);\nconst p = Number(price);\nconst total = q * p;\nif (Number.isNaN(total)) console.log('Invalid input');"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: pageSize = 0 يستبدل بـ 10 بسبب ||."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "return settings.pageSize ?? 10;"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: reduce يجمع أسعار strings كنص."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const total = prices.reduce((sum, p) => sum + Number(p), 0);"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "حدد نتيجة console.log(\"\" + 0 + 1)"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الإجابة: \"01\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح الـ Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "function getValue(x) { return x || 100; } ترجع 100 عند x=0. أصلحها."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function getValue(x) { return x ?? 100; }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: حل مشكلة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو a و b نصوص رقمية، اجمعهما كأرقام."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "Number(a) + Number(b)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تشرح لماذا + مختلف عن - و * و /.",
+                "تعرف نتيجة \"5\" + 3 و \"5\" - 3.",
+                "تعرف القيم falsy وعلاقتها بـ ||.",
+                "تعرف الفرق بين || و ??.",
+                "تستخدم Number.isNaN للفحص الآمن.",
+                "تتعامل مع input/API strings بتحويل صريح."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس الجاي Truthy & Falsy Values سيبني على التحويل إلى Boolean، ويوضح كيف تتصرف القيم داخل if و logical operators."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "درس Type Conversion & Type Coercion يفسر سلوكيات غريبة كثيرة في JavaScript. إذا فهمت قواعد + و - و Number و NaN و || و ?? ستتجنب أخطاء عملية كثيرة."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 23,
+    "subsections": 17,
+    "subsubsections": 0,
+    "blocks": 163,
+    "codeBlocks": 30,
+    "outputs": 16,
+    "boxes": 49,
+    "tables": 5,
+    "lists": 14
+  }
+}

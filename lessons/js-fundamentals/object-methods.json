@@ -1,0 +1,1590 @@
+{
+  "metadata": {
+    "sourceFile": "Object Methods.tex",
+    "convertedAt": "2026-06-07T07:03:50.055769+00:00",
+    "title": "Object Methods في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "توضيح أن method هي property قيمتها function داخل object",
+        "توضيح ES6 method shorthand بجانب function expression",
+        "تصحيح وتحذير مهم حول arrow functions كـ methods بسبب lexical this",
+        "توسيع شرح this: يتحدد وقت الاستدعاء حسب call-site وليس وقت التعريف",
+        "إضافة أمثلة على فقدان this عند فصل method عن object وتمهيد لـ bind/call/apply",
+        "توضيح caching وتخزين النتائج داخل object مع ملاحظة trade-offs",
+        "توضيح أن arrays objects خاصة وأن methods موجودة عبر prototype بشكل تمهيدي",
+        "إضافة بدائل أكثر أمانًا في getSummary وتجنب undefined",
+        "تحسين Troubleshooting و Cheat Sheet والأسئلة والتمارين العملية"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "microtype",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "needspace",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox",
+      "comparebox",
+      "outputblock"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "Object Methods في JavaScript",
+    "إزاي تضيف Functions جوه الـ Objects وتستخدم this Keyword",
+    "من كورس The Complete JavaScript Course",
+    "القسم: JavaScript Fundamentals - Part 2"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "الربط بالمفاهيم السابقة وأهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قبل ما تبدأ، تأكد إنك فاهم:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "Objects: object literal وproperties وdot/bracket notation.",
+                "Function Expressions وFunction Declarations.",
+                "Arrow Functions وصياغتها المختصرة.",
+                "Functions Calling Other Functions.",
+                "Array Methods مثل push وpop.",
+                "Template Literals والـ Ternary Operator."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد الدرس هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفهم أن function قيمة يمكن وضعها داخل object.",
+                "تعرّف method داخل object باستخدام function expression أو ES6 shorthand.",
+                "تستدعي method باستخدام dot أو bracket notation.",
+                "تفهم this keyword وأنه يشير غالبًا للـ object الذي استدعى method.",
+                "تستخدم this للوصول إلى properties من نفس object.",
+                "تستخدم this لإنشاء properties جديدة وتخزين نتائج.",
+                "تفهم لماذا لا نستخدم arrow function كـ method يعتمد على this.",
+                "تبني getSummary method باستخدام template literals وternary operator."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "في JavaScript، الـ function قيمة. وبما أن object يخزن قيمًا داخل properties، يمكن أن تكون قيمة property عبارة عن function. عندما تكون function داخل object نسميها method."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Properties تصف بيانات object، وmethods تصف أفعال object أو السلوك الذي يستطيع تنفيذه."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه هو Method؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Method هو property داخل object قيمته function. أي أنه key-value pair عادي، لكن value هنا function."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  birthYear: 1991,\n  hasDriversLicense: true,\n  friends: ['Michael', 'Peter', 'Steven'],\n  calcAge: function(birthYear) {\n    return 2037 - birthYear;\n  },\n};"
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "Property",
+              "نوع القيمة",
+              "مثال"
+            ],
+            [
+              "firstName",
+              "String",
+              "Jonas"
+            ],
+            [
+              "birthYear",
+              "Number",
+              "1991"
+            ],
+            [
+              "hasDriversLicense",
+              "Boolean",
+              "true"
+            ],
+            [
+              "friends",
+              "Array",
+              "[...]"
+            ],
+            [
+              "calcAge",
+              "Function",
+              "function(...) {...}"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الـ method ليست شيء سحري؛ هي property قيمتها function."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إزاي تعرّف Method داخل Object؟",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Function Expression",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  birthYear: 1991,\n  calcAge: function(birthYear) {\n    return 2037 - birthYear;\n  },\n};"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "داخل object literal نحتاج key: value. لذلك نستخدم function expression كقيمة. Function declaration العادية لا تكتب بهذا الشكل داخل object literal."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "ES6 Method Shorthand",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  birthYear: 1991,\n  calcAge() {\n    return 2037 - this.birthYear;\n  },\n};\n\nconsole.log(jonas.calcAge());"
+        },
+        {
+          "type": "output",
+          "text": "46"
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "الطريقة الكاملة",
+              "الطريقة المختصرة"
+            ],
+            [
+              "calcAge: function() { ... }",
+              "calcAge() { ... }"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الطريقة المختصرة هي الأشهر في الكود الحديث، لكن فهم function expression مهم جدًا لفهم الأساس."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تحذير: Arrow Functions كـ Methods",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  birthYear: 1991,\n  calcAge: () => {\n    return 2037 - this.birthYear;\n  },\n};\n\nconsole.log(jonas.calcAge()); // غالبًا NaN أو سلوك غير متوقع"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Arrow function لا تملك this خاص بها، بل تأخذه lexical من المحيط. لذلك لا تستخدم arrow function كـ method إذا كانت تعتمد على this."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إزاي تنادي Method؟",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  birthYear: 1991,\n  calcAge: function(birthYear) {\n    return 2037 - birthYear;\n  },\n};\n\nconsole.log(jonas.calcAge(1991));\nconsole.log(jonas['calcAge'](1991));"
+        },
+        {
+          "type": "output",
+          "text": "46\n46"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "jonas.calcAge يصل إلى function المخزنة في property.",
+                "(1991) يشغّل function ويمرر argument.",
+                "bracket notation مفيدة عندما يكون اسم method في متغير."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const methodName = 'calcAge';\nconsole.log(jonas[methodName](1991));"
+        },
+        {
+          "type": "output",
+          "text": "46"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "this Keyword",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المشكلة: تكرار البيانات",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  birthYear: 1991,\n  calcAge: function(birthYear) {\n    return 2037 - birthYear;\n  },\n};\n\nconsole.log(jonas.calcAge(1991));"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "سنة الميلاد موجودة داخل object، ومع ذلك نمررها مرة أخرى كـ argument. هذا تكرار وقد يسبب أخطاء."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "الحل باستخدام this",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "this داخل method يشير إلى object الذي استدعى method وقت الاستدعاء. في jonas.calcAge()، this داخل calcAge يساوي jonas."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  birthYear: 1991,\n  job: 'teacher',\n  hasDriversLicense: true,\n\n  calcAge: function() {\n    console.log(this);\n    return 2037 - this.birthYear;\n  },\n};\n\nconsole.log(jonas.calcAge());"
+        },
+        {
+          "type": "output",
+          "text": "{firstName: \"Jonas\", birthYear: 1991, job: \"teacher\", hasDriversLicense: true, calcAge: ƒ}\n46"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قاعدة مبسطة: this هو object قبل النقطة في الاستدعاء. لكن التفاصيل الكاملة لـ this أوسع وستأتي لاحقًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "this يتحدد وقت الاستدعاء وليس وقت التعريف",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const person = {\n  name: 'Ali',\n  sayName: function() {\n    return this.name;\n  },\n};\n\nconst another = {\n  name: 'Sara',\n  sayName: person.sayName,\n};\n\nconsole.log(person.sayName());\nconsole.log(another.sayName());"
+        },
+        {
+          "type": "output",
+          "text": "Ali\nSara"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "نفس function أعطت نتيجتين مختلفتين لأن this تحدد حسب object الذي استدعاها."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "فقدان this عند فصل method",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const person = {\n  name: 'Ali',\n  sayName: function() {\n    return this.name;\n  },\n};\n\nconst fn = person.sayName;\n// console.log(fn()); // في strict mode: TypeError أو undefined حسب السياق"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "عند حفظ method في متغير ثم استدعائها كـ fn()، لم يعد هناك object قبل النقطة، لذلك this قد لا يشير إلى object الأصلي. لاحقًا ستتعلم bind/call/apply."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه نستخدم this بدل اسم Object مباشرة؟",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas2 = {\n  firstName: 'Jonas',\n  birthYear: 1991,\n  calcAge: function() {\n    return 2037 - this.birthYear;\n  },\n};\n\nconsole.log(jonas2.calcAge());"
+        },
+        {
+          "type": "output",
+          "text": "46"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدام this يجعل method مستقلة عن اسم المتغير. لو تغير اسم المتغير أو استُخدمت function مع object آخر، لا تحتاج تعديل hard-coded name."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تخزين النتائج داخل Object: Caching",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  birthYear: 1991,\n  calcAge: function() {\n    this.age = 2037 - this.birthYear;\n    return this.age;\n  },\n};\n\njonas.calcAge();\nconsole.log(jonas.age);\nconsole.log(jonas.age);"
+        },
+        {
+          "type": "output",
+          "text": "46\n46"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "this.age = ... تنشئ property جديدة على نفس object. هذا مفيد إذا كانت النتيجة ستُستخدم كثيرًا."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Caching مفيد، لكن انتبه: إذا تغير birthYear بعد تخزين age، فقد تصبح age قديمة إلا إذا أعدت حسابها."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مثال عملي: getSummary Method",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  birthYear: 1991,\n  job: 'teacher',\n  hasDriversLicense: true,\n\n  calcAge: function() {\n    this.age = 2037 - this.birthYear;\n    return this.age;\n  },\n\n  getSummary: function() {\n    return `${this.firstName} is a ${this.calcAge()} year old ${this.job}, and he has ${this.hasDriversLicense ? 'a' : 'no'} driver's license`;\n  },\n};\n\nconsole.log(jonas.getSummary());"
+        },
+        {
+          "type": "output",
+          "text": "Jonas is a 46 year old teacher, and he has a driver's license"
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الجزء",
+              "المعنى"
+            ],
+            [
+              "this.firstName",
+              "قراءة الاسم من object الحالي"
+            ],
+            [
+              "this.calcAge()",
+              "استدعاء method أخرى من نفس object"
+            ],
+            [
+              "this.job",
+              "قراءة الوظيفة"
+            ],
+            [
+              "ternary",
+              "اختيار a أو no حسب hasDriversLicense"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدام this.calcAge() داخل getSummary يضمن أن العمر يُحسب قبل استخدامه."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه Arrays عندها Methods؟",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = ['Michael', 'Peter', 'Steven'];\nfriends.push('Jay');\nconsole.log(friends);\nconsole.log(typeof friends);\nconsole.log(Array.isArray(friends));"
+        },
+        {
+          "type": "output",
+          "text": "[\"Michael\", \"Peter\", \"Steven\", \"Jay\"]\nobject\ntrue"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Arrays في JavaScript objects خاصة. لذلك عندها properties وmethods جاهزة مثل push وpop. عمليًا استخدم Array.isArray للتمييز بينها وبين object العادي."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بشكل تمهيدي: array methods تأتي من Array.prototype، وهذا موضوع متقدم في prototypes وOOP."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تتبع تنفيذ الكود خطوة بخطوة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  birthYear: 1991,\n  job: 'teacher',\n  hasDriversLicense: true,\n\n  calcAge: function() {\n    this.age = 2037 - this.birthYear;\n    return this.age;\n  },\n\n  getSummary: function() {\n    return `${this.firstName} is a ${this.calcAge()} year old ${this.job}, and he has ${this.hasDriversLicense ? 'a' : 'no'} driver's license`;\n  },\n};\n\nconsole.log(jonas.getSummary());"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "JavaScript تنشئ object وتخزن properties وmethods. لا يتم تنفيذ methods أثناء التعريف.",
+                "عند jonas.getSummary() يكون this داخل getSummary هو jonas.",
+                "this.firstName ترجع Jonas.",
+                "this.calcAge() تستدعي calcAge من نفس object.",
+                "داخل calcAge، this هو jonas أيضًا؛ يتم حساب age = 46 وتخزينها في jonas.age.",
+                "getSummary يكمل template literal باستخدام job وhasDriversLicense.",
+                "console.log تطبع النص النهائي."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "Jonas is a 46 year old teacher, and he has a driver's license"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "المثال الكامل من الفيديو",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const jonas = {\n  firstName: 'Jonas',\n  birthYear: 1991,\n  job: 'teacher',\n  friends: ['Michael', 'Peter', 'Steven'],\n  hasDriversLicense: true,\n\n  calcAge: function() {\n    this.age = 2037 - this.birthYear;\n    return this.age;\n  },\n\n  getSummary: function() {\n    return `${this.firstName} is a ${this.calcAge()} year old ${this.job}, and he has ${this.hasDriversLicense ? 'a' : 'no'} driver's license`;\n  },\n};\n\nconsole.log(jonas.calcAge());\nconsole.log(jonas.age);\nconsole.log(jonas.getSummary());"
+        },
+        {
+          "type": "output",
+          "text": "46\n46\nJonas is a 46 year old teacher, and he has a driver's license"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية متنوعة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "حساب BMI",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const person = {\n  name: 'Ahmed',\n  mass: 78,\n  height: 1.69,\n  calcBMI: function() {\n    this.bmi = this.mass / (this.height * this.height);\n    return this.bmi;\n  },\n};\n\nconsole.log(person.calcBMI());\nconsole.log(person.bmi);"
+        },
+        {
+          "type": "output",
+          "text": "27.289355322338993\n27.289355322338993"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Method بتنادي Method تانية",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const car = {\n  brand: 'Toyota',\n  model: 'Corolla',\n  year: 2020,\n  getAge: function() {\n    this.age = 2025 - this.year;\n    return this.age;\n  },\n  getDescription: function() {\n    return `${this.brand} ${this.model}, ${this.getAge()} years old`;\n  },\n};\n\nconsole.log(car.getDescription());"
+        },
+        {
+          "type": "output",
+          "text": "Toyota Corolla, 5 years old"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "عداد بـ Methods",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const counter = {\n  count: 0,\n  increment: function() { this.count += 1; return this.count; },\n  decrement: function() { this.count -= 1; return this.count; },\n  reset: function() { this.count = 0; return this.count; },\n};\n\nconsole.log(counter.increment());\nconsole.log(counter.increment());\nconsole.log(counter.decrement());\nconsole.log(counter.reset());"
+        },
+        {
+          "type": "output",
+          "text": "1\n2\n1\n0"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "حساب بنكي مبسط",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const account = {\n  owner: 'Sara',\n  balance: 1000,\n  deposit: function(amount) {\n    this.balance += amount;\n    return `Deposited ${amount}. New balance: ${this.balance}`;\n  },\n  withdraw: function(amount) {\n    if (amount > this.balance) return `Not enough funds! Balance: ${this.balance}`;\n    this.balance -= amount;\n    return `Withdrew ${amount}. New balance: ${this.balance}`;\n  },\n  getStatement: function() {\n    return `Account owner: ${this.owner}, Balance: ${this.balance}`;\n  },\n};\n\nconsole.log(account.deposit(500));\nconsole.log(account.withdraw(200));\nconsole.log(account.withdraw(2000));\nconsole.log(account.getStatement());"
+        },
+        {
+          "type": "output",
+          "text": "Deposited 500. New balance: 1500\nWithdrew 200. New balance: 1300\nNot enough funds! Balance: 1300\nAccount owner: Sara, Balance: 1300"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Method تستخدم Array من نفس Object",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const student = {\n  name: 'Omar',\n  grades: [85, 90, 78, 92, 88],\n  calcAverage: function() {\n    let sum = 0;\n    for (let i = 0; i < this.grades.length; i++) sum += this.grades[i];\n    this.average = sum / this.grades.length;\n    return this.average;\n  },\n  getSummary: function() {\n    return `${this.name} has an average of ${this.calcAverage()}`;\n  },\n};\n\nconsole.log(student.getSummary());\nconsole.log(student.average);"
+        },
+        {
+          "type": "output",
+          "text": "Omar has an average of 86.6\n86.6"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ",
+              "الصح"
+            ],
+            [
+              "Function declaration داخل object",
+              "استخدم key: function() {} أو shorthand"
+            ],
+            [
+              "نسيان comma بين methods",
+              "ضع comma بين properties/methods"
+            ],
+            [
+              "hard-code اسم object داخل method",
+              "استخدم this"
+            ],
+            [
+              "قراءة this.age قبل حسابها",
+              "استدعِ calcAge أولًا أو احسب عند الحاجة"
+            ],
+            [
+              "نسيان () عند استدعاء method",
+              "obj.method() وليس obj.method"
+            ],
+            [
+              "استخدام arrow function كـ method يعتمد على this",
+              "استخدم function expression أو shorthand"
+            ],
+            [
+              "فصل method عن object ثم استدعاؤها",
+              "this قد يضيع؛ لاحقًا استخدم bind/call/apply"
+            ],
+            [
+              "كود بعد return",
+              "لن يتم تنفيذه"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح"
+            ],
+            [
+              "Method",
+              "function داخل object كـ property"
+            ],
+            [
+              "تعريف كامل",
+              "methodName: function() { ... }"
+            ],
+            [
+              "تعريف ES6",
+              "methodName() { ... }"
+            ],
+            [
+              "استدعاء Dot",
+              "object.method()"
+            ],
+            [
+              "استدعاء Bracket",
+              "object[\"method\"]()"
+            ],
+            [
+              "this",
+              "يشير إلى object الذي استدعى method غالبًا"
+            ],
+            [
+              "this.property",
+              "قراءة property من object الحالي"
+            ],
+            [
+              "this.newProp = value",
+              "إضافة/تعديل property"
+            ],
+            [
+              "Caching",
+              "تخزين نتيجة حساب داخل object"
+            ],
+            [
+              "Method calls method",
+              "this.otherMethod()"
+            ],
+            [
+              "Arrow كـ method",
+              "تجنبها إذا تحتاج this"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const obj = {\n  value: 10,\n\n  // Function Expression\n  double: function() {\n    return this.value * 2;\n  },\n\n  // ES6 Method Shorthand\n  triple() {\n    return this.value * 3;\n  },\n\n  // Caching\n  calculate() {\n    this.result = this.value * 4;\n    return this.result;\n  },\n};\n\nconsole.log(obj.double());\nconsole.log(obj['triple']());\nobj.calculate();\nconsole.log(obj.result);"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "الشكل",
+              "الوصف"
+            ],
+            [
+              "obj.method()",
+              "استدعاء method"
+            ],
+            [
+              "this.property",
+              "قراءة من نفس object"
+            ],
+            [
+              "this.newProp = val",
+              "إضافة/تعديل property"
+            ],
+            [
+              "this.otherMethod()",
+              "استدعاء method أخرى"
+            ],
+            [
+              "methodName() {}",
+              "ES6 shorthand"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق",
+              "المعنى"
+            ],
+            [
+              "Method",
+              "ميثود",
+              "Function داخل object كـ property"
+            ],
+            [
+              "this Keyword",
+              "ذس كيوورد",
+              "يشير إلى مستدعي method حسب السياق"
+            ],
+            [
+              "Object Literal",
+              "أوبجكت ليترال",
+              "تعريف object باستخدام {}"
+            ],
+            [
+              "Property",
+              "بروبرتي",
+              "key-value داخل object"
+            ],
+            [
+              "Function Expression",
+              "فانكشن إكسبريشن",
+              "function كقيمة"
+            ],
+            [
+              "Method Shorthand",
+              "ميثود شورت هاند",
+              "صيغة ES6 المختصرة method() {}"
+            ],
+            [
+              "Dot Notation",
+              "دوت نوتيشن",
+              "obj.prop"
+            ],
+            [
+              "Bracket Notation",
+              "براكت نوتيشن",
+              "obj[\"prop\"]"
+            ],
+            [
+              "Caching",
+              "كاشينج",
+              "تخزين نتيجة الحساب"
+            ],
+            [
+              "DRY",
+              "دراي",
+              "Don’t Repeat Yourself"
+            ],
+            [
+              "Template Literal",
+              "تيمبليت ليترال",
+              "string بـ backticks"
+            ],
+            [
+              "Ternary Operator",
+              "تيرناري",
+              "condition ? a : b"
+            ],
+            [
+              "Built-in Method",
+              "بيلت إن ميثود",
+              "method جاهزة مثل push"
+            ],
+            [
+              "State",
+              "ستيت",
+              "حالة البيانات داخل object"
+            ],
+            [
+              "Arrow Function",
+              "أرو فانكشن",
+              "لا تملك this خاص بها"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب المحتمل",
+              "الحل"
+            ],
+            [
+              "SyntaxError داخل object",
+              "استخدام function declaration أو missing comma",
+              "استخدم key: function() {} وضع commas"
+            ],
+            [
+              "is not a function",
+              "تنادي property ليست function أو الاسم غلط",
+              "راجع الاسم ونوع القيمة"
+            ],
+            [
+              "this.age undefined",
+              "calcAge لم تُستدعَ بعد",
+              "استدع calcAge أو احسب داخل method"
+            ],
+            [
+              "this undefined/window",
+              "استدعاء غير method أو arrow function",
+              "استدعِ obj.method() واستخدم function عادية"
+            ],
+            [
+              "obj.method يرجع function نفسها",
+              "نسيت ()",
+              "اكتب obj.method()"
+            ],
+            [
+              "ReferenceError بسبب اسم object",
+              "hard-coded name تغير",
+              "استخدم this"
+            ],
+            [
+              "method تعمل لكن this غير صحيح",
+              "تم فصل method أو استخدامها كcallback",
+              "ستتعلم bind لاحقًا"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين عملية متدرجة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تمرين 1: rectangle area",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل المقترح:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const rectangle = {\n  width: 10,\n  height: 5,\n  calcArea: function() {\n    this.area = this.width * this.height;\n    return this.area;\n  },\n};\n\nconsole.log(rectangle.calcArea());\nconsole.log(rectangle.area);"
+            },
+            {
+              "type": "output",
+              "text": "50\n50"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 2: weather report",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل المقترح:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const weather = {\n  temp: 35,\n  city: 'Cairo',\n  getReport: function() {\n    return `${this.city}: ${this.temp >= 30 ? 'Hot!' : 'Nice weather'}`;\n  },\n};\n\nconsole.log(weather.getReport());"
+            },
+            {
+              "type": "output",
+              "text": "Cairo: Hot!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 3: currency converter",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل المقترح:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const converter = {\n  rate: 50,\n  toEGP: function(dollars) { return dollars * this.rate; },\n  toUSD: function(egp) { return egp / this.rate; },\n};\n\nconsole.log(converter.toEGP(100));\nconsole.log(converter.toUSD(2500));"
+            },
+            {
+              "type": "output",
+              "text": "5000\n50"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 4: employee payslip",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل المقترح:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const employee = {\n  name: 'Ali',\n  basicSalary: 5000,\n  bonusPercentage: 20,\n  calcBonus: function() {\n    this.bonus = this.basicSalary * this.bonusPercentage / 100;\n    return this.bonus;\n  },\n  calcTotalSalary: function() {\n    this.calcBonus();\n    this.totalSalary = this.basicSalary + this.bonus;\n    return this.totalSalary;\n  },\n  getPaySlip: function() {\n    this.calcTotalSalary();\n    return `${this.name}: Basic ${this.basicSalary}, Bonus ${this.bonus}, Total ${this.totalSalary}`;\n  },\n};\n\nconsole.log(employee.getPaySlip());"
+            },
+            {
+              "type": "output",
+              "text": "Ali: Basic 5000, Bonus 1000, Total 6000"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 5: student report",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل المقترح:"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const student = {\n  name: 'Nour',\n  scores: [85, 92, 78, 95, 88],\n  calcAverage: function() {\n    let sum = 0;\n    for (let i = 0; i < this.scores.length; i++) sum += this.scores[i];\n    this.average = sum / this.scores.length;\n    return this.average;\n  },\n  getHighest: function() {\n    this.highest = Math.max(...this.scores);\n    return this.highest;\n  },\n  getLowest: function() {\n    this.lowest = Math.min(...this.scores);\n    return this.lowest;\n  },\n  getGrade: function() {\n    this.calcAverage();\n    this.grade = this.average >= 90 ? 'A' : this.average >= 80 ? 'B' : this.average >= 70 ? 'C' : 'F';\n    return this.grade;\n  },\n  getReport: function() {\n    this.getGrade();\n    this.getHighest();\n    this.getLowest();\n    return `${this.name}: Average ${this.average}, Grade ${this.grade}, Highest ${this.highest}, Lowest ${this.lowest}`;\n  },\n};\n\nconsole.log(student.getReport());"
+            },
+            {
+              "type": "output",
+              "text": "Nour: Average 87.6, Grade B, Highest 95, Lowest 78"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة نظرية",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "ما هو method؟",
+              "answer": "property داخل object قيمتها function."
+            },
+            {
+              "question": "لماذا نستخدم function expression أو shorthand داخل object؟",
+              "answer": "لأن object يحتاج value بعد key، والfunction expression قيمة."
+            },
+            {
+              "question": "this يشير إلى ماذا داخل method؟",
+              "answer": "غالبًا إلى object الذي استدعى method وقت الاستدعاء."
+            },
+            {
+              "question": "ما الفرق بين obj.method و obj.method()؟",
+              "answer": "الأولى function نفسها، والثانية تشغّل function وترجع نتيجتها."
+            },
+            {
+              "question": "لماذا arrays لها methods؟",
+              "answer": "لأن arrays objects خاصة ولها methods جاهزة عبر Array.prototype."
+            },
+            {
+              "question": "لماذا لا نستخدم arrow function كـ method يعتمد على this؟",
+              "answer": "لأن arrow function لا تملك this خاص بها."
+            },
+            {
+              "question": "ما الفرق بين calcAge: function() {} و calcAge() {}؟",
+              "answer": "نفس الفكرة تقريبًا، والثانية shorthand حديثة وأنظف."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الدرس",
+              "العلاقة"
+            ],
+            [
+              "Coding Challenge #3",
+              "تطبيق مباشر على object methods وthis"
+            ],
+            [
+              "for loop",
+              "تكرار كود داخل methods"
+            ],
+            [
+              "Looping Arrays",
+              "methods تتعامل مع arrays"
+            ],
+            [
+              "Behind the Scenes",
+              "فهم this بتفاصيل أعمق"
+            ],
+            [
+              "OOP",
+              "classes/prototypes وبناء objects باحتراف"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Method = function داخل object.",
+                "استخدم this للوصول إلى properties من نفس object.",
+                "لا تستخدم arrow function كـ method يعتمد على this.",
+                "يمكن للmethod تخزين نتائج جديدة مثل this.age.",
+                "method يمكن أن تنادي method أخرى: this.otherMethod()."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Object methods تجمع البيانات والسلوك في مكان واحد. بدل function منفصلة تحتاج arguments كثيرة، method تستخدم this للوصول إلى بيانات object مباشرة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Object مثل موظف: properties تصف بياناته، وmethods تصف أفعاله. this مثل كلمة “أنا” داخل الموظف: اسمي، سنة ميلادي، وظيفتي."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: نسيان الأقواس."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(jonas.calcAge);  // function\nconsole.log(jonas.calcAge()); // result"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: arrow function وthis."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const obj = {\n  x: 1,\n  bad: () => this.x,\n};"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: فصل method عن object."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const fn = obj.method;\n// fn(); // this may be lost"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "كيف يتحدد this في method call؟",
+                "ما الفرق بين function expression وmethod shorthand؟",
+                "لماذا arrow function لا تصلح كmethod مع this؟",
+                "ماذا يحدث إذا مررت method كcallback؟",
+                "ما معنى caching داخل object؟",
+                "كيف تستدعي method ديناميكيًا باستخدام bracket notation؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: this undefined داخل method."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تأكد أنك لا تستخدم arrow function.",
+                "تأكد أنك تستدعيها كـ obj.method()."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: obj.method بدون () لا ينفذ."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "obj.method(); // correct"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: age قديمة بعد تغيير birthYear."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "إذا خزنت age ثم غيرت birthYear، أعد calcAge.",
+                "أو لا تخزن age واحسبها عند الطلب."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ما الفرق بين counter.increment و counter.increment()؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الأولى function نفسها، والثانية تستدعيها وتغير count وترجع النتيجة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "method معرفة كسهم وتستخدم this."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const obj = {\n  x: 1,\n  good: function() {\n    return this.x;\n  },\n};"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: Method تستدعي Method",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب method summary تستدعي calcTotal من نفس object."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "summary: function() {\n  return `Total is ${this.calcTotal()}`;\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تعرف method كـ property قيمتها function.",
+                "تستدعي method بالdot/bracket.",
+                "تفهم this داخل obj.method().",
+                "لا تستخدم arrow function للmethods التي تحتاج this.",
+                "تستخدم this.property وthis.otherMethod().",
+                "تفهم caching وعيوبه المحتملة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس القادم Coding Challenge #3 سيطبّق object methods وthis في تمرين عملي. حاول تحله بنفسك قبل مشاهدة الحل."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Object Methods تنقل object من مجرد حاوية بيانات إلى كيان لديه سلوك. فهم this هنا خطوة أساسية جدًا قبل OOP وprototypes وclasses لاحقًا."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 30,
+    "subsections": 20,
+    "subsubsections": 0,
+    "blocks": 170,
+    "codeBlocks": 33,
+    "outputs": 21,
+    "boxes": 51,
+    "tables": 9,
+    "lists": 10
+  }
+}

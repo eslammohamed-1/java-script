@@ -1,0 +1,2013 @@
+{
+  "metadata": {
+    "sourceFile": "Basic Operators.tex",
+    "convertedAt": "2026-06-07T06:23:35.206586+00:00",
+    "title": "Basic Operators في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "إضافة توضيح أدق لمفهوم Operator و Operand و Expression",
+        "إضافة ملاحظات مهمة عن remainder % و unary plus/minus ضمن العمليات الحسابية",
+        "توضيح سلوك + مع strings وnumbers والتحويل الضمني coercion",
+        "توضيح أن - و * و / غالبًا تحاول تحويل النصوص الرقمية إلى أرقام",
+        "إضافة الفرق بين x++ و ++x وتوصية بتجنبهم داخل expressions المركبة",
+        "إضافة تحذير من المقارنة بين strings وnumbers والتحويلات الضمنية",
+        "تحسين شرح assignment operators مع const و let",
+        "إضافة ملاحظات عن القسمة على صفر وNaN وInfinity",
+        "إضافة Best Practices: استخدم parentheses، وNumber() عند البيانات القادمة كنص، وtemplate literals للنصوص",
+        "تطوير Troubleshooting وCheat Sheet والأسئلة والتمارين"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox",
+      "comparebox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "Basic Operators في JavaScript",
+    "العمليات الحسابية وعمليات المقارنة والتعيين في JavaScript",
+    "من كورس The Complete JavaScript Course",
+    "القسم: JavaScript Fundamentals - Part 1",
+    "يتضمن: رسومات توضيحية -- تتبع خطوة بخطوة",
+    "أمثلة إضافية -- تمارين عملية متدرجة"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "قبل البداية وأهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قبل ما تبدأ، يفضل تكون فاهم:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "Values and Variables: تعريف المتغيرات واستخدام let و const.",
+                "Data Types: خصوصًا Number و String و Boolean.",
+                "typeof و Dynamic Typing.",
+                "console.log و Comments."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد الدرس هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تعرف معنى Operator و Operand و Expression.",
+                "تستخدم arithmetic operators مثل + و - و * و / و ** و %.",
+                "تفهم + مع الأرقام ومع النصوص.",
+                "تستخدم assignment operators مثل = و += و ++.",
+                "تستخدم comparison operators وتعرف أنها ترجع Boolean.",
+                "تفهم فخاخ coercion مثل \"5\" + 3 و \"10\" - \"5\".",
+                "تستخدم parentheses لتوضيح النية وتقليل أخطاء precedence."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "الأوبريتورز Operators هي الأدوات التي تجعل القيم تتحول إلى نتائج: نجمع ونطرح ونقارن ونخزن نتائج في متغيرات."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تشبيه الآلة الحاسبة: الأرقام هي القيم، والأزرار مثل + و - هي operators، والنتيجة هي قيمة جديدة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه هو الـ Operator؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الـ Operator هو رمز أو كلمة تقوم بعملية على قيمة أو أكثر. القيمة التي يعمل عليها تسمى Operand. والتعبير الكامل الذي ينتج قيمة يسمى Expression."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const result = 10 + 5;\n// 10 و 5 هما operands\n// + هو operator\n// 10 + 5 هو expression ينتج 15"
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "النوع",
+              "الوظيفة",
+              "أمثلة"
+            ],
+            [
+              "Arithmetic",
+              "عمليات حسابية",
+              "+, -, *, /, **, %"
+            ],
+            [
+              "Assignment",
+              "تعيين وتعديل قيم",
+              "=, +=, -=, *=, ++"
+            ],
+            [
+              "Comparison",
+              "مقارنة وإرجاع Boolean",
+              ">, <, >=, <="
+            ],
+            [
+              "Logical",
+              "دمج شروط",
+              "&&, ||, !"
+            ],
+            [
+              "typeof",
+              "معرفة نوع القيمة",
+              "typeof 23"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس الأصلي يركز على أول 3 أنواع، لكن تم إضافة % وبعض الفخاخ العلمية المهمة لأنك ستقابلها عمليًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الأوبريتورز الحسابية Arithmetic Operators",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "الأوبريتورز الأساسية",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الرمز",
+              "العملية",
+              "مثال",
+              "النتيجة"
+            ],
+            [
+              "+",
+              "جمع",
+              "10 + 5",
+              "15"
+            ],
+            [
+              "-",
+              "طرح",
+              "10 - 5",
+              "5"
+            ],
+            [
+              "*",
+              "ضرب",
+              "10 * 5",
+              "50"
+            ],
+            [
+              "/",
+              "قسمة",
+              "10 / 5",
+              "2"
+            ],
+            [
+              "**",
+              "أس",
+              "2 ** 3",
+              "8"
+            ],
+            [
+              "%",
+              "باقي القسمة",
+              "10 % 3",
+              "1"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تم إضافة % لأنه من أهم الأوبريتورز العملية رغم أنه لم يكن مركز الدرس الأصلي. يستخدم لمعرفة باقي القسمة، مثل تحديد هل الرقم زوجي أو فردي."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(10 % 3); // 1\nconsole.log(8 % 2);  // 0\nconsole.log(7 % 2);  // 1"
+        },
+        {
+          "type": "output",
+          "text": "1\n0\n1"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال: حساب العمر من سنة الميلاد",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const now = 2037;\nconst ageJonas = now - 1991;\nconst ageSarah = now - 2018;\n\nconsole.log(ageJonas, ageSarah);"
+        },
+        {
+          "type": "output",
+          "text": "46 19"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدام now بدل تكرار 2037 يطبق مبدأ DRY: لا تكرر نفس القيمة في أكثر من مكان."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "عمليات حسابية متنوعة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const now = 2037;\nconst ageJonas = now - 1991;\n\nconsole.log(ageJonas * 2, ageJonas / 10, 2 ** 3);"
+        },
+        {
+          "type": "output",
+          "text": "92 4.6 8"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "2 ** 3 يعني 2 أس 3، وليس ضرب. الضرب هو * فقط."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "القسمة على صفر في JavaScript لا تعطي Error عادة، بل تعطي Infinity أو -Infinity، وعمليات غير صالحة قد تعطي NaN."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(10 / 0);  // Infinity\nconsole.log(-10 / 0); // -Infinity\nconsole.log(0 / 0);   // NaN"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أوبريتور + مع النصوص -- String Concatenation",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "مع الأرقام: + يعمل جمع حسابي.",
+                "مع النصوص: + يعمل لصق نصوص Concatenation.",
+                "لو أحد الطرفين String، غالبًا يتم تحويل الطرف الآخر إلى String والنتيجة لصق."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const firstName = 'Jonas';\nconst lastName = 'Schmedtmann';\n\nconsole.log(firstName + ' ' + lastName);"
+        },
+        {
+          "type": "output",
+          "text": "Jonas Schmedtmann"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو نسيت المسافة ستلتصق الكلمات:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(firstName + lastName); // JonasSchmedtmann"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "في الكود الحديث، Template Literals أوضح من concatenation الطويلة:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const fullName = `${firstName} ${lastName}`;\nconsole.log(fullName);"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "التحويل الضمني مع operators",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "JavaScript تعمل type coercion في بعض العمليات. هذا مفيد أحيانًا وخطير أحيانًا."
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "التعبير",
+              "الناتج",
+              "السبب"
+            ],
+            [
+              "\"5\" + 3",
+              "\"53\"",
+              "+ مع String يعمل concatenation"
+            ],
+            [
+              "\"10\" - \"5\"",
+              "5",
+              "- يحاول تحويل النصوص لأرقام"
+            ],
+            [
+              "\"10\" * \"2\"",
+              "20",
+              "* يحاول التحويل لأرقام"
+            ],
+            [
+              "\"10\" / \"2\"",
+              "5",
+              "/ يحاول التحويل لأرقام"
+            ],
+            [
+              "\"hello\" - 3",
+              "NaN",
+              "النص لا يتحول لرقم صالح"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log('5' + 3);\nconsole.log('10' - '5');\nconsole.log('10' * '2');\nconsole.log('hello' - 3);"
+        },
+        {
+          "type": "output",
+          "text": "53\n5\n20\nNaN"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Best Practice: لو البيانات جاية من input أو API كنص وتريد حسابًا، حوّلها صراحة باستخدام Number(value) بدل الاعتماد على التحويل الضمني."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أوبريتورز التعيين Assignment Operators",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "أوبريتور التعيين الأساسي =",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let x = 10 + 5;\nconsole.log(x);"
+        },
+        {
+          "type": "output",
+          "text": "15"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "+ يحسب 10 + 5 أولًا وينتج 15.",
+                "= يضع الناتج داخل x.",
+                "هذا بسبب operator precedence: الحساب قبل التعيين."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "أوبريتورز التعيين المختصرة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الأوبريتور",
+              "معناه",
+              "مثال"
+            ],
+            [
+              "=",
+              "تعيين عادي",
+              "x = 10"
+            ],
+            [
+              "+=",
+              "أضف وعيّن",
+              "x += 5 هو x = x + 5"
+            ],
+            [
+              "-=",
+              "اطرح وعيّن",
+              "x -= 3"
+            ],
+            [
+              "*=",
+              "اضرب وعيّن",
+              "x *= 2"
+            ],
+            [
+              "/=",
+              "اقسم وعيّن",
+              "x /= 4"
+            ],
+            [
+              "%=",
+              "باقي القسمة وعيّن",
+              "x %= 2"
+            ],
+            [
+              "**=",
+              "أس وعيّن",
+              "x **= 3"
+            ],
+            [
+              "++",
+              "زود 1",
+              "x++"
+            ],
+            [
+              "--",
+              "انقص 1",
+              "x--"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let x = 15;\nx += 10; // 25\nx *= 4;  // 100\nx++;     // 101\nx--;     // 100\nx--;     // 99\nconsole.log(x);"
+        },
+        {
+          "type": "output",
+          "text": "99"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لا يمكن استخدام += أو ++ مع const لأنك تعيد تعيين binding."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const score = 10;\n// score++; // TypeError: Assignment to constant variable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "x++ و ++x",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "x++ و ++x كلاهما يزيد المتغير، لكن القيمة التي يرجعها التعبير مختلفة."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let a = 1;\nconsole.log(a++); // 1: يرجع القديم ثم يزيد\nconsole.log(a);   // 2\n\nlet b = 1;\nconsole.log(++b); // 2: يزيد ثم يرجع الجديد\nconsole.log(b);   // 2"
+        },
+        {
+          "type": "output",
+          "text": "1\n2\n2\n2"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Best Practice: تجنب ++ داخل تعبيرات مركبة. استخدم x += 1 في سطر مستقل لو الهدف الوضوح."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أوبريتورز المقارنة Comparison Operators",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أوبريتورز المقارنة تأخذ قيمتين وترجع Boolean: true أو false."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الرمز",
+              "المعنى",
+              "مثال",
+              "النتيجة"
+            ],
+            [
+              ">",
+              "أكبر من",
+              "46 > 19",
+              "true"
+            ],
+            [
+              "<",
+              "أصغر من",
+              "46 < 19",
+              "false"
+            ],
+            [
+              ">=",
+              "أكبر من أو يساوي",
+              "18 >= 18",
+              "true"
+            ],
+            [
+              "<=",
+              "أصغر من أو يساوي",
+              "17 <= 18",
+              "true"
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const now = 2037;\nconst ageJonas = now - 1991;\nconst ageSarah = now - 2018;\n\nconsole.log(ageJonas > ageSarah);\nconst isFullAge = ageSarah >= 18;\nconsole.log(isFullAge);"
+        },
+        {
+          "type": "output",
+          "text": "true\ntrue"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المقارنة بين String و Number قد تؤدي إلى تحويل ضمني. الأفضل توحيد الأنواع قبل المقارنة، خصوصًا مع inputs."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "دمج الحساب والمقارنة في سطر واحد",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const now = 2037;\nconsole.log(now - 1991 > now - 2018);"
+        },
+        {
+          "type": "output",
+          "text": "true"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "تحسب now - 1991 = 46.",
+                "تحسب now - 2018 = 19.",
+                "تقارن 46 > 19 = true."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم الأقواس لتوضيح النية حتى لو precedence سيعمل بشكل صحيح:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log((now - 1991) > (now - 2018));"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تشبيه شامل -- المطبخ والأوبريتورز",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Arithmetic = أدوات الطبخ التي تحول المكونات إلى نتيجة.",
+                "Assignment = الطبق الذي تحفظ فيه النتيجة.",
+                "Comparison = التذوق الذي يرجع true أو false."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تتبع تنفيذ الكود خطوة بخطوة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const now = 2037;\nconst ageJonas = now - 1991;\nconst ageSarah = now - 2018;\nconsole.log(ageJonas, ageSarah);\n\nconsole.log(ageJonas * 2, ageJonas / 10, 2 ** 3);\n\nconst firstName = 'Jonas';\nconst lastName = 'Schmedtmann';\nconsole.log(firstName + ' ' + lastName);\n\nlet x = 10 + 5;\nx += 10;\nx *= 4;\nx++;\nx--;\nx--;\nconsole.log(x);\n\nconsole.log(ageJonas > ageSarah);\nconst isFullAge = ageSarah >= 18;\nconsole.log(isFullAge);"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "now = 2037، ثم ageJonas = 46 و ageSarah = 19."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "طباعة الأعمار: 46 19."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "عمليات حسابية متعددة: 92 و 4.6 و 8."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لصق النصوص ينتج Jonas Schmedtmann."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "سلسلة assignment على x تنتهي بالقيمة 99."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المقارنة ageJonas > ageSarah ترجع true."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "isFullAge = ageSarah >= 18 ترجع true."
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "46 19\n92 4.6 8\nJonas Schmedtmann\n99\ntrue\ntrue"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "المثال الكامل المحسّن",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const now = 2037;\nconst ageJonas = now - 1991;\nconst ageSarah = now - 2018;\nconsole.log(ageJonas, ageSarah);\n\nconsole.log(ageJonas * 2, ageJonas / 10, 2 ** 3);\nconsole.log(10 % 3);\n\nconst firstName = 'Jonas';\nconst lastName = 'Schmedtmann';\nconsole.log(firstName + ' ' + lastName);\nconsole.log(`${firstName} ${lastName}`);\n\nlet x = 10 + 5;\nx += 10;\nx *= 4;\nx++;\nx--;\nx--;\nconsole.log(x);\n\nconsole.log(ageJonas > ageSarah);\nconsole.log(ageSarah >= 18);\n\nconst isFullAge = ageSarah >= 18;\nconsole.log(isFullAge);\nconsole.log((now - 1991) > (now - 2018));"
+        },
+        {
+          "type": "output",
+          "text": "46 19\n92 4.6 8\n1\nJonas Schmedtmann\nJonas Schmedtmann\n99\ntrue\ntrue\ntrue\ntrue"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية متنوعة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "مثال 1: حاسبة فاتورة مطعم",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const mealPrice = 120;\nconst numberOfPeople = 4;\nconst tipPercentage = 15;\n\nconst totalBill = mealPrice * numberOfPeople;\nconst tip = totalBill * tipPercentage / 100;\nconst grandTotal = totalBill + tip;\nconst perPerson = grandTotal / numberOfPeople;\n\nconsole.log('Total bill:', totalBill);\nconsole.log('Tip:', tip);\nconsole.log('Grand total:', grandTotal);\nconsole.log('Per person:', perPerson);"
+        },
+        {
+          "type": "output",
+          "text": "Total bill: 480\nTip: 72\nGrand total: 552\nPer person: 138"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 2: عداد بأوبريتورز التعيين",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let counter = 0;\nconsole.log('Start:', counter);\n\ncounter++;\ncounter++;\ncounter++;\nconsole.log('After 3 increments:', counter);\n\ncounter--;\nconsole.log('After 1 decrement:', counter);\n\ncounter += 10;\ncounter -= 5;\ncounter *= 2;\nconsole.log('Final:', counter);"
+        },
+        {
+          "type": "output",
+          "text": "Start: 0\nAfter 3 increments: 3\nAfter 1 decrement: 2\nFinal: 14"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 3: مقارنات متعددة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const tempCairo = 35;\nconst tempAlex = 28;\nconst tempAswan = 42;\n\nconsole.log('Cairo > Alex?', tempCairo > tempAlex);\nconsole.log('Alex > Aswan?', tempAlex > tempAswan);\nconsole.log('Aswan >= 40?', tempAswan >= 40);\nconsole.log('Alex <= 30?', tempAlex <= 30);"
+        },
+        {
+          "type": "output",
+          "text": "Cairo > Alex? true\nAlex > Aswan? false\nAswan >= 40? true\nAlex <= 30? true"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 4: بناء جملة من نصوص متعددة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const name = 'Ahmed';\nconst age = 25;\nconst city = 'Cairo';\n\nconst sentence = 'My name is ' + name + ', I am ' + age + ' years old, and I live in ' + city + '.';\nconsole.log(sentence);"
+        },
+        {
+          "type": "output",
+          "text": "My name is Ahmed, I am 25 years old, and I live in Cairo."
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مثال 5: مساحة ومحيط مستطيل",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const length = 15;\nconst width = 8;\n\nconst area = length * width;\nconst perimeter = 2 * (length + width);\nconst isLarge = area > 100;\n\nconsole.log('Area:', area);\nconsole.log('Perimeter:', perimeter);\nconsole.log('Is large?', isLarge);"
+        },
+        {
+          "type": "output",
+          "text": "Area: 120\nPerimeter: 46\nIs large? true"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ الشائع",
+              "الحل الصح"
+            ],
+            [
+              "استخدام = كأنه مقارنة",
+              "= للتعيين، والمقارنة لها operators أخرى مثل > و < و لاحقًا ==="
+            ],
+            [
+              "نسيان المسافة في النصوص",
+              "أضف \" \" أو استخدم template literals"
+            ],
+            [
+              "استخدام ** كأنه ضرب",
+              "** أس، والضرب *"
+            ],
+            [
+              "استخدام const مع ++ أو +=",
+              "استخدم let لو ستعيد التعيين"
+            ],
+            [
+              "تكرار القيم",
+              "احفظها في متغير لتطبيق DRY"
+            ],
+            [
+              "توقع جمع من \"5\" + 3",
+              "سيحدث concatenation، استخدم Number(\"5\") + 3"
+            ],
+            [
+              "تجاهل precedence",
+              "استخدم parentheses لتوضيح النية"
+            ],
+            [
+              "استخدام x++ داخل expression مركب",
+              "افصل الزيادة في سطر مستقل للوضوح"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح باختصار"
+            ],
+            [
+              "Operator",
+              "رمز أو كلمة تعمل عملية على قيمة أو أكثر"
+            ],
+            [
+              "Operand",
+              "القيمة التي يعمل عليها operator"
+            ],
+            [
+              "Expression",
+              "تعبير ينتج قيمة"
+            ],
+            [
+              "Arithmetic",
+              "+, -, *, /, **, %"
+            ],
+            [
+              "+ مع نصوص",
+              "Concatenation"
+            ],
+            [
+              "=",
+              "Assignment operator"
+            ],
+            [
+              "+= وغيره",
+              "Assignment shortcuts"
+            ],
+            [
+              "++ و --",
+              "زيادة/نقصان 1 مع فرق بين prefix/postfix"
+            ],
+            [
+              "Comparison",
+              ">, <, >=, <= ترجع Boolean"
+            ],
+            [
+              "DRY",
+              "لا تكرر نفس القيمة"
+            ],
+            [
+              "Precedence",
+              "ترتيب تنفيذ operators"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Arithmetic Operators"
+            },
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "الرمز",
+                  "العملية",
+                  "مثال"
+                ],
+                [
+                  "+",
+                  "جمع أو لصق نصوص",
+                  "5 + 3"
+                ],
+                [
+                  "-",
+                  "طرح",
+                  "10 - 4"
+                ],
+                [
+                  "*",
+                  "ضرب",
+                  "3 * 7"
+                ],
+                [
+                  "/",
+                  "قسمة",
+                  "20 / 4"
+                ],
+                [
+                  "**",
+                  "أس",
+                  "2 ** 4"
+                ],
+                [
+                  "%",
+                  "باقي القسمة",
+                  "10 % 3"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Assignment Operators"
+            },
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "الشكل",
+                  "المعنى"
+                ],
+                [
+                  "x = 5",
+                  "تعيين"
+                ],
+                [
+                  "x += 3",
+                  "x = x + 3"
+                ],
+                [
+                  "x -= 2",
+                  "x = x - 2"
+                ],
+                [
+                  "x *= 4",
+                  "x = x * 4"
+                ],
+                [
+                  "x /= 2",
+                  "x = x / 2"
+                ],
+                [
+                  "x++",
+                  "post-increment"
+                ],
+                [
+                  "++x",
+                  "pre-increment"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Comparison Operators"
+            },
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "الشكل",
+                  "المعنى"
+                ],
+                [
+                  "a > b",
+                  "a أكبر من b"
+                ],
+                [
+                  "a < b",
+                  "a أصغر من b"
+                ],
+                [
+                  "a >= b",
+                  "a أكبر من أو يساوي b"
+                ],
+                [
+                  "a <= b",
+                  "a أصغر من أو يساوي b"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const result = value1 + value2;\nx += value;\nx++;\n++x;\nconst isTrue = value1 > value2;\nconst fullName = `${first} ${last}`;\nconst numericTotal = Number(inputValue) + tax;"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق بالعربي",
+              "المعنى"
+            ],
+            [
+              "Operator",
+              "أوبريتور",
+              "رمز أو كلمة تعمل عملية"
+            ],
+            [
+              "Operand",
+              "أوبراند",
+              "القيمة التي يعمل عليها operator"
+            ],
+            [
+              "Arithmetic Operator",
+              "أريثماتيك أوبريتور",
+              "عامل حسابي"
+            ],
+            [
+              "Assignment Operator",
+              "أساينمنت أوبريتور",
+              "عامل تعيين"
+            ],
+            [
+              "Comparison Operator",
+              "كومباريسون أوبريتور",
+              "عامل مقارنة"
+            ],
+            [
+              "Concatenation",
+              "كونكاتينيشن",
+              "لصق النصوص"
+            ],
+            [
+              "Exponentiation",
+              "إكسبوننشييشن",
+              "رفع لقوة"
+            ],
+            [
+              "Remainder",
+              "ريميندر",
+              "باقي القسمة %"
+            ],
+            [
+              "Increment",
+              "إنكريمنت",
+              "زيادة بمقدار 1"
+            ],
+            [
+              "Decrement",
+              "ديكريمنت",
+              "نقصان بمقدار 1"
+            ],
+            [
+              "Expression",
+              "إكسبريشن",
+              "تعبير ينتج قيمة"
+            ],
+            [
+              "Precedence",
+              "بريسيدنس",
+              "أولوية التنفيذ"
+            ],
+            [
+              "Coercion",
+              "كويرشن",
+              "تحويل ضمني للنوع"
+            ],
+            [
+              "DRY",
+              "دراي",
+              "Don’t Repeat Yourself"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "Assignment to constant variable",
+              "تحاول تغيير const",
+              "استخدم let لو القيمة ستتغير"
+            ],
+            [
+              "NaN",
+              "عملية حسابية على قيمة غير رقمية",
+              "افحص typeof وحوّل بـ Number"
+            ],
+            [
+              "\"55\" بدل 10",
+              "String + Number تسبب concatenation",
+              "حوّل النص لرقم"
+            ],
+            [
+              "النص ملتصق",
+              "لا توجد مسافة",
+              "أضف \" \" أو template literal"
+            ],
+            [
+              "Unexpected token",
+              "operator مكتوب غلط",
+              "راجع الرموز واستخدم ** للأس"
+            ],
+            [
+              "مقارنة غريبة",
+              "مقارنة بين أنواع مختلفة",
+              "وحّد النوع قبل المقارنة"
+            ],
+            [
+              "x += 5 لا يعمل",
+              "x معرف const",
+              "استخدم let"
+            ],
+            [
+              "0.1 + 0.2 غير دقيق",
+              "floating point",
+              "استخدم rounding عند العرض"
+            ],
+            [
+              "x++ نتيجة غير متوقعة",
+              "post-increment داخل expression",
+              "استخدم ++ في سطر مستقل أو += 1"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين عملية متدرجة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تمرين 1: سهل -- عمليات حسابية بسيطة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "عرّف a=20 و b=7 ثم اطبع الجمع والطرح والضرب والقسمة والأس وباقي القسمة."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const a = 20;\nconst b = 7;\n\nconsole.log('Sum:', a + b);\nconsole.log('Difference:', a - b);\nconsole.log('Product:', a * b);\nconsole.log('Quotient:', a / b);\nconsole.log('Power:', a ** b);\nconsole.log('Remainder:', a % b);"
+            },
+            {
+              "type": "output",
+              "text": "Sum: 27\nDifference: 13\nProduct: 140\nQuotient: 2.857142857142857\nPower: 1280000000\nRemainder: 6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 2: سهل -- بناء جملة تعريفية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ابن جملة باستخدام متغيرات الاسم والعمر والمدينة."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const first = 'Sara';\nconst last = 'Ahmed';\nconst age = 28;\nconst city = 'Alex';\n\nconst intro = `Hello, I am ${first} ${last}, ${age} years old, from ${city}.`;\nconsole.log(intro);"
+            },
+            {
+              "type": "output",
+              "text": "Hello, I am Sara Ahmed, 28 years old, from Alex."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 3: متوسط -- Assignment Operators",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "توقع قيمة score النهائية."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let score = 50;\nscore += 20; // 70\nscore -= 5;  // 65\nscore *= 2;  // 130\nscore /= 13; // 10\nscore++;\nscore++;\nscore--;\nconsole.log(score);"
+            },
+            {
+              "type": "output",
+              "text": "11"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 4: متوسط -- مقارنات متعددة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قارن درجات 3 طلاب واحفظ النتائج في variables."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const gradeAli = 85;\nconst gradeMona = 92;\nconst gradeOmar = 78;\n\nconst aliGreaterThanOmar = gradeAli > gradeOmar;\nconst monaExcellent = gradeMona >= 90;\nconst omarBelow80 = gradeOmar < 80;\nconst aliNotAboveMona = gradeAli <= gradeMona;\n\nconsole.log('Ali > Omar?', aliGreaterThanOmar);\nconsole.log('Mona >= 90?', monaExcellent);\nconsole.log('Omar < 80?', omarBelow80);\nconsole.log('Ali <= Mona?', aliNotAboveMona);"
+            },
+            {
+              "type": "output",
+              "text": "Ali > Omar? true\nMona >= 90? true\nOmar < 80? true\nAli <= Mona? true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 5: صعب -- حاسبة قسط شهري",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "احسب القسط الشهري ومدى مناسبته."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const carPrice = 250000;\nconst downPayment = 50000;\nconst interestRate = 10;\nconst years = 5;\n\nconst remaining = carPrice - downPayment;\nconst totalInterest = remaining * interestRate / 100 * years;\nconst totalAmount = remaining + totalInterest;\nconst months = years * 12;\nconst monthlyPayment = totalAmount / months;\nconst isAffordable = monthlyPayment <= 5000;\n\nconst summary = `Monthly payment: ${monthlyPayment} EGP - Affordable: ${isAffordable}`;\nconsole.log(summary);"
+            },
+            {
+              "type": "output",
+              "text": "Monthly payment: 5000 EGP - Affordable: true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 6: متقدم -- Coercion Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أصلح جمع ages القادمة كنصوص."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const age1 = '25';\nconst age2 = '28';\nconst age3 = '30';\n\nconst total = Number(age1) + Number(age2) + Number(age3);\nconsole.log(total);"
+            },
+            {
+              "type": "output",
+              "text": "83"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة نظرية",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "إيه الفرق بين + مع أرقام و + مع نصوص؟",
+              "answer": "مع الأرقام جمع، ومع النصوص concatenation. لو طرف string غالبًا النتيجة string."
+            },
+            {
+              "question": "ليه = يتنفذ بعد + في let x = 10 + 5؟",
+              "answer": "لأن + له precedence أعلى من assignment."
+            },
+            {
+              "question": "ما الفرق بين x += 5 و x = 5؟",
+              "answer": "x += 5 تضيف على القيمة الحالية، أما x = 5 تستبدلها."
+            },
+            {
+              "question": "ليه نستخدم const now = 2037 بدل تكرار الرقم؟",
+              "answer": "لتطبيق DRY وتقليل الأخطاء عند التعديل."
+            },
+            {
+              "question": "إيه الفرق بين x++ و ++x؟",
+              "answer": "x++ يرجع القديم ثم يزيد، ++x يزيد ثم يرجع الجديد."
+            },
+            {
+              "question": "ليه \"10\" - \"5\" يرجع 5؟",
+              "answer": "لأن - يحاول تحويل النصوص الرقمية إلى numbers."
+            },
+            {
+              "question": "ما نتيجة 2 + 3 * 4؟",
+              "answer": "14 لأن * له precedence أعلى من +."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الدرس الجاي",
+              "هتتعلم فيه إيه",
+              "العلاقة"
+            ],
+            [
+              "Operator Precedence",
+              "ترتيب تنفيذ operators",
+              "يفسر + قبل = و * قبل +"
+            ],
+            [
+              "Strings and Template Literals",
+              "دمج نصوص أسهل",
+              "بدل concatenation الطويل"
+            ],
+            [
+              "Type Conversion and Coercion",
+              "تحويل الأنواع",
+              "يفسر \"5\" + 3"
+            ],
+            [
+              "Equality Operators",
+              "== و ===",
+              "مقارنات مساواة"
+            ],
+            [
+              "Logical Operators",
+              "&& و || و !",
+              "دمج شروط"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Arithmetic: +, -, *, /, **, %.",
+                "+ مع string يعمل concatenation.",
+                "Assignment: =, +=, ++, وغيرها.",
+                "Comparison: >, <, >=, <= ترجع boolean.",
+                "استخدم parentheses وNumber() عندما تحتاج وضوحًا."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "operators هي أساس أي حساب أو مقارنة أو تعديل قيمة. فهمها يمنع bugs شائعة مثل concatenation بدل الجمع أو نتائج precedence غير المتوقعة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "operators أزرار على آلة حاسبة. + زر ذكي: مع النص يدمج، ومع الرقم يجمع. أما - و * و / غالبًا يحاولوا تحويل النص الرقمي إلى رقم."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: \"5\" + 3 = \"53\" وليس 8."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(Number('5') + 3); // 8"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: x++ و ++x ليسا نفس القيمة المرجعة."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let a = 1;\nconsole.log(a++); // 1\nlet b = 1;\nconsole.log(++b); // 2"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: 2 + 3 * 4 = 14 وليس 20."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "console.log(2 + 3 * 4);     // 14\nconsole.log((2 + 3) * 4);   // 20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "ليه \"10\" - \"5\" بيرجع 5؟",
+                "إيه الفرق بين x++ و ++x؟",
+                "إزاي precedence تؤثر على expressions؟",
+                "ليه + مختلف عن - و *؟",
+                "إمتى تستخدم += بدل x = x + value؟",
+                "ليه استخدام ++ داخل expression قد يقلل وضوح الكود؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: ages جاية كنصوص من API والناتج \"252830\" بدل 83."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "+ مع strings يعمل concatenation.",
+                "حوّل كل قيمة إلى Number قبل الجمع."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const total = ages.reduce((sum, age) => sum + Number(age), 0);"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: score من input.value وهو string."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "input.value دائمًا string.",
+                "حوّل قبل المقارنة أو الحساب."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (Number(score) > 80) console.log(\"Excellent\");"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: let x = 5; let y = x++ + 2 يعطي y = 7."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "x++ يرجع 5 ثم يزيد x إلى 6.",
+                "5 + 2 = 7.",
+                "افصل increment عن التعبير لو عايز وضوح."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ما نتيجة console.log(\"10\" - 3)؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الإجابة: 7 لأن - يحوّل النص الرقمي إلى رقم."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح الـ Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لماذا يطلع \"105\"؟"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let a = \"10\", b = 5; console.log(a + b);"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لأن + مع string يعمل concatenation. الحل: Number(a) + b أو +a + b."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: حل مشكلة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب تعبيرًا يحسب متوسط n1 و n2 و n3."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "(n1 + n2 + n3) / 3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تتنبأ بنتيجة + مع string أو number.",
+                "تعرف الفرق بين x++ و ++x.",
+                "تعرف أن * قبل + في precedence.",
+                "تستخدم += و -= بشكل صحيح.",
+                "تعرف أن المقارنات ترجع boolean.",
+                "تعرف متى تستخدم Number() للتحويل الصريح."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس الجاي Operator Precedence أو Type Conversion and Coercion سيشرح لماذا تنفذ expressions بترتيب معين وكيف تتحول الأنواع تلقائيًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ملخص الدرس:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "Arithmetic operators تنفذ حسابات على الأرقام.",
+                "+ مع strings يعمل concatenation.",
+                "Assignment operators تعدل القيم داخل variables.",
+                "Comparison operators ترجع Boolean.",
+                "DRY يقلل التكرار والأخطاء.",
+                "Precedence يحدد ترتيب تنفيذ operators.",
+                "Coercion يفسر كثيرًا من النتائج الغريبة مثل \"5\" + 3."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 30,
+    "subsections": 20,
+    "subsubsections": 0,
+    "blocks": 214,
+    "codeBlocks": 37,
+    "outputs": 23,
+    "boxes": 63,
+    "tables": 13,
+    "lists": 14
+  }
+}

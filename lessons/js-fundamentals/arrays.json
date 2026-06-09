@@ -1,0 +1,1348 @@
+{
+  "metadata": {
+    "sourceFile": "Arrays.tex",
+    "convertedAt": "2026-06-07T06:47:20.945214+00:00",
+    "title": "Arrays في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "تصحيح نقطة Array constructor: يمكن استخدام Array() بدون new لكن يفضّل literal []",
+        "إضافة فخ new Array(3) الذي ينشئ slots فارغة بطول 3 وليس [3]",
+        "توضيح أن arrays هي objects خاصة وأن typeof array يرجع object",
+        "إضافة Array.isArray للفحص الصحيح",
+        "توضيح const مع arrays: يمنع reassignment ولا يمنع mutation",
+        "إضافة reference vs shallow copy باستخدام spread و slice",
+        "إضافة arr.at(-1) لجلب آخر عنصر",
+        "إضافة out-of-bounds و sparse arrays",
+        "تحسين جزء functions with arrays وشرح coercion مع array + number و array - number",
+        "تطوير Troubleshooting و Cheat Sheet و Senior Questions والتمارين"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "Arrays في JavaScript",
+    "أول Data Structure هنتعلمها",
+    "من كورس The Complete JavaScript Course"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "أهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد ما تخلص الهاندبوك ده، هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفهم لماذا نحتاج Arrays بدل متغيرات كثيرة.",
+                "تنشئ Array باستخدام literal syntax والطريقة الأقل شيوعًا Array constructor.",
+                "تصل لأي عنصر باستخدام index وتفهم zero-based indexing.",
+                "تستخدم length وتجيب آخر عنصر تلقائيًا.",
+                "تعدل عناصر array وتفهم mutation.",
+                "تفهم العلاقة بين const و arrays.",
+                "تضع أنواع بيانات مختلفة داخل array واحد.",
+                "تستخدم functions مع عناصر arrays.",
+                "تفهم reference vs copy بشكل مبدئي.",
+                "تستخدم Array.isArray لفحص المصفوفات."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Arrays هي أول Data Structure مهمة في JavaScript. بدل تخزين قيم كثيرة في متغيرات منفصلة، نضعها داخل قائمة مرتبة يمكن الوصول لعناصرها بالـ index."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أهم Data Structures في أساسيات JavaScript هما Arrays و Objects. الـ Array مناسبة للقوائم المرتبة، والـ Object مناسب غالبًا للبيانات ذات المفاتيح والأسماء."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه نحتاج Arrays؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بدون arrays سنحتاج متغير لكل قيمة:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friend1 = \"Michael\";\nconst friend2 = \"Steven\";\nconst friend3 = \"Peter\";"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "باستخدام Array نخزن القيم في مكان واحد:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = [\"Michael\", \"Steven\", \"Peter\"];\nconsole.log(friends);"
+        },
+        {
+          "type": "output",
+          "text": "[\"Michael\", \"Steven\", \"Peter\"]"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تشبيه: Array مثل صف كراسي مرقمة من 0. كل كرسي له index، وكل index يحتوي value."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "Index 0",
+              "Index 1",
+              "Index 2"
+            ],
+            [
+              "Michael",
+              "Steven",
+              "Peter"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "طرق إنشاء Array",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Literal Syntax []",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = [\"Michael\", \"Steven\", \"Peter\"];"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "هذه الطريقة هي الأكثر استخدامًا ووضوحًا، ويفضل استخدامها في معظم الحالات."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Array Constructor",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const years = new Array(1991, 1984, 2008, 2020);\nconsole.log(years);"
+        },
+        {
+          "type": "output",
+          "text": "[1991, 1984, 2008, 2020]"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تصحيح مهم: Array() يمكن استدعاؤها بدون new أيضًا، لكن الأفضل في التعلم والعمل اليومي استخدام [] لأنها أوضح وتتفادى فخاخ constructor."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "فخ new Array(3)",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log([3]);\nconsole.log(new Array(3));\nconsole.log(new Array(3).length);"
+        },
+        {
+          "type": "output",
+          "text": "[3]\n[empty × 3]\n3"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "new Array(3) لا تنشئ [3]. هي تنشئ array بطول 3 وخانات فارغة sparse/empty. لذلك [] أكثر أمانًا ووضوحًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "مقارنة طرق الإنشاء",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المقارنة",
+              "Literal []",
+              "new Array()"
+            ],
+            [
+              "الشكل",
+              "[\"a\", \"b\"]",
+              "new Array(\"a\", \"b\")"
+            ],
+            [
+              "الاستخدام",
+              "الأكثر شيوعًا",
+              "أقل شيوعًا"
+            ],
+            [
+              "فخ خاص",
+              "لا يوجد غالبًا",
+              "new Array(3) ينشئ طول 3 لا عنصر 3"
+            ],
+            [
+              "التوصية",
+              "استخدمها افتراضيًا",
+              "استخدمها نادرًا"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الوصول لعناصر Array",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = [\"Michael\", \"Steven\", \"Peter\"];\n\nconsole.log(friends[0]);\nconsole.log(friends[2]);\nconsole.log(friends[3]);"
+        },
+        {
+          "type": "output",
+          "text": "Michael\nPeter\nundefined"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Arrays تبدأ من index 0، وليس 1. ولو استخدمت index خارج الحدود سترجع undefined وليس Error."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "العنصر",
+              "Index"
+            ],
+            [
+              "الأول",
+              "0"
+            ],
+            [
+              "الثاني",
+              "1"
+            ],
+            [
+              "الثالث",
+              "2"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاصية length وآخر عنصر",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = [\"Michael\", \"Steven\", \"Peter\"];\n\nconsole.log(friends.length);\nconsole.log(friends[friends.length - 1]);\nconsole.log(friends.at(-1));"
+        },
+        {
+          "type": "output",
+          "text": "3\nPeter\nPeter"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "length هو عدد العناصر وليس آخر index.",
+                "لو length = 3، آخر index هو 2.",
+                "arr.at(-1) طريقة حديثة لجلب آخر عنصر."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Expressions داخل []",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "داخل brackets للوصول للعنصر يمكن وضع أي expression ينتج index."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = [\"Michael\", \"Steven\", \"Peter\"];\nconst i = 1;\n\nconsole.log(friends[i]);\nconsole.log(friends[1 + 1]);\nconsole.log(friends[friends.length - 1]);"
+        },
+        {
+          "type": "output",
+          "text": "Steven\nPeter\nPeter"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لا تضع statement داخل []؛ المطلوب قيمة أو expression ينتج قيمة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تعديل عناصر Array Mutation",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = [\"Michael\", \"Steven\", \"Peter\"];\n\nfriends[2] = \"Jay\";\nconsole.log(friends);"
+        },
+        {
+          "type": "output",
+          "text": "[\"Michael\", \"Steven\", \"Jay\"]"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "كانت القيمة في index 2 هي Peter.",
+                "غيرناها إلى Jay.",
+                "نفس array اتغيرت من الداخل. هذا يسمى mutation."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "const مع Arrays",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = [\"Michael\", \"Steven\", \"Peter\"];\n\nfriends[2] = \"Jay\";      // يعمل\n// friends = [\"Bob\"];    // TypeError: Assignment to constant variable"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "const يمنع إعادة تعيين المتغير نفسه لقيمة/array جديدة.",
+                "const لا يمنع تعديل محتوى object أو array.",
+                "السبب أن المتغير يحتفظ بمرجع reference للـ array، والمحتوى يمكن تغييره."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Arrays هي Objects خاصة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = [\"Michael\", \"Steven\"];\n\nconsole.log(typeof friends);\nconsole.log(Array.isArray(friends));\nconsole.log(Array.isArray({}));"
+        },
+        {
+          "type": "output",
+          "text": "object\ntrue\nfalse"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "typeof array يرجع object. لفحص هل القيمة Array فعلاً استخدم Array.isArray(value)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أنواع بيانات مختلفة في Array واحد",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const firstName = \"Jonas\";\nconst friends = [\"Michael\", \"Steven\", \"Peter\"];\n\nconst jonas = [\n  firstName,\n  \"Schmedtmann\",\n  2037 - 1991,\n  \"teacher\",\n  friends\n];\n\nconsole.log(jonas);\nconsole.log(jonas.length);"
+        },
+        {
+          "type": "output",
+          "text": "[\"Jonas\", \"Schmedtmann\", 46, \"teacher\", [\"Michael\", \"Steven\", \"Peter\"]]\n5"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أي موضع داخل array يقبل expression: literal value، variable، عملية حسابية، function call، array أخرى، object، إلخ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Functions مع Arrays",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "الدالة والبيانات",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const calcAge = function (birthYear) {\n  return 2037 - birthYear;\n};\n\nconst years = [1990, 1967, 2002, 2010, 2018];"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "ما لا يعمل كما تتوقع",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(calcAge(years));\nconsole.log(years + 10);\nconsole.log(years - 10);"
+        },
+        {
+          "type": "output",
+          "text": "NaN\n1990,1967,2002,2010,201810\nNaN"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "calcAge يتوقع رقمًا، لكننا مررنا array كاملة.",
+                "+ مع array يحولها غالبًا إلى string ثم يعمل concatenation.",
+                "- يحاول تحويل array إلى number، وغالبًا يفشل فيعطي NaN."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "الطريقة الصحيحة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const age1 = calcAge(years[0]);\nconst age2 = calcAge(years[1]);\nconst age3 = calcAge(years[years.length - 1]);\n\nconsole.log(age1, age2, age3);\n\nconst ages = [\n  calcAge(years[0]),\n  calcAge(years[1]),\n  calcAge(years[years.length - 1])\n];\nconsole.log(ages);"
+        },
+        {
+          "type": "output",
+          "text": "47 70 19\n[47, 70, 19]"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استدعاء function هو expression ينتج قيمة، لذلك يمكن وضعه داخل array literal."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Reference vs Copy",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Arrays تُخزن وتُمرر بالمرجع reference. لو عملت const b = a، فهما يشيران لنفس array."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const a = [1, 2];\nconst b = a;\n\nb.push(3);\nconsole.log(a);\nconsole.log(b);"
+        },
+        {
+          "type": "output",
+          "text": "[1, 2, 3]\n[1, 2, 3]"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لو تريد نسخة سطحية shallow copy استخدم spread أو slice."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const original = [1, 2];\nconst copy1 = [...original];\nconst copy2 = original.slice();\n\ncopy1.push(3);\nconsole.log(original);\nconsole.log(copy1);"
+        },
+        {
+          "type": "output",
+          "text": "[1, 2]\n[1, 2, 3]"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "spread و slice يعملان shallow copy فقط. لو داخل array objects أو arrays متداخلة، العناصر الداخلية ما زالت references."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "التحقق من Array فارغة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const arr = [];\n\nconsole.log(Boolean(arr));\nconsole.log(arr.length > 0);\nconsole.log(Array.isArray(arr) && arr.length > 0);"
+        },
+        {
+          "type": "output",
+          "text": "true\nfalse\nfalse"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "[] قيمة truthy. لذلك if (arr) لا يعني أن المصفوفة فيها عناصر. استخدم arr.length أو Array.isArray(arr) && arr.length > 0."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Sparse Arrays والفجوات",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const weird = [];\nweird[3] = \"hello\";\n\nconsole.log(weird);\nconsole.log(weird.length);\nconsole.log(weird[0]);"
+        },
+        {
+          "type": "output",
+          "text": "[empty × 3, \"hello\"]\n4\nundefined"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "JavaScript تسمح بإنشاء gaps داخل arrays. للمبتدئين: حاول تجنب القفز في indexes واستخدم methods مثل push لاحقًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "قسم خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ",
+              "الصح"
+            ],
+            [
+              "وضع الفاصلة داخل string بدل بين العناصر",
+              "الفاصلة بين عناصر array خارج علامات التنصيص"
+            ],
+            [
+              "الاعتماد على new Array(3)",
+              "استخدم [3] لو تريد عنصرًا واحدًا قيمته 3"
+            ],
+            [
+              "استبدال array كاملة وهي const",
+              "عدّل عنصرًا أو استخدم let لو تحتاج إعادة تعيين"
+            ],
+            [
+              "تمرير array كاملة لدالة تتوقع رقم",
+              "مرر عنصرًا مثل years[0] أو استخدم loop/map لاحقًا"
+            ],
+            [
+              "افتراض أن length يبدأ من 0",
+              "length هو العدد الفعلي"
+            ],
+            [
+              "استخدام if (arr) لفحص هل فيها عناصر",
+              "استخدم arr.length > 0"
+            ],
+            [
+              "استخدام typeof لفحص array",
+              "استخدم Array.isArray"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الكود",
+              "ملاحظة"
+            ],
+            [
+              "إنشاء Array",
+              "const arr = [1, 2, 3]",
+              "Literal syntax الأشهر"
+            ],
+            [
+              "إنشاء بطريقة constructor",
+              "new Array(1, 2, 3)",
+              "أقل استخدامًا"
+            ],
+            [
+              "الوصول لعنصر",
+              "arr[0]",
+              "zero-based"
+            ],
+            [
+              "عدد العناصر",
+              "arr.length",
+              "ليس zero-based"
+            ],
+            [
+              "آخر عنصر",
+              "arr[arr.length - 1] أو arr.at(-1)",
+              "تلقائي"
+            ],
+            [
+              "تعديل عنصر",
+              "arr[0] = \"new\"",
+              "mutation"
+            ],
+            [
+              "const + Array",
+              "تغيير العناصر مسموح",
+              "إعادة التعيين ممنوعة"
+            ],
+            [
+              "فحص Array",
+              "Array.isArray(arr)",
+              "أفضل من typeof"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Arrays Quick Reference"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const a = [1, 2, 3];\n\nconsole.log(a[0]);              // first element\nconsole.log(a.length);          // number of elements\nconsole.log(a[a.length - 1]);   // last element\nconsole.log(a.at(-1));          // last element modern style\n\na[0] = 99;                      // mutate element\nconsole.log(Array.isArray(a));  // true\n\nconst copy = [...a];             // shallow copy"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات Glossary",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق",
+              "المعنى"
+            ],
+            [
+              "Array",
+              "أراي",
+              "مصفوفة؛ قائمة مرتبة من العناصر"
+            ],
+            [
+              "Index",
+              "إندكس",
+              "رقم موقع العنصر"
+            ],
+            [
+              "Zero-Based",
+              "زيرو بيسد",
+              "الترقيم يبدأ من 0"
+            ],
+            [
+              "Length",
+              "لينث",
+              "عدد العناصر"
+            ],
+            [
+              "Mutate",
+              "ميوتيت",
+              "تعديل المحتوى"
+            ],
+            [
+              "Literal",
+              "ليترال",
+              "كتابة القيمة مباشرة"
+            ],
+            [
+              "Expression",
+              "إكسبريشن",
+              "كود ينتج قيمة"
+            ],
+            [
+              "Property",
+              "بروبرتي",
+              "خاصية مثل length"
+            ],
+            [
+              "Reference",
+              "ريفيرنس",
+              "إشارة لنفس الكائن في الذاكرة"
+            ],
+            [
+              "Shallow Copy",
+              "شالو كوبي",
+              "نسخة سطحية"
+            ],
+            [
+              "Sparse Array",
+              "سبارس أراي",
+              "مصفوفة بها فجوات/empty slots"
+            ],
+            [
+              "NaN",
+              "نان",
+              "Not a Number"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "Assignment to constant variable",
+              "تحاول إعادة تعيين array معلنة const",
+              "عدّل عناصرها أو استخدم let إذا تحتاج استبدالها"
+            ],
+            [
+              "undefined عند الوصول لعنصر",
+              "index خارج الحدود أو array فارغة",
+              "راجع length قبل الوصول"
+            ],
+            [
+              "NaN في عملية حسابية",
+              "عملية على array كاملة بدل عنصر",
+              "استخدم arr[0] أو loop/map لاحقًا"
+            ],
+            [
+              "typeof arr = object",
+              "arrays objects خاصة",
+              "استخدم Array.isArray"
+            ],
+            [
+              "a تغيرت بعد تعديل b",
+              "a و b يشيران لنفس reference",
+              "استخدم [...a] أو a.slice()"
+            ],
+            [
+              "if (arr) يعمل مع []",
+              "[] truthy",
+              "استخدم arr.length > 0"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة لاختبار فهمك",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "لو colors = [\"red\", \"green\", \"blue\"]، ما نتيجة colors[1]؟",
+              "answer": "\"green\" لأن index يبدأ من 0."
+            },
+            {
+              "question": "ما نتيجة colors.length؟",
+              "answer": "3، العدد الفعلي للعناصر."
+            },
+            {
+              "question": "كيف تجيب آخر عنصر من array؟",
+              "answer": "arr[arr.length - 1] أو arr.at(-1)."
+            },
+            {
+              "question": "لماذا const arr = [1,2]; arr[0] = 5 يعمل؟",
+              "answer": "const يمنع إعادة تعيين المتغير، لكنه لا يمنع mutation داخل array."
+            },
+            {
+              "question": "كيف تعمل array جديدة من نتائج double على [3,7]؟",
+              "answer": "const results = [double(arr[0]), double(arr[1])];"
+            },
+            {
+              "question": "كيف تفحص أن القيمة array؟",
+              "answer": "Array.isArray(value)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Array قائمة مرتبة من العناصر.",
+                "الوصول بالـ index: arr[0] أول عنصر.",
+                "length هو عدد العناصر.",
+                "const لا يمنع تعديل محتوى array.",
+                "arrays objects خاصة، لذلك استخدم Array.isArray للفحص."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بدون arrays ستحتاج متغيرًا منفصلًا لكل قيمة. arrays تجعل التعامل مع القوائم أسهل: وصول، تعديل، نسخ، ثم لاحقًا loops وmethods مثل push وmap وfilter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Array مثل رف صناديق مرقمة من 0. الرقم هو index. length هو عدد الصناديق، وآخر صندوق رقمه length - 1."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: arr[arr.length] يرجع undefined لأنه index بعد آخر عنصر."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const arr = [1,2,3];\nconsole.log(arr[arr.length]); // undefined"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: const لا يمنع push أو تعديل العناصر."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const arr = [1,2];\narr[0] = 9; // works"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: typeof array يرجع object."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const arr = [];\nconsole.log(typeof arr);\nconsole.log(Array.isArray(arr));"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "لماذا index يبدأ من 0؟",
+                "ما الفرق بين arr[0] و arr.at(0)؟",
+                "لماذا const arr = []; arr.push(1) يعمل؟",
+                "كيف تصل لآخر عنصر بأكثر من طريقة؟",
+                "لماذا نستخدم Array.isArray؟",
+                "ما الفرق بين reference و shallow copy؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: arr[0] من API أحيانًا undefined."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "الـ API قد يرجع [] فارغة.",
+                "arr[0] على array فارغة = undefined.",
+                "تحقق من length قبل الوصول."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const first = arr.length > 0 ? arr[0] : null;"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: const ids = userIds; ids.push(99) عدلت userIds."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "ids و userIds نفس reference.",
+                "push يعمل mutation.",
+                "انسخ قبل التعديل."
+              ]
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const ids = [...userIds];\nids.push(99);"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: if (arr) يعمل مع [] رغم أنها فارغة."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (Array.isArray(arr) && arr.length > 0) {\n  console.log('has items');\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ما نتيجة [1,2,3][1]؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الإجابة: 2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "const a = [1,2]; const b = a; b.push(3); لماذا a تغيرت؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "لأن a و b نفس reference. استخدم const b = [...a]."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: آخر عنصر",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب تعبير يرجع آخر عنصر من arr بدون معرفة الطول."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "arr[arr.length - 1]\n// or\narr.at(-1)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 4: فحص Array غير فارغة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب شرطًا يتحقق أن data مصفوفة وبها عناصر."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "if (Array.isArray(data) && data.length > 0) {\n  console.log(data[0]);\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تصل لعنصر بالـ index.",
+                "تعرف أن index يبدأ من 0.",
+                "تعرف أن length هو العدد الفعلي.",
+                "تفرق بين reference والنسخة.",
+                "تستخدم Array.isArray.",
+                "تعرف أن const لا يمنع mutation.",
+                "تتجنب new Array(3) عندما تقصد [3]."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس الجاي Array Operations/Methods: push, pop, shift, unshift, indexOf, includes وغيرها. هذه methods ستجعل التعامل مع arrays أقوى وأسهل."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Arrays أساس التعامل مع القوائم في JavaScript. افهم index وlength وmutation وreference جيدًا، لأن كل Array Methods والـ loops لاحقًا ستبني على هذه المفاهيم."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 30,
+    "subsections": 11,
+    "subsubsections": 0,
+    "blocks": 149,
+    "codeBlocks": 28,
+    "outputs": 15,
+    "boxes": 45,
+    "tables": 7,
+    "lists": 11
+  }
+}

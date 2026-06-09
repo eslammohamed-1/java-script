@@ -1,9 +1,16 @@
 import { useState } from 'react';
 
-function FillItem({ question, answer, index, onCorrect }) {
+function normalizeAnswer(value) {
+  return String(value ?? '').trim().toLowerCase();
+}
+
+function FillItem({ question, answer, acceptedAnswers, explanation, index, onCorrect }) {
   const [value, setValue] = useState('');
   const [checked, setChecked] = useState(false);
-  const isCorrect = value.trim().toLowerCase() === answer.toLowerCase();
+  const validAnswers = acceptedAnswers?.length ? acceptedAnswers : [answer];
+  const isCorrect = validAnswers
+    .map(normalizeAnswer)
+    .includes(normalizeAnswer(value));
 
   function handleCheck() {
     setChecked(true);
@@ -42,6 +49,9 @@ function FillItem({ question, answer, index, onCorrect }) {
           {isCorrect
             ? '✓ صحيح!'
             : `✗ خطأ. الإجابة الصحيحة: ${answer}`}
+          {explanation && (
+            <div className="quiz-explanation">{explanation}</div>
+          )}
         </div>
       )}
     </div>
@@ -59,6 +69,8 @@ export default function FillInBlankTests({ tests, onCorrect }) {
           index={i}
           question={test.question}
           answer={test.answer}
+          acceptedAnswers={test.accepted_answers}
+          explanation={test.explanation}
           onCorrect={onCorrect}
         />
       ))}

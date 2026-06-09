@@ -860,6 +860,194 @@ a {
   color: var(--text-muted);
 }
 
+.improved-course__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.improved-course__accordion {
+  gap: 0.65rem;
+}
+
+.improved-accordion {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.improved-accordion__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.98rem;
+  font-weight: 700;
+  text-align: right;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.improved-accordion__trigger:hover {
+  background: var(--surface-hover);
+}
+
+.improved-accordion--open .improved-accordion__trigger {
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-hover);
+}
+
+.improved-accordion__title {
+  flex: 1;
+  line-height: 1.5;
+}
+
+.improved-accordion__icon {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: var(--accent-bg);
+  color: var(--accent-soft);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.improved-accordion__panel {
+  padding: 1rem 1.1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.improved-section {
+  padding-bottom: 0.5rem;
+}
+
+.improved-section__title {
+  margin: 0 0 0.75rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.improved-section--level-0 .improved-section__title,
+.improved-section--level-1 .improved-section__title {
+  font-size: 1.15rem;
+}
+
+.improved-section--level-2 .improved-section__title {
+  font-size: 1.05rem;
+}
+
+.improved-section--level-3 .improved-section__title,
+.improved-section--level-4 .improved-section__title {
+  font-size: 0.98rem;
+}
+
+.lesson-content__list--ordered {
+  list-style: decimal;
+}
+
+.lesson-qa-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.lesson-qa-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.lesson-qa-item__question {
+  color: var(--text);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.lesson-qa-item__toggle {
+  align-self: flex-start;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  background: var(--accent-bg);
+  color: var(--accent-soft);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.lesson-qa-item__toggle:hover {
+  background: rgba(251, 191, 36, 0.25);
+}
+
+.lesson-qa-item__answer {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--info-bg);
+  border: 1px solid rgba(125, 211, 252, 0.25);
+}
+
+.improved-code-block {
+  margin: 0.5rem 0 1rem;
+}
+
+.improved-code-block--preview-only .lesson-code-preview {
+  margin-bottom: 0;
+}
+
+.lesson-code-preview {
+  margin: 0 0 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  direction: ltr;
+  text-align: left;
+}
+
+.lesson-output {
+  margin: 0.5rem 0 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.lesson-output__label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.lesson-output pre {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  direction: ltr;
+  text-align: left;
+  white-space: pre-wrap;
+}
+
 .lesson-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--border);
@@ -1062,6 +1250,15 @@ a {
   background: var(--error-bg);
   color: var(--error);
   font-weight: 600;
+}
+
+.quiz-explanation {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid currentColor;
+  opacity: 0.85;
+  font-weight: 500;
+  line-height: 1.6;
 }
 
 /* Fill in blank */

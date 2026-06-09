@@ -1,5 +1,6 @@
 import { normalizeCourse } from '../utils/normalizeCourse';
 import { normalizeWorkshop } from '../utils/normalizeWorkshop';
+import { getJsFundamentalsQuestions } from './jsFundamentalsQuestions';
 
 const lessonConfigs = import.meta.glob('../../lessons/*/lesson.json', {
   eager: true,
@@ -16,6 +17,19 @@ function normalizeModuleData(type, raw) {
   return normalizeCourse(raw);
 }
 
+function withQuestionBank(lessonId, mod, data) {
+  if (lessonId !== 'js-fundamentals') return data;
+
+  const questions = getJsFundamentalsQuestions(mod.source);
+  if (!questions) return data;
+
+  return {
+    ...data,
+    mcq: questions.mcq,
+    complete_code_tests: questions.complete_code_tests,
+  };
+}
+
 function buildLesson(config) {
   const folderPath = `../../lessons/${config.id}`;
 
@@ -28,12 +42,14 @@ function buildLesson(config) {
       return null;
     }
 
+    const data = withQuestionBank(config.id, mod, normalizeModuleData(mod.type, raw));
+
     return {
       id: mod.id,
       type: mod.type,
       label: mod.label,
       isExam: mod.isExam ?? false,
-      data: normalizeModuleData(mod.type, raw),
+      data,
     };
   }).filter(Boolean);
 

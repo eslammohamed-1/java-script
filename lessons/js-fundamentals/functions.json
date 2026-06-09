@@ -1,0 +1,1899 @@
+{
+  "metadata": {
+    "sourceFile": "Functions.tex",
+    "convertedAt": "2026-06-07T06:42:45.700565+00:00",
+    "title": "Functions في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "توضيح الفرق بين Function Declaration والاستدعاء والقيمة الراجعة بشكل أدق",
+        "توضيح أن Function Declaration يتم hoisting لها، مع تأجيل التفاصيل للدرس القادم",
+        "توسيع الفرق بين parameters و arguments",
+        "توضيح أن الدوال في JavaScript قيم من الدرجة الأولى First-Class Values بشكل تمهيدي",
+        "تصحيح مفهوم console.log: هو دالة ترجع undefined غالبًا وليست بديلاً عن return",
+        "توضيح أن return يوقف تنفيذ الدالة ويرجع قيمة، وأن غياب return يعني undefined",
+        "إضافة default parameters كحل أولي لمشكلة arguments الناقصة",
+        "إضافة rest parameters و arguments object كمعلومة متقدمة اختيارية",
+        "إضافة مفهوم pure function و side effects بشكل مبسط",
+        "تحسين Troubleshooting و Cheat Sheet والتمارين والأسئلة العملية"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "Functions في JavaScript",
+    "اللبنة الأساسية لأي تطبيق JavaScript",
+    "من كورس The Complete JavaScript Course",
+    "القسم التاني: JavaScript Fundamentals -- Part 2"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "الربط بالمفاهيم السابقة وأهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قبل ما تبدأ، تأكد إنك فاهم:"
+            },
+            {
+              "type": "unordered_list",
+              "items": [
+                "const و let لتعريف المتغيرات.",
+                "if / else لاستخدام الشروط داخل function body.",
+                "Template Literals لبناء strings ديناميكية.",
+                "Strict Mode، ويفضل تفعيله في scripts العادية.",
+                "Expressions و Statements لأن return يرجع expression غالبًا."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد الدرس هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفهم معنى function ككود قابل لإعادة الاستخدام.",
+                "تعرّف Function Declaration وتستدعيها.",
+                "تفرق بين parameters و arguments.",
+                "تستخدم return لإرجاع قيمة وإيقاف التنفيذ.",
+                "تفرق بين console.log و return.",
+                "تفهم ماذا يحدث عند نقص أو زيادة arguments.",
+                "تلتقط return value داخل variable.",
+                "تفهم built-in functions مثل console.log و Number.",
+                "تطبق مبدأ DRY.",
+                "تتعرف مبدئيًا على default parameters و pure functions."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Functions هي واحدة من أهم اللبنات في JavaScript. الدالة قطعة كود قابلة لإعادة الاستخدام، ممكن تستقبل مدخلات، تعالجها، وترجع نتيجة."
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تشبيه سريع: variable يخزن قيمة، لكن function تخزن منطق أو خطوات تنفيذ يمكن تشغيلها أكثر من مرة."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "المقارنة",
+              "Variable",
+              "Function"
+            ],
+            [
+              "ماذا يخزن؟",
+              "قيمة واحدة",
+              "كود أو منطق قابل للتنفيذ"
+            ],
+            [
+              "مثال",
+              "const x = 10",
+              "function doSomething() { ... }"
+            ],
+            [
+              "الاستخدام",
+              "قراءة قيمة",
+              "استدعاء وتشغيل"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "معلومة تمهيدية متقدمة: الدوال في JavaScript قيم First-Class، يعني يمكن تخزينها في متغير وتمريرها كـ arguments وإرجاعها من دوال أخرى. التفاصيل ستأتي لاحقًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تشبيه Function بآلة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "تضع مدخلات Input مثل الفاكهة.",
+                "الدالة تعالج المدخلات داخل Function Body.",
+                "تحصل على Output أو Return Value."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "التدفق العام:"
+            },
+            {
+              "type": "text",
+              "text": "Arguments → Parameters داخل Function Body → Return Value → يمكن حفظها في Variable"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أول Function بسيطة بدون Parameters",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تعريف Function",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function logger() {\n  console.log(\"My name is Jonas\");\n}"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "الجزء",
+                  "المعنى"
+                ],
+                [
+                  "function",
+                  "keyword لتعريف دالة"
+                ],
+                [
+                  "logger",
+                  "اسم الدالة"
+                ],
+                [
+                  "()",
+                  "مكان parameters، وهو فارغ هنا"
+                ],
+                [
+                  "{ ... }",
+                  "Function Body"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "استدعاء Function",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function logger() {\n  console.log(\"My name is Jonas\");\n}\n\nlogger();\nlogger();\nlogger();"
+        },
+        {
+          "type": "output",
+          "text": "My name is Jonas\nMy name is Jonas\nMy name is Jonas"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "لازم تكتب الأقواس () لتشغيل الدالة.",
+                "كتابة logger بدون () لا تشغّل الدالة، بل تشير إلى قيمة الدالة نفسها.",
+                "لو لم تستدعِ الدالة، الكود داخلها لن ينفذ."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Calling / Running / Invoking",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "المصطلح",
+              "المعنى"
+            ],
+            [
+              "Calling",
+              "استدعاء الدالة"
+            ],
+            [
+              "Running",
+              "تشغيل الدالة"
+            ],
+            [
+              "Invoking",
+              "تنفيذ الدالة"
+            ]
+          ]
+        },
+        {
+          "type": "text",
+          "text": "الثلاثة غالبًا يستخدمون بنفس المعنى في هذا السياق."
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Function مع Parameters و Return",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Parameters",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Parameters هي أسماء متغيرات محلية خاصة بالدالة، تُكتب في تعريف الدالة وتستقبل قيمًا عند الاستدعاء."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function fruitProcessor(apples, oranges) {\n  const juice = `Juice with ${apples} apples and ${oranges} oranges.`;\n  return juice;\n}"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "apples و oranges هنا parameters: خانات فاضية يتم ملؤها عند استدعاء الدالة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Arguments",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const appleJuice = fruitProcessor(5, 0);\nconsole.log(appleJuice);"
+        },
+        {
+          "type": "output",
+          "text": "Juice with 5 apples and 0 oranges."
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "المقارنة",
+              "Parameters",
+              "Arguments"
+            ],
+            [
+              "التعريف",
+              "أسماء في تعريف الدالة",
+              "قيم فعلية في الاستدعاء"
+            ],
+            [
+              "المكان",
+              "function f(apples, oranges)",
+              "f(5, 0)"
+            ],
+            [
+              "التشبيه",
+              "خانات فاضية",
+              "القيم التي تملأ الخانات"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تتبع تنفيذ الكود خطوة بخطوة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function fruitProcessor(apples, oranges) {\n  const juice = `Juice with ${apples} apples and ${oranges} oranges.`;\n  return juice;\n}\n\nconst appleJuice = fruitProcessor(5, 0);\nconsole.log(appleJuice);"
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "JavaScript تقرأ تعريف الدالة وتحفظه، ولا تنفذ body الآن.",
+                "عند fruitProcessor(5, 0) يبدأ تشغيل الدالة.",
+                "apples = 5 و oranges = 0.",
+                "يتم بناء juice باستخدام template literal.",
+                "return juice ترجع النص وتنهي الدالة.",
+                "استدعاء الدالة يُستبدل بالقيمة الراجعة.",
+                "appleJuice يحفظ القيمة ثم console.log يطبعها."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "output",
+          "text": "Juice with 5 apples and 0 oranges."
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "return بالتفصيل",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "معنى return",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "return تعني: انتهيت من الدالة وهذه هي النتيجة.",
+                "القيمة الراجعة تحل محل function call.",
+                "return يوقف تنفيذ الدالة فورًا."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function add(a, b) {\n  return a + b;\n}\n\nconst result = add(3, 5);\nconsole.log(result);"
+        },
+        {
+          "type": "output",
+          "text": "8"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "التقاط Return Value",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const appleJuice = fruitProcessor(5, 0);\nconsole.log(appleJuice);\n\nconsole.log(fruitProcessor(2, 4));"
+        },
+        {
+          "type": "output",
+          "text": "Juice with 5 apples and 0 oranges.\nJuice with 2 apples and 4 oranges."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "حفظ النتيجة في variable أفضل عندما تحتاج استخدامها أكثر من مرة أو تمريرها لدالة أخرى."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "return يوقف تنفيذ الدالة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function example() {\n  console.log(\"Step 1\");\n  console.log(\"Step 2\");\n  return \"Done\";\n  console.log(\"Step 3\"); // unreachable\n}\n\nconst result = example();\nconsole.log(result);"
+        },
+        {
+          "type": "output",
+          "text": "Step 1\nStep 2\nDone"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أي كود بعد return في نفس مسار التنفيذ لن يعمل. هذا يسمى Unreachable Code."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "console.log vs return",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function addLog(a, b) {\n  console.log(a + b);\n}\n\nconst result1 = addLog(3, 5);\nconsole.log(\"result1 =\", result1);"
+        },
+        {
+          "type": "output",
+          "text": "8\nresult1 = undefined"
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function addReturn(a, b) {\n  return a + b;\n}\n\nconst result2 = addReturn(3, 5);\nconsole.log(\"result2 =\", result2);"
+        },
+        {
+          "type": "output",
+          "text": "result2 = 8"
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المقارنة",
+              "console.log",
+              "return"
+            ],
+            [
+              "الوظيفة",
+              "يطبع للـ console",
+              "يرجع قيمة للكود"
+            ],
+            [
+              "يوقف الدالة؟",
+              "لا",
+              "نعم"
+            ],
+            [
+              "نقدر نحفظ النتيجة؟",
+              "لا، لأنه مجرد side effect",
+              "نعم"
+            ],
+            [
+              "الاستخدام",
+              "debugging أو عرض مؤقت",
+              "منطق الدالة الحقيقي"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "console.log ليس بديلًا عن return. دالة تطبع فقط غالبًا ترجع undefined."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إعادة استخدام الدالة بقيم مختلفة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function fruitProcessor(apples, oranges) {\n  const juice = `Juice with ${apples} apples and ${oranges} oranges.`;\n  return juice;\n}\n\nconst appleJuice = fruitProcessor(5, 0);\nconst appleOrangeJuice = fruitProcessor(2, 4);\n\nconsole.log(appleJuice);\nconsole.log(appleOrangeJuice);"
+        },
+        {
+          "type": "output",
+          "text": "Juice with 5 apples and 0 oranges.\nJuice with 2 apples and 4 oranges."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "نفس الدالة، inputs مختلفة، outputs مختلفة. هذه قوة إعادة الاستخدام."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "عدد Arguments أقل أو أكثر من Parameters",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Arguments أقل من المطلوب",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function add(a, b) {\n  console.log(\"a =\", a);\n  console.log(\"b =\", b);\n  return a + b;\n}\n\nconsole.log(add(3));"
+        },
+        {
+          "type": "output",
+          "text": "a = 3\nb = undefined\nNaN"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الـ parameter الذي لا يستقبل argument يصبح undefined. العمليات الحسابية قد تنتج NaN."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Arguments أكثر من المطلوب",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function add(a, b) {\n  return a + b;\n}\n\nconsole.log(add(3, 5, 100));"
+        },
+        {
+          "type": "output",
+          "text": "8"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "القيم الزائدة لا ترتبط بـ parameters عادية ويتم تجاهلها في هذا المثال. توجد طرق متقدمة مثل rest parameters للتعامل معها."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Default Parameters كحل أولي",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function add(a = 0, b = 0) {\n  return a + b;\n}\n\nconsole.log(add(3));\nconsole.log(add());"
+        },
+        {
+          "type": "output",
+          "text": "3\n0"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Default parameters تمنع undefined في حالات كثيرة. سنتوسع فيها لاحقًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Rest Parameters كمعلومة متقدمة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function sumAll(...numbers) {\n  let total = 0;\n  for (const num of numbers) total += num;\n  return total;\n}\n\nconsole.log(sumAll(1, 2, 3, 4));"
+        },
+        {
+          "type": "output",
+          "text": "10"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "...numbers تجمع أي عدد من arguments داخل array. هذا موضوع متقدم سيأتي لاحقًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "دالة بسيطة مقابل دالة كاملة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المقارنة",
+              "دالة بسيطة",
+              "دالة كاملة"
+            ],
+            [
+              "Parameters",
+              "لا",
+              "نعم"
+            ],
+            [
+              "Arguments",
+              "لا غالبًا",
+              "نعم"
+            ],
+            [
+              "return",
+              "لا",
+              "نعم"
+            ],
+            [
+              "القيمة الراجعة",
+              "undefined تلقائيًا",
+              "قيمة محددة"
+            ],
+            [
+              "الاستخدام",
+              "تنفيذ side effect أو تكرار كود",
+              "معالجة بيانات وإرجاع نتيجة"
+            ],
+            [
+              "الشيوع",
+              "أقل",
+              "أكثر"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "أي function لا تحتوي return صريح ترجع undefined تلقائيًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أمثلة إضافية متنوعة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "حساب مساحة المستطيل",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function calcArea(length, width) {\n  return length * width;\n}\n\nconsole.log(calcArea(10, 5));"
+        },
+        {
+          "type": "output",
+          "text": "50"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تحويل Celsius إلى Fahrenheit",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function toFahrenheit(celsius) {\n  return celsius * 9 / 5 + 32;\n}\n\nconsole.log(toFahrenheit(0));\nconsole.log(toFahrenheit(100));\nconsole.log(toFahrenheit(37));"
+        },
+        {
+          "type": "output",
+          "text": "32\n212\n98.6"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "رسالة ترحيب",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function greet(name, time) {\n  return `Good ${time}, ${name}!`;\n}\n\nconsole.log(greet('Ahmed', 'morning'));\nconsole.log(greet('Sara', 'evening'));"
+        },
+        {
+          "type": "output",
+          "text": "Good morning, Ahmed!\nGood evening, Sara!"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "حساب العمر",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function calcAge(birthYear) {\n  return 2024 - birthYear;\n}\n\nconsole.log(calcAge(1990), calcAge(2000));"
+        },
+        {
+          "type": "output",
+          "text": "34 24"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "دالة مع if/else",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function checkAge(age) {\n  if (age >= 18) {\n    return 'You can drive!';\n  } else {\n    return 'You are too young.';\n  }\n}\n\nconsole.log(checkAge(20));\nconsole.log(checkAge(15));"
+        },
+        {
+          "type": "output",
+          "text": "You can drive!\nYou are too young."
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Built-in Functions",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "كثير من الأشياء التي تستخدمها هي functions جاهزة Built-in Functions."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log('Hello!');\n\nconst num = Number('23');\nconsole.log(num);"
+        },
+        {
+          "type": "output",
+          "text": "Hello!\n23"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "تستدعيها بالأقواس ().",
+                "تمرر لها arguments.",
+                "قد ترجع return value.",
+                "يمكن حفظ return value في variable إذا كانت ترجع قيمة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "DRY: Don't Repeat Yourself",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "DRY يعني لا تكرر نفسك. لو عندك منطق يتكرر، ضعه في function واستدعه عند الحاجة."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function logger() {\n  console.log('My name is Jonas');\n}\n\nlogger();\nlogger();\nlogger();"
+        },
+        {
+          "type": "output",
+          "text": "My name is Jonas\nMy name is Jonas\nMy name is Jonas"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "كود أنظف.",
+                "صيانة أسهل.",
+                "أخطاء أقل.",
+                "إعادة استخدام أفضل."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Pure Functions و Side Effects كمقدمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Pure Function هي دالة تعتمد فقط على inputs وترجع output بدون تغيير شيء خارجي. أما side effect فهو تأثير خارجي مثل console.log أو تعديل متغير خارجي أو DOM."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "function add(a, b) {\n  return a + b; // غالبًا pure\n}\n\nfunction logName(name) {\n  console.log(name); // side effect\n}"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ليس كل side effect سيئًا، لكنه يجب أن يكون مقصودًا. return مناسب للحسابات، وconsole.log مناسب للعرض أو debugging."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "المثال الكامل من الفيديو",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "\"use strict\";\n\nfunction logger() {\n  console.log(\"My name is Jonas\");\n}\n\nlogger();\nlogger();\nlogger();\n\nfunction fruitProcessor(apples, oranges) {\n  const juice = `Juice with ${apples} apples and ${oranges} oranges.`;\n  return juice;\n}\n\nconst appleJuice = fruitProcessor(5, 0);\nconsole.log(appleJuice);\n\nconsole.log(fruitProcessor(5, 0));\n\nconst appleOrangeJuice = fruitProcessor(2, 4);\nconsole.log(appleOrangeJuice);"
+        },
+        {
+          "type": "output",
+          "text": "My name is Jonas\nMy name is Jonas\nMy name is Jonas\nJuice with 5 apples and 0 oranges.\nJuice with 5 apples and 0 oranges.\nJuice with 2 apples and 4 oranges."
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "قسم خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ",
+              "الصح"
+            ],
+            [
+              "نسيان () عند الاستدعاء",
+              "logger() وليس logger"
+            ],
+            [
+              "الخلط بين parameters و arguments",
+              "parameter في التعريف، argument في الاستدعاء"
+            ],
+            [
+              "اعتبار console.log مثل return",
+              "log يطبع، return يرجع قيمة"
+            ],
+            [
+              "نسيان حفظ return value",
+              "const x = func()"
+            ],
+            [
+              "تكرار الكود",
+              "استخدم function و DRY"
+            ],
+            [
+              "نسيان return",
+              "بدون return ترجع undefined"
+            ],
+            [
+              "كود بعد return",
+              "return يوقف الدالة"
+            ],
+            [
+              "arguments أقل",
+              "الناقص يصبح undefined"
+            ],
+            [
+              "arguments أكثر",
+              "الزيادة تتجاهل إلا إذا استخدمت rest parameters"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص سريع",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المفهوم",
+              "الشرح"
+            ],
+            [
+              "Function",
+              "قطعة كود قابلة لإعادة الاستخدام"
+            ],
+            [
+              "Function Body",
+              "الكود داخل { }"
+            ],
+            [
+              "Parameters",
+              "متغيرات في تعريف الدالة"
+            ],
+            [
+              "Arguments",
+              "قيم فعلية في الاستدعاء"
+            ],
+            [
+              "Return",
+              "إرجاع قيمة وإيقاف الدالة"
+            ],
+            [
+              "console.log",
+              "يطبع ولا يرجع نتيجة مفيدة غالبًا"
+            ],
+            [
+              "Arguments أقل",
+              "الناقص undefined"
+            ],
+            [
+              "Arguments أكثر",
+              "الزيادة تتجاهل غالبًا"
+            ],
+            [
+              "Built-in Functions",
+              "دوال جاهزة مثل Number و console.log"
+            ],
+            [
+              "DRY",
+              "لا تكرر نفسك"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Functions Quick Reference"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function functionName(param1, param2) {\n  const result = param1 + param2;\n  return result;\n}\n\nconst output = functionName(arg1, arg2);\nconsole.log(output);"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "العملية",
+              "الشكل"
+            ],
+            [
+              "تعريف دالة",
+              "function name() { ... }"
+            ],
+            [
+              "تعريف مع parameters",
+              "function name(a, b) { ... }"
+            ],
+            [
+              "استدعاء",
+              "name() أو name(5, 3)"
+            ],
+            [
+              "إرجاع قيمة",
+              "return value;"
+            ],
+            [
+              "حفظ النتيجة",
+              "const x = name(5, 3)"
+            ],
+            [
+              "طباعة مباشرة",
+              "console.log(name(5, 3))"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات Glossary",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق",
+              "المعنى"
+            ],
+            [
+              "Function",
+              "فانكشن",
+              "دالة؛ كود قابل لإعادة الاستخدام"
+            ],
+            [
+              "Function Body",
+              "فانكشن بودي",
+              "جسم الدالة داخل { }"
+            ],
+            [
+              "Parameter",
+              "باراميتر",
+              "متغير في تعريف الدالة"
+            ],
+            [
+              "Argument",
+              "أرجيومنت",
+              "قيمة في استدعاء الدالة"
+            ],
+            [
+              "Return",
+              "ريتيرن",
+              "إرجاع قيمة من الدالة"
+            ],
+            [
+              "Return Value",
+              "ريتيرن فاليو",
+              "القيمة التي ترجعها الدالة"
+            ],
+            [
+              "Call / Invoke / Run",
+              "كول/إنفوك/ران",
+              "تشغيل الدالة"
+            ],
+            [
+              "Built-in Function",
+              "بيلت إن فانكشن",
+              "دالة جاهزة في اللغة"
+            ],
+            [
+              "DRY",
+              "دراي",
+              "Don’t Repeat Yourself"
+            ],
+            [
+              "Side Effect",
+              "سايد إفكت",
+              "تأثير خارجي مثل console.log"
+            ],
+            [
+              "Pure Function",
+              "بيور فانكشن",
+              "دالة بلا side effects وتعتمد على inputs"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "الدالة لا تعمل",
+              "لم تستدعها أو نسيت ()",
+              "اكتب name()"
+            ],
+            [
+              "النتيجة undefined",
+              "لا يوجد return",
+              "أضف return value"
+            ],
+            [
+              "parameter undefined",
+              "argument ناقص",
+              "مرر القيمة أو استخدم default parameter"
+            ],
+            [
+              "is not a function",
+              "اسم خاطئ أو القيمة ليست function",
+              "راجع الاسم والنوع"
+            ],
+            [
+              "NaN",
+              "argument ناقص أو نوع غير رقمي",
+              "تحقق من inputs"
+            ],
+            [
+              "كود بعد return لا يعمل",
+              "return يوقف الدالة",
+              "انقل الكود قبل return"
+            ],
+            [
+              "console.log يطبع undefined",
+              "الدالة تطبع ولا ترجع",
+              "استخدم return بدل log داخل الدالة"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين عملية متدرجة",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "تمرين 1: دالة التضعيف",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب double(num) ترجع ضعف الرقم."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function double(num) {\n  return num * 2;\n}\n\nconsole.log(double(5));\nconsole.log(double(100));"
+            },
+            {
+              "type": "output",
+              "text": "10\n200"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 2: رسالة ترحيب",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب welcome(name) ترجع Welcome, [name]!"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function welcome(name) {\n  return `Welcome, ${name}!`;\n}\n\nconsole.log(welcome('Ahmed'));\nconsole.log(welcome('Sara'));"
+            },
+            {
+              "type": "output",
+              "text": "Welcome, Ahmed!\nWelcome, Sara!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 3: هل الرقم زوجي؟",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب isEven(num) ترجع true لو زوجي."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function isEven(num) {\n  return num % 2 === 0;\n}\n\nconsole.log(isEven(4));\nconsole.log(isEven(7));\nconsole.log(isEven(0));"
+            },
+            {
+              "type": "output",
+              "text": "true\nfalse\ntrue"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 4: حاسبة الإكرامية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب calcTip(bill): 15% بين 50 و300، غير ذلك 20%."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function calcTip(bill) {\n  if (bill >= 50 && bill <= 300) {\n    return bill * 0.15;\n  }\n  return bill * 0.20;\n}\n\nconsole.log(calcTip(100));\nconsole.log(calcTip(40));\nconsole.log(calcTip(500));"
+            },
+            {
+              "type": "output",
+              "text": "15\n8\n100"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 5: وصف الشخص",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب describePerson(name, birthYear, job)."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function describePerson(name, birthYear, job) {\n  const age = 2024 - birthYear;\n  return `${name} is ${age} years old and works as a ${job}.`;\n}\n\nconsole.log(describePerson('Jonas', 1991, 'teacher'));\nconsole.log(describePerson('Sara', 2000, 'designer'));"
+            },
+            {
+              "type": "output",
+              "text": "Jonas is 33 years old and works as a teacher.\nSara is 24 years old and works as a designer."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "تمرين 6: الأصغر",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب min(a,b) ترجع الأصغر."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الحل:"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function min(a, b) {\n  return a < b ? a : b;\n}\n\nconsole.log(min(3, 7));\nconsole.log(min(10, 2));"
+            },
+            {
+              "type": "output",
+              "text": "3\n2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة نظرية لاختبار فهمك",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "ما الفرق بين parameter و argument؟",
+              "answer": "parameter اسم في تعريف الدالة، argument قيمة في الاستدعاء."
+            },
+            {
+              "question": "ما الفرق بين console.log و return؟",
+              "answer": "console.log يطبع فقط، return يرجع قيمة للكود ويوقف الدالة."
+            },
+            {
+              "question": "ماذا يحدث للكود بعد return؟",
+              "answer": "لا ينفذ في نفس مسار التنفيذ ويسمى unreachable code."
+            },
+            {
+              "question": "ماذا يحدث لو argument ناقص؟",
+              "answer": "الـ parameter المقابل يصبح undefined."
+            },
+            {
+              "question": "ما معنى DRY؟",
+              "answer": "Don’t Repeat Yourself؛ ضع الكود المتكرر في function."
+            },
+            {
+              "question": "ماذا ترجع function بدون return؟",
+              "answer": "undefined تلقائيًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الموضوع",
+              "علاقته بالـ Functions"
+            ],
+            [
+              "Function Declarations vs Expressions",
+              "طرق كتابة الدوال"
+            ],
+            [
+              "Arrow Functions",
+              "صيغة مختصرة ES6"
+            ],
+            [
+              "Functions calling Functions",
+              "تكوين منطق أكبر من دوال صغيرة"
+            ],
+            [
+              "Array Methods",
+              "map/filter/forEach تستقبل functions"
+            ],
+            [
+              "Callback Functions",
+              "تمرير function كـ argument"
+            ],
+            [
+              "DOM Manipulation",
+              "Event handlers هي functions"
+            ],
+            [
+              "Objects Methods",
+              "functions داخل objects"
+            ],
+            [
+              "React",
+              "components غالبًا functions"
+            ],
+            [
+              "Node.js",
+              "route handlers functions"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "الدالة كود معزول قابل لإعادة الاستخدام.",
+                "تستقبل parameters وتُستدعى بـ arguments.",
+                "return يرجع قيمة ويوقف التنفيذ.",
+                "بدون return ترجع undefined."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بدون functions الكود يصبح مكررًا وصعب الصيانة. الدوال تجعل الكود منظمًا وقابلًا لإعادة الاستخدام والاختبار."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدالة آلة: arguments تدخل، function body يعالج، return value يخرج. إذا لم تخرج شيئًا بـ return، الناتج undefined."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: نسيان return."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function sum(a, b) {\n  const s = a + b;\n}\nconsole.log(sum(1, 2)); // undefined"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: كود بعد return."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function f() {\n  return 5;\n  console.log('never');\n}"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: عدد arguments مختلف."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function add(a, b) { return a + b; }\nconsole.log(add(1)); // NaN"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "لماذا function بدون return ترجع undefined؟",
+                "ما الفرق بين parameter و argument؟",
+                "ما معنى pure function؟",
+                "كيف يؤثر return على control flow؟",
+                "لماذا console.log يعتبر side effect؟",
+                "كيف تتعامل مع arguments ناقصة؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: calcTotal ترجع undefined."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "راجع وجود return.",
+                "تأكد أن return خارج loop إذا تريد المجموع النهائي.",
+                "لا تكتفِ بـ console.log داخل الدالة."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: greet تطبع ثم console.log(greet()) يطبع undefined."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function greet(name) {\n  return `Hello ${name}`;\n}\nconsole.log(greet('Ali'));"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: getScore async ترجع undefined أو Promise غير مستخدم."
+            },
+            {
+              "type": "text",
+              "text": "الحل لاحقًا: async/await. الفكرة: return داخل callback أو then لا يساوي return من الدالة الخارجية."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية إضافية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "ما نتيجة function f(){return 5} console.log(f());؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الإجابة: 5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "function sum(a,b){ let s=a+b; } لا ترجع المجموع."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function sum(a, b) { const s = a + b; return s; }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: حل مشكلة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اكتب min(a,b) ترجع الأصغر."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "function min(a, b) { return a < b ? a : b; }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تكتب function بـ parameters و return.",
+                "تفرق بين تعريف الدالة واستدعائها.",
+                "تعرف لماذا return مهم.",
+                "تمرر argument بشكل صحيح.",
+                "تعرف ماذا يحدث بدون return.",
+                "تشرح console.log vs return."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس الجاي Function Declarations vs Expressions سيشرح طرق كتابة الدوال، ومفهوم hoisting بشكل أوضح، ثم Arrow Functions."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Functions أساس JavaScript. راجع الفرق بين parameters و arguments، وافهم return جيدًا، ودرّب نفسك على تحويل الكود المتكرر إلى functions صغيرة واضحة."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 33,
+    "subsections": 26,
+    "subsubsections": 0,
+    "blocks": 205,
+    "codeBlocks": 37,
+    "outputs": 27,
+    "boxes": 59,
+    "tables": 12,
+    "lists": 13
+  }
+}

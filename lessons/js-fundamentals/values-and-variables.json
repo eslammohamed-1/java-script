@@ -1,0 +1,1601 @@
+{
+  "metadata": {
+    "sourceFile": "Values and Variables.tex",
+    "convertedAt": "2026-06-07T06:18:52.242429+00:00",
+    "title": "Values and Variables - القيم والمتغيرات في JavaScript",
+    "language": "ar",
+    "version": "final-scientific-improved-v1",
+    "converter": "Manual cleaned and scientifically improved JSON by M365 Copilot",
+    "scientificReview": {
+      "status": "تم تحويل المحتوى إلى JSON منظم مع تحسينات علمية وتعليمية",
+      "mainImprovements": [
+        "توضيح أن const لا تعني أن القيمة immutable دائمًا، بل تمنع إعادة تعيين binding/reference",
+        "توضيح أن let firstName = value هو declaration مع initialization، وأن = هو assignment operator",
+        "إضافة Best Practice: استخدم const افتراضيًا و let فقط عند الحاجة لإعادة التعيين",
+        "تصحيح اصطلاح UPPERCASE: للثوابت العامة/السحرية أو الثوابت المعروفة وليس كل const",
+        "توضيح أن أسماء identifiers في JavaScript تدعم Unicode تقنيًا، لكن camelCase الإنجليزية هي الشائع في الكود الاحترافي",
+        "توضيح الفرق بين SyntaxError و ReferenceError و TypeError",
+        "إضافة ملاحظة عن Automatic Semicolon Insertion وأن ; اختيارية غالبًا لكنها مستحبة في بدايات التعلم",
+        "تحسين شرح memory والidentifier lookup بصورة أدق دون تعقيد",
+        "إضافة أمثلة واقعية وفخاخ واختبارات فهم محسنة"
+      ]
+    }
+  },
+  "preamble": {
+    "documentClass": {
+      "name": "article",
+      "options": [
+        "a4paper",
+        "12pt"
+      ]
+    },
+    "mainLanguage": "arabic",
+    "otherLanguage": "english",
+    "mainFont": "Amiri",
+    "packages": [
+      "polyglossia",
+      "fontspec",
+      "xcolor",
+      "listings",
+      "etoolbox",
+      "geometry",
+      "enumitem",
+      "array",
+      "booktabs",
+      "longtable",
+      "fancyhdr",
+      "titlesec",
+      "hyperref",
+      "setspace",
+      "mdframed"
+    ],
+    "customCommands": [
+      "en",
+      "code",
+      "outputtext"
+    ],
+    "customEnvironments": [
+      "warningbox",
+      "tipbox",
+      "errorbox",
+      "infobox",
+      "codebox",
+      "stepbox"
+    ]
+  },
+  "titlePage": [
+    "هاندبوك شامل",
+    "--- نسخة محسّنة ومزيدة ---",
+    "Values and Variables",
+    "القيم والمتغيرات في JavaScript",
+    "أساس كل حاجة في البرمجة",
+    "من كورس The Complete JavaScript Course",
+    "القسم الأول: JavaScript Fundamentals -- Part 1",
+    "يتضمن: تشبيهات من الحياة -- قواعد التسمية",
+    "الأخطاء الشائعة -- أمثلة عملية -- تمارين"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "أهداف التعلم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بعد ما تخلص الهاندبوك ده، هتقدر:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تفهم معنى Value في JavaScript.",
+                "تفرّق بين القيمة والمتغير والـ identifier.",
+                "تعرّف متغيرات باستخدام let وتفهم initialization و assignment.",
+                "تفهم متى تستخدم const ومتى تستخدم let.",
+                "تستخدم console.log لعرض القيم والنتائج.",
+                "تسمّي المتغيرات بطريقة صحيحة طبقًا لقواعد identifiers.",
+                "تتبع اصطلاحات التسمية مثل camelCase.",
+                "تتجنب الكلمات المحجوزة والمشاكل الشائعة مثل name في المتصفح.",
+                "تختار أسماء وصفية تساعدك وتساعد الفريق.",
+                "تفهم الفرق بين القاعدة الصارمة والاصطلاح البرمجي."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مقدمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "القيم Values والمتغيرات Variables هم أساس كل حاجة في البرمجة. القيمة هي البيانات نفسها، والمتغير هو اسم نستخدمه للإشارة لقيمة أو نتيجة مخزنة/مرتبطة في البرنامج."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "القيمة Value = قطعة بيانات مثل نص أو رقم أو Boolean.",
+                "المتغير Variable = اسم/identifier نستخدمه للوصول لقيمة.",
+                "التشبيه البسيط: المتغير صندوق عليه ليبل. علميًا أدق: المتغير binding بين اسم وقيمة في بيئة التنفيذ."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تحسين علمي: في JavaScript، المتغير ليس دائمًا “الصندوق” نفسه بالمعنى الحرفي، لكنه اسم يتم ربطه بقيمة. التشبيه مفيد للمبتدئين، لكن في المستوى الأدق نقول إن الاسم identifier يشير إلى value أو reference حسب نوع القيمة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه هي القيمة Value؟",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "التعريف",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "القيمة Value هي أصغر وحدة بيانات يتعامل معها البرنامج. ممكن تكون String أو Number أو Boolean أو undefined أو null أو Object وغيرها."
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "معلومة مهمة: بعض القيم primitive مثل numbers وstrings وbooleans، وبعضها reference values مثل objects وarrays. التفاصيل هتيجي في درس Data Types."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "أمثلة على القيم",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(\"Jonas\");  // String value\nconsole.log(23);       // Number value\nconsole.log(true);     // Boolean value"
+        },
+        {
+          "type": "output",
+          "text": "Jonas\n23\ntrue"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "القيم في العمليات الحسابية",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(40 + 8 + 23 - 10);"
+        },
+        {
+          "type": "output",
+          "text": "61"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "لدينا 4 قيم رقمية: 40 و 8 و 23 و 10.",
+                "العمليات + و - تنتج قيمة جديدة.",
+                "الناتج النهائي 61 هو أيضًا قيمة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه هو المتغير Variable؟",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "التعريف",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "المتغير هو اسم نعرّفه في البرنامج لكي نستخدمه لاحقًا للوصول لقيمة. في JavaScript الاسم يسمى identifier، وعملية ربط الاسم بالقيمة تتم داخل بيئة التنفيذ."
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تشبيه الصندوق ممتاز كبداية: القيمة هي الشيء داخل الصندوق، واسم المتغير هو الليبل. لكن تذكّر أن JavaScript فعليًا تتعامل مع bindings وقيم وreferences."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "التشبيه: الصندوق",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "تضع قيمة داخل “صندوق”.",
+                "تكتب على الصندوق اسمًا مثل firstName.",
+                "عندما تكتب firstName في الكود، JavaScript تبحث عن binding بهذا الاسم وترجع قيمته."
+              ]
+            },
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "الصندوق/الاسم",
+                  "القيمة"
+                ],
+                [
+                  "firstName",
+                  "\"Jonas\""
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "إزاي نعرّف متغير Declaring a Variable",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let firstName = \"Jonas\";"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تشريح أدق للكود:"
+            },
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "الجزء",
+                  "معناه"
+                ],
+                [
+                  "let",
+                  "keyword لتعريف binding قابل لإعادة التعيين"
+                ],
+                [
+                  "firstName",
+                  "identifier أو اسم المتغير"
+                ],
+                [
+                  "=",
+                  "assignment operator"
+                ],
+                [
+                  "\"Jonas\"",
+                  "القيمة الابتدائية initial value"
+                ],
+                [
+                  ";",
+                  "نهاية statement - غالبًا اختيارية بسبب ASI لكنها مستحبة للتعلم"
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الجملة let firstName = \"Jonas\"; تسمى Declaration with initialization: تعريف متغير مع إعطائه قيمة ابتدائية. أما firstName = \"Matilda\" لاحقًا فهي Assignment أو إعادة تعيين."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "استخدام المتغير",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let firstName = \"Jonas\";\n\nconsole.log(firstName);\nconsole.log(firstName);\nconsole.log(firstName);"
+        },
+        {
+          "type": "output",
+          "text": "Jonas\nJonas\nJonas"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "كل مرة JavaScript ترى firstName، تقوم بعملية identifier lookup: تبحث عن الاسم في النطاق Scope المناسب، ثم تستخدم القيمة المرتبطة به."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "الميزة الكبيرة: تغيير في مكان واحد",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let firstName = \"Matilda\";\n\nconsole.log(firstName);\nconsole.log(firstName);\nconsole.log(firstName);"
+        },
+        {
+          "type": "output",
+          "text": "Matilda\nMatilda\nMatilda"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "بدون متغيرات، ستكرر نفس القيمة في أماكن كثيرة.",
+                "مع متغيرات، تغيّر المصدر في مكان واحد.",
+                "هذا يقلل الأخطاء ويزيد قابلية الصيانة."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Literal Value مقابل Variable",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(\"Jonas\");\n\nlet firstName = \"Jonas\";\nconsole.log(firstName);"
+        },
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "المقارنة",
+              "Literal Value",
+              "Variable"
+            ],
+            [
+              "الشكل",
+              "console.log(\"Jonas\")",
+              "console.log(firstName)"
+            ],
+            [
+              "إعادة الاستخدام",
+              "ضعيفة",
+              "قوية"
+            ],
+            [
+              "الصيانة",
+              "تحتاج تغيير كل الأماكن",
+              "تغير قيمة واحدة"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "استخدام console.log",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "console.log(\"Jonas\");\nconsole.log(23);\n\nlet firstName = \"Jonas\";\nconsole.log(firstName);\n\nconsole.log(40 + 8 + 23 - 10);"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "console.log أداة لعرض القيم أثناء التعلم والتجربة.",
+                "تقدر تمرر قيمة مباشرة أو متغير أو expression.",
+                "الأخطاء تظهر في Console تلقائيًا حتى بدون console.log.",
+                "في التطبيقات الاحترافية لا نعتمد على console.log كوسيلة نهائية للمراقبة، لكنه ممتاز للتعلم والdebugging الأولي."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "let و const: تحسين علمي مهم",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المحتوى الأصلي يركز على let، وهذا مناسب كبداية. لكن في JavaScript الحديثة، الأفضل غالبًا استخدام const افتراضيًا، واستخدام let فقط عندما تحتاج لإعادة تعيين القيمة."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const birthYear = 1991; // لا نحتاج إعادة تعيين\nlet age = 30;          // ممكن تتغير لاحقًا\n\nage = 31;              // مسموح مع let\n// birthYear = 1992;   // TypeError: Assignment to constant variable"
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "let يسمح بإعادة التعيين reassignment.",
+                "const لا يسمح بإعادة تعيين الـ binding.",
+                "const لا يعني أن محتوى object أو array لا يمكن تعديله."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const friends = [];\nfriends.push('Michael'); // شغال: تعديل محتوى array\n\n// friends = ['Peter'];  // خطأ: إعادة تعيين binding نفسه"
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قاعدة عملية: استخدم const أولًا. لو احتجت تغيّر القيمة لاحقًا، استخدم let."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "قواعد تسمية المتغيرات: القواعد الصارمة",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "دي قواعد syntax لازم تتبعها؛ مخالفتها تؤدي إلى Error قبل تشغيل البرنامج. أسماء المتغيرات في JavaScript تسمى Identifiers."
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "القاعدة 1: لا يبدأ برقم",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let 3years = 3; // SyntaxError"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اسم المتغير لا يمكن أن يبدأ برقم."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let years3 = 3; // صحيح"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "القاعدة 2: الحروف والرموز المسموحة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "tabular",
+          "rows": [
+            [
+              "مسموح",
+              "ممنوع غالبًا"
+            ],
+            [
+              "حروف a-z و A-Z",
+              "مسافات"
+            ],
+            [
+              "أرقام 0-9 لكن ليس في البداية",
+              "- أو . أو ! أو @"
+            ],
+            [
+              "_ و $",
+              "رموز مثل & و # في الأسماء العادية"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "دقة علمية: JavaScript identifiers تدعم Unicode تقنيًا، يعني يمكن استخدام حروف غير إنجليزية. لكن في الكود الاحترافي الشائع، الأفضل استخدام أسماء إنجليزية camelCase لسهولة التعاون والأدوات."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let _name = \"Jonas\";\nlet $price = 99;\nlet first_name = \"Jonas\";\nlet firstName = \"Jonas\"; // الأفضل في JavaScript"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "القاعدة 3: لا تستخدم كلمات محجوزة",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let new = 27;       // SyntaxError\nlet function = \"test\"; // SyntaxError\nlet if = true;      // SyntaxError"
+        },
+        {
+          "type": "box",
+          "style": "error",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الكلمات المحجوزة لها معنى خاص داخل اللغة ولا تصلح كأسماء متغيرات."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let newValue = 27;\nlet functionName = \"test\";\nlet isConditionTrue = true;"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "حالة خاصة: name",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "name ليست keyword محجوزة رسميًا، لكنها قد تسبب التباسًا في بيئة المتصفح لأن window.name موجودة. الأفضل استخدام اسم أوضح مثل firstName أو userName أو productName."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "ملخص القواعد الصارمة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "القاعدة",
+              "مثال غلط",
+              "مثال صح"
+            ],
+            [
+              "لا يبدأ برقم",
+              "3years",
+              "years3"
+            ],
+            [
+              "لا يحتوي مسافة",
+              "first name",
+              "firstName"
+            ],
+            [
+              "لا يستخدم keyword",
+              "new",
+              "newValue"
+            ],
+            [
+              "لا يحتوي -",
+              "my-name",
+              "myName"
+            ],
+            [
+              "استخدم camelCase اصطلاحًا",
+              "first_name",
+              "firstName"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "اصطلاحات التسمية Naming Conventions",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "الاصطلاحات ليست syntax errors، لكنها تجعل الكود أوضح وأكثر احترافية."
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "camelCase",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "أول كلمة تبدأ بحرف صغير.",
+                "كل كلمة بعدها تبدأ بحرف كبير.",
+                "هو المعيار الأكثر شيوعًا لأسماء المتغيرات والدوال في JavaScript."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let firstName = \"Jonas\";\nlet myCurrentJob = \"teacher\";\nlet hasDriversLicense = true;"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "snake_case و PascalCase و UPPER_CASE",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let first_name = \"Jonas\"; // شائع في لغات أخرى\nlet FirstName = \"Jonas\";  // غالبًا للـ Classes وليس variables\nconst PI = 3.1415926;     // ثابت معروف أو عام"
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "تحسين علمي: ليس كل const يُكتب UPPER_CASE. نكتب UPPER_CASE عادة للثوابت العامة أو القيم السحرية الثابتة مثل MAX_SIZE أو API_URL أو PI. أما const عادي مثل birthYear أو firstName فيظل camelCase."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "const birthYear = 1991; // صحيح camelCase\nconst PI = 3.1415926;   // صحيح UPPER_CASE لأنه ثابت معروف"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "اختيار أسماء وصفية Descriptive Names",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "اسم المتغير يجب أن يوضح محتواه. أي شخص يقرأ الكود يجب أن يفهم المقصود من الاسم بدون البحث في كل الملف."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "JavaScript",
+          "code": "let myFirstJob = \"Programmer\";\nlet myCurrentJob = \"Teacher\";\n\nlet job1 = \"Programmer\"; // أقل وضوحًا\nlet job2 = \"Teacher\";    // أقل وضوحًا"
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "اسم غامض",
+              "اسم وصفي"
+            ],
+            [
+              "x",
+              "userAge"
+            ],
+            [
+              "temp",
+              "celsiusTemperature"
+            ],
+            [
+              "val",
+              "totalPrice"
+            ],
+            [
+              "arr",
+              "studentNames"
+            ],
+            [
+              "n",
+              "numberOfItems"
+            ],
+            [
+              "flag",
+              "isLoggedIn"
+            ],
+            [
+              "data",
+              "weatherForecast"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "قاعدة ذهبية: لو قرأت اسم المتغير ولم تفهم وظيفته، فالاسم يحتاج تحسينًا."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "قراءة رسائل الأخطاء في Console",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الأخطاء تظهر تلقائيًا في Console. تعلم قراءة نوع الخطأ والرسالة ورقم السطر من أول يوم."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الكود الغلط",
+              "نوع الخطأ",
+              "الرسالة"
+            ],
+            [
+              "let 3years = 3;",
+              "SyntaxError",
+              "Invalid or unexpected token"
+            ],
+            [
+              "let jonas&mat = \"JM\";",
+              "SyntaxError",
+              "Unexpected token &"
+            ],
+            [
+              "let new = 27;",
+              "SyntaxError",
+              "Unexpected token new"
+            ],
+            [
+              "console.log(userAge);",
+              "ReferenceError",
+              "userAge is not defined"
+            ],
+            [
+              "const score = 0; score = 10;",
+              "TypeError",
+              "Assignment to constant variable"
+            ]
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "SyntaxError = مشكلة في كتابة الكود قبل التنفيذ.",
+                "ReferenceError = استخدام اسم غير معرّف أو خارج النطاق.",
+                "TypeError = العملية غير مسموحة على نوع/قيمة معينة مثل إعادة تعيين const."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ملخص كل القواعد والاصطلاحات",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "القاعدة/الاصطلاح",
+              "نوعها",
+              "مثال"
+            ],
+            [
+              "لا يبدأ برقم",
+              "قاعدة صارمة",
+              "years3 وليس 3years"
+            ],
+            [
+              "لا يستخدم keyword",
+              "قاعدة صارمة",
+              "newValue وليس new"
+            ],
+            [
+              "camelCase",
+              "اصطلاح",
+              "firstName"
+            ],
+            [
+              "PascalCase للـ Classes",
+              "اصطلاح",
+              "Person وليس person كمتغير"
+            ],
+            [
+              "UPPER_CASE للثوابت العامة",
+              "اصطلاح",
+              "MAX_SIZE"
+            ],
+            [
+              "أسماء وصفية",
+              "اصطلاح",
+              "myCurrentJob وليس job2"
+            ],
+            [
+              "استخدم const افتراضيًا",
+              "Best Practice",
+              "const birthYear = 1991"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "قسم خد بالك -- الأخطاء الشائعة",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "الخطأ",
+              "الصح"
+            ],
+            [
+              "البدء برقم: 3years",
+              "years3 أو threeYears"
+            ],
+            [
+              "رموز غلط: my-name",
+              "myName"
+            ],
+            [
+              "كلمة محجوزة: let new = 5",
+              "let newValue = 5"
+            ],
+            [
+              "اسم غامض: x أو temp",
+              "userAge أو currentTemperature"
+            ],
+            [
+              "أول حرف كبير للمتغير: FirstName",
+              "firstName"
+            ],
+            [
+              "استخدام name وحدها",
+              "firstName أو userName"
+            ],
+            [
+              "استخدام let دائمًا",
+              "استخدم const افتراضيًا و let عند إعادة التعيين"
+            ],
+            [
+              "اعتبار const يعني immutable",
+              "const يمنع reassignment فقط"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Cheat Sheet",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "Values and Variables -- Quick Reference"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const firstName = \"Jonas\"; // لا نحتاج إعادة تعيين\nlet age = 30;              // قد تتغير لاحقًا\nage = 31;\n\nconsole.log(firstName);\nconsole.log(age);"
+            },
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "القاعدة",
+                  "مثال"
+                ],
+                [
+                  "لا يبدأ برقم",
+                  "years3"
+                ],
+                [
+                  "حروف + أرقام + _ + $",
+                  "_name, $price"
+                ],
+                [
+                  "لا تستخدم keywords",
+                  "newValue وليس new"
+                ],
+                [
+                  "camelCase",
+                  "myFirstJob"
+                ],
+                [
+                  "أسماء وصفية",
+                  "currentTemperature"
+                ],
+                [
+                  "UPPER_CASE للثوابت العامة",
+                  "MAX_SIZE, PI"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "معجم المصطلحات Glossary",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المصطلح",
+              "النطق",
+              "المعنى"
+            ],
+            [
+              "Value",
+              "فاليو",
+              "قيمة أو بيانات"
+            ],
+            [
+              "Variable",
+              "فاريابل",
+              "اسم مرتبط بقيمة"
+            ],
+            [
+              "Identifier",
+              "آيدنتيفاير",
+              "اسم المتغير/الدالة"
+            ],
+            [
+              "Declare",
+              "ديكلير",
+              "تعريف متغير"
+            ],
+            [
+              "Initialize",
+              "إنيشيالايز",
+              "إعطاء قيمة ابتدائية عند التعريف"
+            ],
+            [
+              "Assign",
+              "أساين",
+              "تخصيص/إعادة تعيين قيمة"
+            ],
+            [
+              "Literal",
+              "ليترال",
+              "قيمة مكتوبة مباشرة"
+            ],
+            [
+              "Binding",
+              "بايندنج",
+              "ربط اسم بقيمة"
+            ],
+            [
+              "Scope",
+              "سكوب",
+              "النطاق الذي يمكن رؤية المتغير فيه"
+            ],
+            [
+              "SyntaxError",
+              "سينتاكس إيرور",
+              "خطأ في بنية الكود"
+            ],
+            [
+              "ReferenceError",
+              "ريفيرانس إيرور",
+              "اسم غير معرّف أو خارج النطاق"
+            ],
+            [
+              "TypeError",
+              "تايب إيرور",
+              "عملية غير صالحة على قيمة/نوع"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Troubleshooting",
+      "blocks": [
+        {
+          "type": "table",
+          "environment": "longtable",
+          "rows": [
+            [
+              "المشكلة",
+              "السبب",
+              "الحل"
+            ],
+            [
+              "Invalid or unexpected token",
+              "اسم يبدأ برقم أو رمز ممنوع",
+              "غيّر الاسم لقواعد identifiers"
+            ],
+            [
+              "Unexpected token new/function/if",
+              "استخدمت keyword",
+              "اختر اسمًا وصفيًا مثل newValue"
+            ],
+            [
+              "is not defined",
+              "متغير غير معرّف أو typo أو خارج scope",
+              "راجع الاسم والنطاق"
+            ],
+            [
+              "Assignment to constant variable",
+              "تحاول إعادة تعيين const",
+              "استخدم let لو ستعيد التعيين"
+            ],
+            [
+              "لا يوجد output",
+              "نسيت console.log أو الكود لم يصل للسطر",
+              "أضف console.log وتحقق من التنفيذ"
+            ],
+            [
+              "الاسم يعمل لكنه غير واضح",
+              "اسم غامض",
+              "استخدم Descriptive Name"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة لاختبار فهمك",
+      "blocks": [
+        {
+          "type": "ordered_list",
+          "items": [
+            {
+              "question": "إيه هي القيمة Value؟",
+              "answer": "قطعة بيانات مثل رقم أو نص أو Boolean."
+            },
+            {
+              "question": "إيه الفرق بين value و variable؟",
+              "answer": "القيمة هي البيانات نفسها، والمتغير اسم يشير لقيمة."
+            },
+            {
+              "question": "ما الفرق بين declaration و assignment؟",
+              "answer": "declaration تعريف اسم جديد، assignment تخصيص أو تغيير قيمة له."
+            },
+            {
+              "question": "ليه نفضّل const على let؟",
+              "answer": "لأنها تمنع إعادة التعيين غير المقصودة وتجعل نية الكود أوضح."
+            },
+            {
+              "question": "هل const object يمنع تعديل محتوى object؟",
+              "answer": "لا، يمنع إعادة تعيين binding فقط."
+            },
+            {
+              "question": "ما الخطأ في let first-name؟",
+              "answer": "الشرطة غير مسموحة في identifier وتُفهم كعملية طرح."
+            },
+            {
+              "question": "ما الفرق بين SyntaxError و ReferenceError؟",
+              "answer": "SyntaxError في كتابة الكود، ReferenceError عند استخدام اسم غير موجود أو خارج scope."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "إيه اللي هتحتاجه بعد كده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس ده هو الأساس لكل حاجة جاية:"
+            },
+            {
+              "type": "table",
+              "environment": "tabular",
+              "rows": [
+                [
+                  "الموضوع الجاي",
+                  "علاقته بالدرس ده"
+                ],
+                [
+                  "Data Types",
+                  "أنواع القيم التي نخزنها"
+                ],
+                [
+                  "let vs const vs var",
+                  "طرق تعريف المتغيرات"
+                ],
+                [
+                  "Operators",
+                  "عمليات على القيم والمتغيرات"
+                ],
+                [
+                  "Strings",
+                  "التعامل مع النصوص"
+                ],
+                [
+                  "Functions",
+                  "استخدام المتغيرات داخل الدوال"
+                ],
+                [
+                  "Arrays",
+                  "تخزين أكثر من قيمة"
+                ],
+                [
+                  "Objects",
+                  "تجميع قيم مرتبطة ببعض"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الفكرة في سطرين TL;DR",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "Value = بيانات.",
+                "Variable = اسم مرتبط بقيمة.",
+                "استخدم const افتراضيًا و let عند الحاجة لإعادة التعيين.",
+                "الأسماء الوصفية أهم من الاختصارات."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "ليه ده موجود؟ Why",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "المتغيرات تجعل الكود قابلًا لإعادة الاستخدام والصيانة. بدونها ستكرر القيم وتزيد احتمالات الخطأ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "النموذج الذهني Mental Model",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "القيمة هي الشيء نفسه، والمتغير اسم يشير له. const يثبت الارتباط/المرجع، و let يسمح بتغييره. لو القيمة object أو array، محتواها قد يتغير حتى مع const."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "فخاخ شائعة + إزاي تكتشفها",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 1: إعادة تعريف let في نفس scope."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let x = 1;\nlet x = 2; // SyntaxError"
+            },
+            {
+              "type": "text",
+              "text": "الحل: استخدم x = 2 بدون let لو تريد إعادة التعيين، أو استخدم اسمًا مختلفًا."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 2: const مع object/array."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const arr = [];\narr.push(1); // صحيح\n\n// arr = [1]; // خطأ"
+            },
+            {
+              "type": "text",
+              "text": "الحل: افهم أن const يمنع reassignment وليس mutation."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "warning",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "فخ 3: اختلاف حالة الأحرف."
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "let userName = 'Ali';\nconsole.log(username); // ReferenceError غالبًا"
+            },
+            {
+              "type": "text",
+              "text": "الحل: وحد الاسم واستخدم linter."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "أسئلة سينيور يسألهالك",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "ordered_list",
+              "items": [
+                "ليه نفضّل const على let؟",
+                "ما الفرق بين binding و value؟",
+                "هل const يجعل object immutable؟",
+                "إمتى تستخدم UPPER_CASE؟",
+                "إيه الفرق بين SyntaxError و ReferenceError و TypeError؟",
+                "ليه الأسماء المختصرة مثل x سيئة غالبًا؟"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "مشاكل واقعية",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 1: total دائمًا 0 رغم وجود loop."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "تحقق أن total معرف خارج loop.",
+                "تحقق أن سطر التعديل يعمل فعلًا.",
+                "تحقق من scope.",
+                "الحل: عرّف total قبل loop وعدله داخلها."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 2: userName و username في نفس الملف."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "JavaScript حساسة لحالة الأحرف.",
+                "هذا قد ينشئ أسماء مختلفة.",
+                "ابحث ووحّد الاسم.",
+                "استخدم linter وStrict Mode."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "step",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "مشكلة 3: Assignment to constant variable."
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "المتغير معرف بـ const.",
+                "تحاول إعادة تعيينه.",
+                "استخدم let لو القيمة ستتغير.",
+                "لو ثابت رياضي، لا تعيد تعيينه واستخدم Math.PI إن مناسب."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "تمارين تطبيقية",
+      "blocks": []
+    },
+    {
+      "level": 2,
+      "title": "المستوى 1: توقع الناتج",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "بدون تشغيل: ما نتيجة let a = 5; a = 10; console.log(a);؟"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الإجابة: 10 لأن let يسمح بإعادة التعيين."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 2: أصلح الـ Bug",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الكود يطلع TypeError: Assignment to constant variable"
+            },
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const score = 0;\nscore = score + 10;"
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "استخدم let score = 0 لو score ستتغير."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "المستوى 3: حل مشكلة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "code",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "عرّف متغيرًا لاسمك ومتغيرًا لعمرك. استخدم const لما لا يتغير و let لما يتغير."
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "style": "tip",
+          "blocks": [
+            {
+              "type": "code",
+              "language": "JavaScript",
+              "code": "const myName = \"Ali\";\nlet myAge = 25;"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "Checklist قبل ما تقول أنا فهمت",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "unordered_list",
+              "items": [
+                "تشرح الفرق بين value و variable.",
+                "تشرح الفرق بين declaration و assignment.",
+                "تعرف متى تستخدم const ومتى تستخدم let.",
+                "تعرف قواعد identifiers الأساسية.",
+                "تختار أسماء camelCase وصفية.",
+                "تعرف لماذا const arr = []; arr.push(1) يعمل."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "الدرس اللي بعده",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "الدرس الجاي Data Types سيفسّر أنواع القيم التي نخزنها في المتغيرات، ولماذا فهم النوع مهم قبل إجراء العمليات."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "خاتمة",
+      "blocks": [
+        {
+          "type": "box",
+          "style": "info",
+          "blocks": [
+            {
+              "type": "text",
+              "text": "خلاصة الدرس:"
+            },
+            {
+              "type": "ordered_list",
+              "items": [
+                "Value = أصغر وحدة بيانات.",
+                "Variable = اسم مرتبط بقيمة.",
+                "let يسمح بإعادة التعيين.",
+                "const يمنع إعادة تعيين binding ويفضل استخدامه افتراضيًا.",
+                "الأسماء يجب أن تتبع قواعد identifiers.",
+                "camelCase هو الاصطلاح الشائع في JavaScript.",
+                "الأسماء الوصفية تقلل الأخطاء.",
+                "الدرس القادم: Data Types."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "sections": 26,
+    "subsections": 19,
+    "subsubsections": 0,
+    "blocks": 153,
+    "codeBlocks": 24,
+    "outputs": 4,
+    "boxes": 46,
+    "tables": 13,
+    "lists": 17
+  }
+}
